@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (isSaved) {
       await supabase.from('wishlists').delete().eq('course_id', courseId)
     } else {
-      await supabase.from('wishlists').insert({ course_id: courseId })
+      await supabase.from('wishlists').insert({ course_id: courseId, user_id: session.user.id })
     }
   }, [session, wishlisted, supabase])
 
