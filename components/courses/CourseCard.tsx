@@ -1,24 +1,44 @@
 'use client'
 
-import Link from 'next/link'
 import { Course } from '@/lib/types'
-import { CourseBadges } from './CourseBadges'
 import { WishlistButton } from '@/components/ui/WishlistButton'
+
+function FeatureIcons({ course }: { course: Course }) {
+  const features = [
+    { icon: '🏕️', label: 'Overnight stays', active: course.overnight_stays },
+    { icon: '⛳', label: 'Stay & Play', active: course.stay_n_play !== 'no' },
+    { icon: '🐕', label: 'Dogs welcome', active: course.dogs === 'yes' },
+    { icon: '⚡', label: 'Power hookup', active: course.power },
+  ]
+  return (
+    <div className="flex gap-3 mt-2">
+      {features.map(f => (
+        <span
+          key={f.label}
+          title={f.label}
+          className={`text-base transition-opacity ${f.active ? 'opacity-100' : 'opacity-20'}`}
+        >
+          {f.icon}
+        </span>
+      ))}
+    </div>
+  )
+}
 
 export function CourseCard({
   course,
-  marker,
   highlighted,
+  onClick,
 }: {
   course: Course
-  marker?: string
   highlighted?: boolean
+  onClick?: (course: Course) => void
 }) {
   return (
-    <Link
-      href={`/courses/${course.id}`}
-      className={`block rounded-xl border transition-all hover:shadow-md ${
-        highlighted ? 'border-green-500 shadow-md' : 'border-gray-200 hover:border-gray-300'
+    <div
+      onClick={() => onClick?.(course)}
+      className={`block rounded-xl border transition-all cursor-pointer ${
+        highlighted ? 'border-green-500 shadow-md' : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
       }`}
     >
       {/* Photo */}
@@ -42,25 +62,17 @@ export function CourseCard({
           </div>
         )}
         <WishlistButton courseId={course.id} className="absolute top-2 left-2" />
-        {marker && (
-          <div className="absolute top-2 right-2 w-8 h-8 bg-gray-800 text-white rounded-full flex items-center justify-center text-sm font-bold">
-            {marker}
-          </div>
-        )}
       </div>
 
       {/* Content */}
       <div className="p-4">
-        <h3 className="font-semibold text-gray-900 mb-0.5 truncate">{course.name}</h3>
+        <h3 className="font-semibold text-gray-900 truncate">{course.name}</h3>
         {course.region && (
-          <p className="text-sm text-gray-500 mb-2">{course.region}</p>
+          <p className="text-sm text-gray-500">{course.region}</p>
         )}
-        {course.address && (
-          <p className="text-xs text-gray-400 mb-3 truncate">{course.address}</p>
-        )}
-        <CourseBadges course={course} />
+        <FeatureIcons course={course} />
       </div>
-    </Link>
+    </div>
   )
 }
 

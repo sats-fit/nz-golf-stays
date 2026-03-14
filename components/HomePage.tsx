@@ -8,6 +8,7 @@ import { ViewToggle, ViewMode } from '@/components/ui/ViewToggle'
 import { MapView, MapBounds } from '@/components/map/MapView'
 import { Header } from '@/components/layout/Header'
 import { useAuth } from '@/components/auth/AuthProvider'
+import { CourseDetailModal } from '@/components/courses/CourseDetailModal'
 
 function coursesInBounds(courses: Course[], bounds: MapBounds | null): Course[] {
   if (!bounds) return courses
@@ -27,6 +28,7 @@ export function HomePage({ courses }: { courses: Course[] }) {
   const [highlightedId, setHighlightedId] = useState<string | null>(null)
   const [mapBounds, setMapBounds] = useState<MapBounds | null>(null)
   const [wishlistOnly, setWishlistOnly] = useState(false)
+  const [detailCourse, setDetailCourse] = useState<Course | null>(null)
   const { wishlisted, openAuthModal, session } = useAuth()
 
   const handleBoundsChange = useCallback((bounds: MapBounds) => {
@@ -38,14 +40,17 @@ export function HomePage({ courses }: { courses: Course[] }) {
     : courses
   const visibleCourses = view === 'split' ? coursesInBounds(filteredCourses, mapBounds) : filteredCourses
 
-  // Map from course ID → letter label, shared between list and map markers
+  // labelMap: just used to dim out-of-bounds markers, no letters needed
   const labelMap = view === 'split'
-    ? Object.fromEntries(visibleCourses.map((c, i) => [c.id, String.fromCharCode(65 + i)]))
+    ? Object.fromEntries(visibleCourses.map(c => [c.id, '']))
     : undefined
 
   return (
     <>
       <Header />
+      {detailCourse && (
+        <CourseDetailModal course={detailCourse} onClose={() => setDetailCourse(null)} />
+      )}
 
       {/* Body row — not height-constrained, so page can grow and window scrolls */}
       <div className="flex">
@@ -88,7 +93,7 @@ export function HomePage({ courses }: { courses: Course[] }) {
             <div className="flex">
               {/* Left: naturally flowing list */}
               <div className="flex-1 p-4">
-                <CourseList courses={visibleCourses} highlightedId={highlightedId} columns={2} labelMap={labelMap} />
+                <CourseList courses={visibleCourses} highlightedId={highlightedId} columns={2} onCourseClick={setDetailCourse} />
               </div>
               {/* Right: sticky map — floated card with padding + rounded corners */}
               <div className="flex-1 sticky top-[105px] self-start bg-gray-100 p-4" style={{height: 'calc(100vh - 105px)'}}>
@@ -98,6 +103,7 @@ export function HomePage({ courses }: { courses: Course[] }) {
                     highlightedId={highlightedId}
                     onCourseHover={setHighlightedId}
                     onBoundsChange={handleBoundsChange}
+                    onCourseSelect={setDetailCourse}
                     labelMap={labelMap}
                   />
                 </div>
@@ -109,11 +115,12 @@ export function HomePage({ courses }: { courses: Course[] }) {
                 courses={courses}
                 highlightedId={highlightedId}
                 onCourseHover={setHighlightedId}
+                onCourseSelect={setDetailCourse}
               />
             </div>
           ) : (
             <div className="p-5">
-              <CourseList courses={courses} highlightedId={highlightedId} />
+              <CourseList courses={courses} highlightedId={highlightedId} onCourseClick={setDetailCourse} />
             </div>
           )}
         </main>

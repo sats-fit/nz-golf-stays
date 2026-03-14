@@ -7,14 +7,12 @@ export function CourseList({
   courses,
   highlightedId,
   columns,
-  labelMap,
+  onCourseClick,
 }: {
   courses: Course[]
   highlightedId?: string | null
-  /** Fixed column count. Omit for responsive grid. */
   columns?: 1 | 2
-  /** When provided, uses this map for marker letters instead of index order. */
-  labelMap?: Record<string, string>
+  onCourseClick?: (course: Course) => void
 }) {
   if (courses.length === 0) {
     return (
@@ -31,12 +29,12 @@ export function CourseList({
       : columns === 2 ? 'grid grid-cols-2 gap-4'
       : 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4'
     }>
-      {courses.map((course, i) => (
+      {courses.map(course => (
         <CourseCard
           key={course.id}
           course={course}
-          marker={labelMap?.[course.id] ?? String.fromCharCode(65 + i)}
           highlighted={highlightedId === course.id}
+          onClick={onCourseClick}
         />
       ))}
     </div>
