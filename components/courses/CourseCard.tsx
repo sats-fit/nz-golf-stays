@@ -25,6 +25,7 @@ export function CourseCard({
             src={`/api/places/photo?place_id=${course.google_place_id}&index=0`}
             alt={course.name}
             className="w-full h-full object-cover"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
           />
         ) : course.photos.length > 0 ? (
           <img
