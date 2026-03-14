@@ -34,7 +34,7 @@ export function Header() {
         {/* Hamburger */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="shrink-0 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          className="shrink-0 ml-auto p-2 rounded-lg hover:bg-gray-100 transition-colors"
           aria-label="Menu"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
