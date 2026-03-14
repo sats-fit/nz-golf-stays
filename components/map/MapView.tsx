@@ -112,6 +112,8 @@ export function MapView({
           }
         })
 
+        map.addListener('click', () => setSelectedCourse(null))
+
         mapInstanceRef.current = map
         setIsLoading(false)
       })
@@ -182,7 +184,7 @@ export function MapView({
   }
 
   return (
-    <div className="relative w-full h-full" onClick={() => setSelectedCourse(null)}>
+    <div className="relative w-full h-full">
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-50 z-10">
           <div className="text-gray-400 text-sm">Loading map...</div>
