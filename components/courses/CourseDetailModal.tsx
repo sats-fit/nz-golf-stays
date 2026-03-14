@@ -1,8 +1,16 @@
 'use client'
 
 import { Course } from '@/lib/types'
-import { CourseBadges } from './CourseBadges'
 import { WishlistButton } from '@/components/ui/WishlistButton'
+
+const FEATURES = [
+  { icon: '🏕️', label: 'Overnight stays', active: (c: Course) => c.overnight_stays },
+  { icon: '⛳', label: 'Stay & Play', active: (c: Course) => c.stay_n_play !== 'no' },
+  { icon: '🛖', label: 'Stay no play', active: (c: Course) => c.stay_no_play },
+  { icon: '🐕', label: 'Dogs welcome', active: (c: Course) => c.dogs === 'yes' },
+  { icon: '⚡', label: 'Power hookup', active: (c: Course) => c.power },
+  { icon: '📋', label: 'Call ahead to arrange', active: (c: Course) => c.ask_first },
+]
 
 export function CourseDetailModal({
   course,
@@ -46,15 +54,31 @@ export function CourseDetailModal({
           <h2 className="text-xl font-bold text-gray-900">{course.name}</h2>
           {course.region && <p className="text-sm text-gray-500 mt-0.5 mb-3">{course.region}</p>}
 
-          <div className="mb-4">
-            <CourseBadges course={course} />
+          {/* Feature icon row */}
+          <div className="flex gap-3 mb-4">
+            {FEATURES.map(f => (
+              <span
+                key={f.label}
+                title={f.label}
+                className={`text-xl transition-opacity ${f.active(course) ? 'opacity-100' : 'opacity-20'}`}
+              >
+                {f.icon}
+              </span>
+            ))}
           </div>
 
           <div className="space-y-2.5 text-sm">
             {course.address && (
-              <div className="flex gap-2.5 text-gray-700">
+              <div className="flex gap-2.5">
                 <span className="shrink-0">📍</span>
-                <span>{course.address}</span>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(course.address)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-600 hover:underline"
+                >
+                  {course.address}
+                </a>
               </div>
             )}
             {course.phone && (
@@ -71,29 +95,8 @@ export function CourseDetailModal({
                 </a>
               </div>
             )}
-            {course.overnight_stays && (
-              <div className="flex gap-2.5 text-gray-700"><span>🏕️</span><span>Overnight motorhome stays allowed</span></div>
-            )}
-            {course.stay_n_play === 'yes' && (
-              <div className="flex gap-2.5 text-gray-700"><span>⛳</span><span>Stay &amp; Play available</span></div>
-            )}
-            {course.stay_n_play === 'free_with_gf' && (
-              <div className="flex gap-2.5 text-gray-700"><span>⛳</span><span>Free stay with green fees</span></div>
-            )}
-            {course.stay_no_play && (
-              <div className="flex gap-2.5 text-gray-700">
-                <span>🛖</span>
-                <span>Stay without playing{course.stay_no_play_price ? ` · ${course.stay_no_play_price}` : ''}</span>
-              </div>
-            )}
-            {course.dogs === 'yes' && (
-              <div className="flex gap-2.5 text-gray-700"><span>🐕</span><span>Dogs welcome</span></div>
-            )}
-            {course.power && (
-              <div className="flex gap-2.5 text-gray-700"><span>⚡</span><span>Power hookup available</span></div>
-            )}
-            {course.ask_first && (
-              <div className="flex gap-2.5 text-gray-700"><span>📋</span><span>Please call ahead to arrange stay</span></div>
+            {course.stay_no_play && course.stay_no_play_price && (
+              <div className="flex gap-2.5 text-gray-700"><span>🛖</span><span>Stay no play · {course.stay_no_play_price}</span></div>
             )}
             {course.notes && (
               <div className="mt-3 bg-gray-50 rounded-xl p-3">
