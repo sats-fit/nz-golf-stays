@@ -10,6 +10,19 @@ import { WishlistButton } from '@/components/ui/WishlistButton'
 const NZ_CENTER = { lat: -41.2865, lng: 174.7762 }
 const NZ_ZOOM = 6
 
+function flagIcon(color: string) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" viewBox="0 0 22 30">
+    <line x1="7" y1="3" x2="7" y2="27" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+    <polygon points="7,3 20,9 7,15" fill="${color}"/>
+    <circle cx="7" cy="27" r="3.5" fill="#1f2937"/>
+  </svg>`
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`
+}
+
+const FLAG_ACTIVE = flagIcon('#16a34a')
+const FLAG_DIM = flagIcon('#9ca3af')
+const FLAG_HIGHLIGHTED = flagIcon('#15803d')
+
 let optionsSet = false
 
 function ensureOptions() {
@@ -37,7 +50,7 @@ export function MapView({
   highlightedId?: string | null
   onCourseHover?: (id: string | null) => void
   onBoundsChange?: (bounds: MapBounds) => void
-  /** When provided, only courses in this map get a labelled green marker; others get a grey dot */
+  /** When provided, courses not in the map get dimmed markers */
   labelMap?: Record<string, string>
 }) {
   const mapRef = useRef<HTMLDivElement>(null)
@@ -49,37 +62,33 @@ export function MapView({
   const [error, setError] = useState<string | null>(null)
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
 
-  // Re-label markers whenever labelMap changes (split view panning)
+  // Highlight the hovered marker
   useEffect(() => {
     if (isLoading) return
     for (const [id, marker] of markersRef.current) {
-      const letter = labelMap?.[id]
-      if (labelMap == null) {
-        // No labelMap — keep whatever label was set on creation
-        return
-      }
-      if (letter) {
-        marker.setLabel({ text: letter, color: '#ffffff', fontWeight: 'bold', fontSize: '12px' })
-        marker.setIcon({
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 14,
-          fillColor: '#16a34a',
-          fillOpacity: 1,
-          strokeColor: '#15803d',
-          strokeWeight: 2,
-        })
-      } else {
-        // Course is off-screen in split view — show as a small grey dot
-        marker.setLabel({ text: ' ', color: 'transparent', fontSize: '1px', fontWeight: 'normal' })
-        marker.setIcon({
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 8,
-          fillColor: '#9ca3af',
-          fillOpacity: 0.5,
-          strokeColor: '#6b7280',
-          strokeWeight: 1,
-        })
-      }
+      const inView = labelMap == null || id in labelMap
+      const isHighlighted = id === highlightedId
+      marker.setIcon({
+        url: isHighlighted ? FLAG_HIGHLIGHTED : inView ? FLAG_ACTIVE : FLAG_DIM,
+        scaledSize: isHighlighted ? new google.maps.Size(26, 35) : new google.maps.Size(22, 30),
+        anchor: isHighlighted ? new google.maps.Point(8, 35) : new google.maps.Point(7, 30),
+      })
+      if (isHighlighted) marker.setZIndex(999)
+      else marker.setZIndex(undefined as unknown as number)
+    }
+  }, [highlightedId, isLoading, labelMap])
+
+  // Update marker icons when visible set changes (split view panning)
+  useEffect(() => {
+    if (isLoading || labelMap == null) return
+    for (const [id, marker] of markersRef.current) {
+      const inView = id in labelMap
+      marker.setLabel('')
+      marker.setIcon({
+        url: inView ? FLAG_ACTIVE : FLAG_DIM,
+        scaledSize: new google.maps.Size(22, 30),
+        anchor: new google.maps.Point(7, 30),
+      })
     }
   }, [labelMap, isLoading])
 
@@ -147,19 +156,17 @@ export function MapView({
         if (!course.lat || !course.lng) return
         if (markersRef.current.has(course.id)) return
 
-        const letter = labelMap != null ? (labelMap[course.id] ?? null) : String.fromCharCode(65 + (i % 26))
-        const labeled = letter != null
+        const inView = labelMap == null || course.id in labelMap
 
         const marker = new Marker({
           map,
           position: { lat: course.lat, lng: course.lng },
           title: course.name,
-          label: labeled
-            ? { text: letter!, color: '#ffffff', fontWeight: 'bold', fontSize: '12px' }
-            : { text: ' ', color: 'transparent', fontSize: '1px', fontWeight: 'normal' },
-          icon: labeled
-            ? { path: google.maps.SymbolPath.CIRCLE, scale: 14, fillColor: '#16a34a', fillOpacity: 1, strokeColor: '#15803d', strokeWeight: 2 }
-            : { path: google.maps.SymbolPath.CIRCLE, scale: 8, fillColor: '#9ca3af', fillOpacity: 0.5, strokeColor: '#6b7280', strokeWeight: 1 },
+          icon: {
+            url: inView ? FLAG_ACTIVE : FLAG_DIM,
+            scaledSize: new google.maps.Size(22, 30),
+            anchor: new google.maps.Point(7, 30),
+          },
         })
 
         marker.addListener('click', () => {
