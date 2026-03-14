@@ -27,11 +27,11 @@ async function getRating(placeId: string): Promise<{ rating?: number; user_ratin
 }
 
 async function main() {
-  const { data: courses, error } = await supabase
-    .from('courses')
-    .select('id, name, google_place_id')
-    .not('google_place_id', 'is', null)
-    .is('google_rating', null)  // only fetch missing ones
+  const refreshAll = process.argv.includes('--all')
+  let query = supabase.from('courses').select('id, name, google_place_id').not('google_place_id', 'is', null)
+  if (!refreshAll) query = query.is('google_rating', null)  // only missing ones unless --all passed
+
+  const { data: courses, error } = await query
 
   if (error) { console.error(error); process.exit(1) }
   if (!courses?.length) { console.log('All ratings already filled.'); return }

@@ -1,0 +1,26 @@
+name: Refresh Google Ratings
+
+on:
+  schedule:
+    - cron: '0 2 1 * *'  # 2am UTC on the 1st of every month
+  workflow_dispatch:       # allows manual run from GitHub Actions UI
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Refresh all Google ratings
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+        run: npx ts-node --project tsconfig.json scripts/import/backfill-ratings.ts --all
