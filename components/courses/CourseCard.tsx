@@ -20,7 +20,13 @@ export function CourseCard({
     >
       {/* Photo */}
       <div className="relative h-44 bg-gray-100 rounded-t-xl overflow-hidden">
-        {course.photos.length > 0 ? (
+        {course.google_place_id ? (
+          <img
+            src={`/api/places/photo?place_id=${course.google_place_id}&index=0`}
+            alt={course.name}
+            className="w-full h-full object-cover"
+          />
+        ) : course.photos.length > 0 ? (
           <img
             src={course.photos[0]}
             alt={course.name}

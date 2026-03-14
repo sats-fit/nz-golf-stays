@@ -19,6 +19,7 @@ export type Course = {
   power: boolean
   ask_first: boolean
   photos: string[]
+  google_place_id: string | null
   approved: boolean
   submitted_by: string | null
   created_at: string
