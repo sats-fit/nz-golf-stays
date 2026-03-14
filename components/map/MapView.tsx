@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { setOptions, importLibrary } from '@googlemaps/js-api-loader'
+import Link from 'next/link'
 import { Course } from '@/lib/types'
-import { stayNPlayLabel } from '@/lib/utils'
+import { CourseBadges } from '@/components/courses/CourseBadges'
 
 const NZ_CENTER = { lat: -41.2865, lng: 174.7762 }
 const NZ_ZOOM = 6
@@ -41,11 +42,11 @@ export function MapView({
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<google.maps.Map | null>(null)
   const markersRef = useRef<Map<string, google.maps.Marker>>(new Map())
-  const infoWindowRef = useRef<google.maps.InfoWindow | null>(null)
   const onBoundsChangeRef = useRef(onBoundsChange)
   onBoundsChangeRef.current = onBoundsChange
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
 
   // Re-label markers whenever labelMap changes (split view panning)
   useEffect(() => {
@@ -88,7 +89,7 @@ export function MapView({
     ensureOptions()
 
     importLibrary('maps')
-      .then(({ Map, InfoWindow }) => {
+      .then(({ Map }) => {
         if (!mapRef.current) return
 
         const map = new Map(mapRef.current, {
@@ -112,7 +113,6 @@ export function MapView({
         })
 
         mapInstanceRef.current = map
-        infoWindowRef.current = new InfoWindow()
         setIsLoading(false)
       })
       .catch((err: unknown) => {
@@ -127,7 +127,6 @@ export function MapView({
     if (!mapInstanceRef.current || isLoading) return
 
     const map = mapInstanceRef.current
-    const infoWindow = infoWindowRef.current!
     const existingIds = new Set(markersRef.current.keys())
 
     // Remove stale markers
@@ -161,8 +160,7 @@ export function MapView({
         })
 
         marker.addListener('click', () => {
-          infoWindow.setContent(buildInfoWindowContent(course))
-          infoWindow.open({ anchor: marker, map })
+          setSelectedCourse(course)
         })
 
         markersRef.current.set(course.id, marker)
@@ -184,41 +182,61 @@ export function MapView({
   }
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full" onClick={() => setSelectedCourse(null)}>
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-50 z-10">
           <div className="text-gray-400 text-sm">Loading map...</div>
         </div>
       )}
       <div ref={mapRef} className="w-full h-full" />
+
+      {selectedCourse && (
+        <div
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 w-72 bg-white rounded-2xl shadow-2xl overflow-hidden"
+          onClick={e => e.stopPropagation()}
+        >
+          {/* Photo */}
+          <div className="relative h-40 bg-gray-100">
+            {selectedCourse.google_place_id ? (
+              <img
+                src={`/api/places/photo?place_id=${selectedCourse.google_place_id}&index=0`}
+                alt={selectedCourse.name}
+                className="w-full h-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+              />
+            ) : selectedCourse.photos.length > 0 ? (
+              <img
+                src={selectedCourse.photos[0]}
+                alt={selectedCourse.name}
+                className="w-full h-full object-cover"
+              />
+            ) : null}
+            <button
+              onClick={() => setSelectedCourse(null)}
+              className="absolute top-2 right-2 w-7 h-7 bg-white rounded-full shadow flex items-center justify-center text-gray-600 hover:text-gray-900"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Details */}
+          <div className="p-3">
+            <h3 className="font-semibold text-gray-900 text-sm truncate">{selectedCourse.name}</h3>
+            {selectedCourse.region && (
+              <p className="text-xs text-gray-500 mb-1">{selectedCourse.region}</p>
+            )}
+            <div className="mb-3">
+              <CourseBadges course={selectedCourse} />
+            </div>
+            <Link
+              href={`/courses/${selectedCourse.id}`}
+              className="block w-full text-center bg-green-600 hover:bg-green-700 text-white text-sm font-medium py-2 rounded-lg"
+            >
+              View details →
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   )
-}
-
-function buildInfoWindowContent(course: Course): string {
-  const badges = [
-    course.overnight_stays ? 'Overnight' : null,
-    course.stay_n_play !== 'no' ? stayNPlayLabel(course.stay_n_play) : null,
-    course.dogs === 'yes' ? 'Dogs OK' : null,
-    course.power ? 'Power' : null,
-  ]
-    .filter(Boolean)
-    .map(
-      b =>
-        `<span style="background:#dcfce7;color:#166534;padding:2px 6px;border-radius:9999px;font-size:11px;margin-right:3px;">${b}</span>`
-    )
-    .join('')
-
-  return `
-    <div style="font-family:Arial,sans-serif;max-width:240px;padding:4px 0">
-      <strong style="font-size:14px;color:#111;">${course.name}</strong>
-      ${course.region ? `<p style="color:#6b7280;font-size:12px;margin:2px 0 0">${course.region}</p>` : ''}
-      ${course.address ? `<p style="color:#9ca3af;font-size:11px;margin:2px 0 6px">${course.address}</p>` : ''}
-      <div style="margin:6px 0">${badges}</div>
-      <a href="/courses/${course.id}"
-         style="display:inline-block;background:#16a34a;color:white;padding:4px 10px;border-radius:6px;font-size:12px;text-decoration:none;margin-top:4px">
-        View details →
-      </a>
-    </div>
-  `
 }
