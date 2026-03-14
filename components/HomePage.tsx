@@ -1,13 +1,12 @@
 'use client'
 
-import { useState, Suspense, useCallback } from 'react'
+import { useState, useCallback, Suspense } from 'react'
 import { Course } from '@/lib/types'
 import { CourseList } from '@/components/courses/CourseList'
 import { FilterSidebar } from '@/components/filters/FilterSidebar'
-import { SearchBar } from '@/components/filters/SearchBar'
 import { ViewToggle, ViewMode } from '@/components/ui/ViewToggle'
 import { MapView, MapBounds } from '@/components/map/MapView'
-import Link from 'next/link'
+import { Header } from '@/components/layout/Header'
 
 function coursesInBounds(courses: Course[], bounds: MapBounds | null): Course[] {
   if (!bounds) return courses
@@ -40,23 +39,7 @@ export function HomePage({ courses }: { courses: Course[] }) {
 
   return (
     <div className="flex flex-col h-screen">
-      {/* Header */}
-      <header className="shrink-0 bg-white border-b border-gray-200 px-4 py-3">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="text-green-600 font-bold text-lg">NZ Golf Stays</span>
-          </div>
-          <Suspense>
-            <SearchBar />
-          </Suspense>
-          <Link
-            href="/submit"
-            className="shrink-0 bg-green-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
-          >
-            + Add Course
-          </Link>
-        </div>
-      </header>
+      <Header />
 
       {/* Body */}
       <div className="flex flex-1 min-h-0">

@@ -5,6 +5,7 @@ import { setOptions, importLibrary } from '@googlemaps/js-api-loader'
 import Link from 'next/link'
 import { Course } from '@/lib/types'
 import { CourseBadges } from '@/components/courses/CourseBadges'
+import { WishlistButton } from '@/components/ui/WishlistButton'
 
 const NZ_CENTER = { lat: -41.2865, lng: 174.7762 }
 const NZ_ZOOM = 6
@@ -213,6 +214,7 @@ export function MapView({
                 className="w-full h-full object-cover"
               />
             ) : null}
+            <WishlistButton courseId={selectedCourse.id} className="absolute top-2 left-2" />
             <button
               onClick={() => setSelectedCourse(null)}
               className="absolute top-2 right-2 w-7 h-7 bg-white rounded-full shadow flex items-center justify-center text-gray-600 hover:text-gray-900"

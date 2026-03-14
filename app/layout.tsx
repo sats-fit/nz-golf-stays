@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { AuthProvider } from '@/components/auth/AuthProvider'
 
 export const metadata: Metadata = {
   title: 'NZ Golf Stays — Find Golf Courses That Welcome Motorhomes',
@@ -20,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-white text-gray-900 antialiased">
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   )

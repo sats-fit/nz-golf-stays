@@ -1,6 +1,9 @@
+'use client'
+
 import Link from 'next/link'
 import { Course } from '@/lib/types'
 import { CourseBadges } from './CourseBadges'
+import { WishlistButton } from '@/components/ui/WishlistButton'
 
 export function CourseCard({
   course,
@@ -38,6 +41,7 @@ export function CourseCard({
             <GolfIcon className="w-12 h-12 text-gray-300" />
           </div>
         )}
+        <WishlistButton courseId={course.id} className="absolute top-2 left-2" />
         {marker && (
           <div className="absolute top-2 right-2 w-8 h-8 bg-gray-800 text-white rounded-full flex items-center justify-center text-sm font-bold">
             {marker}
