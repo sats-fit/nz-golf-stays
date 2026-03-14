@@ -31,17 +31,27 @@ export function Header() {
         >
           + Add Course
         </Link>
-        {/* Hamburger */}
+        {/* Avatar / Hamburger */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="shrink-0 ml-auto p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          className="shrink-0 ml-auto rounded-full hover:opacity-80 transition-opacity"
           aria-label="Menu"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
+          {session?.user.user_metadata?.avatar_url ? (
+            <img
+              src={session.user.user_metadata.avatar_url}
+              alt="Profile"
+              className="w-8 h-8 rounded-full object-cover ring-2 ring-green-500"
+            />
+          ) : (
+            <div className="p-2 rounded-lg hover:bg-gray-100">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </div>
+          )}
         </button>
       </div>
 
