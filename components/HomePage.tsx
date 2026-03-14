@@ -7,6 +7,7 @@ import { FilterSidebar } from '@/components/filters/FilterSidebar'
 import { ViewToggle, ViewMode } from '@/components/ui/ViewToggle'
 import { MapView, MapBounds } from '@/components/map/MapView'
 import { Header } from '@/components/layout/Header'
+import { useAuth } from '@/components/auth/AuthProvider'
 
 function coursesInBounds(courses: Course[], bounds: MapBounds | null): Course[] {
   if (!bounds) return courses
@@ -25,12 +26,17 @@ export function HomePage({ courses }: { courses: Course[] }) {
   const [view, setView] = useState<ViewMode>('split')
   const [highlightedId, setHighlightedId] = useState<string | null>(null)
   const [mapBounds, setMapBounds] = useState<MapBounds | null>(null)
+  const [wishlistOnly, setWishlistOnly] = useState(false)
+  const { wishlisted, openAuthModal, session } = useAuth()
 
   const handleBoundsChange = useCallback((bounds: MapBounds) => {
     setMapBounds(bounds)
   }, [])
 
-  const visibleCourses = view === 'split' ? coursesInBounds(courses, mapBounds) : courses
+  const filteredCourses = wishlistOnly
+    ? courses.filter(c => wishlisted.has(c.id))
+    : courses
+  const visibleCourses = view === 'split' ? coursesInBounds(filteredCourses, mapBounds) : filteredCourses
 
   // Map from course ID → letter label, shared between list and map markers
   const labelMap = view === 'split'
@@ -55,7 +61,26 @@ export function HomePage({ courses }: { courses: Course[] }) {
               <span className="font-semibold text-gray-900">{visibleCourses.length}</span>{' '}
               {visibleCourses.length === 1 ? 'course' : 'courses'}{view === 'split' ? ' in view' : ' found'}
             </p>
-            <ViewToggle view={view} onChange={setView} />
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  if (!session) { openAuthModal(); return }
+                  setWishlistOnly(v => !v)
+                }}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm font-medium transition-colors ${
+                  wishlistOnly
+                    ? 'bg-red-50 border-red-300 text-red-600'
+                    : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
+                }`}
+                title="Show wishlist only"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill={wishlistOnly ? '#ef4444' : 'none'} stroke={wishlistOnly ? '#ef4444' : 'currentColor'} strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                Saved
+              </button>
+              <ViewToggle view={view} onChange={setView} />
+            </div>
           </div>
 
           {/* View area */}
@@ -68,7 +93,7 @@ export function HomePage({ courses }: { courses: Course[] }) {
               {/* Right: map — 50% width */}
               <div className="flex-1 min-w-0">
                 <MapView
-                  courses={courses}
+                  courses={filteredCourses}
                   highlightedId={highlightedId}
                   onCourseHover={setHighlightedId}
                   onBoundsChange={handleBoundsChange}
