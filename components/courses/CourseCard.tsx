@@ -7,8 +7,10 @@ function FeatureIcons({ course }: { course: Course }) {
   const features = [
     { icon: '🏕️', label: 'Overnight stays', active: course.overnight_stays },
     { icon: '⛳', label: 'Stay & Play', active: course.stay_n_play !== 'no' },
+    { icon: '🛖', label: 'Stay no play', active: course.stay_no_play },
     { icon: '🐕', label: 'Dogs welcome', active: course.dogs === 'yes' },
     { icon: '⚡', label: 'Power hookup', active: course.power },
+    { icon: '📋', label: 'Call ahead to arrange', active: course.ask_first },
   ]
   return (
     <div className="flex gap-3 mt-2">
