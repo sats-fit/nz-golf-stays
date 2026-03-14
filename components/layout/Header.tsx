@@ -17,7 +17,7 @@ export function Header() {
   }
 
   return (
-    <header className="shrink-0 bg-white border-b border-gray-200 px-4 py-3 relative z-10">
+    <header className="sticky top-0 z-20 bg-white border-b border-gray-200 px-4 py-3 relative">
       <div className="flex items-center gap-4">
         <Link href="/" className="shrink-0">
           <span className="text-green-600 font-bold text-lg">NZ Golf Stays</span>

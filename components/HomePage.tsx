@@ -44,19 +44,19 @@ export function HomePage({ courses }: { courses: Course[] }) {
     : undefined
 
   return (
-    <div className="flex flex-col h-screen">
+    <>
       <Header />
 
-      {/* Body */}
-      <div className="flex flex-1 min-h-0">
+      {/* Body row — not height-constrained, so page can grow and window scrolls */}
+      <div className="flex">
         <Suspense>
           <FilterSidebar />
         </Suspense>
 
         {/* Main content */}
-        <main className="flex-1 flex flex-col min-w-0">
-          {/* Toolbar */}
-          <div className="shrink-0 flex items-center justify-between px-5 py-3 border-b border-gray-100">
+        <main className="flex-1 min-w-0">
+          {/* Toolbar — sticky below header */}
+          <div className="sticky top-[57px] z-10 bg-white flex items-center justify-between px-5 py-3 border-b border-gray-100">
             <p className="text-sm text-gray-500">
               <span className="font-semibold text-gray-900">{visibleCourses.length}</span>{' '}
               {visibleCourses.length === 1 ? 'course' : 'courses'}{view === 'split' ? ' in view' : ' found'}
@@ -85,39 +85,39 @@ export function HomePage({ courses }: { courses: Course[] }) {
 
           {/* View area */}
           {view === 'split' ? (
-            <div className="flex-1 flex min-h-0">
-              {/* Left: scrollable list — 50% width */}
-              <div className="flex-1 overflow-y-auto border-r border-gray-100 p-4">
+            <div className="flex">
+              {/* Left: naturally flowing list */}
+              <div className="flex-1 p-4">
                 <CourseList courses={visibleCourses} highlightedId={highlightedId} columns={2} labelMap={labelMap} />
               </div>
-              {/* Right: map — 50% width */}
-              <div className="flex-1 min-w-0">
-                <MapView
-                  courses={filteredCourses}
-                  highlightedId={highlightedId}
-                  onCourseHover={setHighlightedId}
-                  onBoundsChange={handleBoundsChange}
-                  labelMap={labelMap}
-                />
+              {/* Right: sticky map — floated card with padding + rounded corners */}
+              <div className="flex-1 sticky top-[105px] self-start bg-gray-100 p-4" style={{height: 'calc(100vh - 105px)'}}>
+                <div className="h-full rounded-2xl overflow-hidden shadow-md">
+                  <MapView
+                    courses={filteredCourses}
+                    highlightedId={highlightedId}
+                    onCourseHover={setHighlightedId}
+                    onBoundsChange={handleBoundsChange}
+                    labelMap={labelMap}
+                  />
+                </div>
               </div>
             </div>
+          ) : view === 'map' ? (
+            <div className="h-[calc(100vh-105px)]">
+              <MapView
+                courses={courses}
+                highlightedId={highlightedId}
+                onCourseHover={setHighlightedId}
+              />
+            </div>
           ) : (
-            <div className="flex-1 overflow-auto">
-              {view === 'map' ? (
-                <MapView
-                  courses={courses}
-                  highlightedId={highlightedId}
-                  onCourseHover={setHighlightedId}
-                />
-              ) : (
-                <div className="p-5">
-                  <CourseList courses={courses} highlightedId={highlightedId} />
-                </div>
-              )}
+            <div className="p-5">
+              <CourseList courses={courses} highlightedId={highlightedId} />
             </div>
           )}
         </main>
       </div>
-    </div>
+    </>
   )
 }

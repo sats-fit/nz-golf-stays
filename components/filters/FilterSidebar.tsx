@@ -12,7 +12,7 @@ export function FilterSidebar() {
   })
 
   return (
-    <aside className="w-64 shrink-0 bg-white border-r border-gray-200 overflow-y-auto">
+    <aside className="w-64 shrink-0 bg-white border-r border-gray-200 overflow-y-auto sticky top-[57px] self-start h-[calc(100vh-57px)]">
       <div className="p-5 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
