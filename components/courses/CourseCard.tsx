@@ -2,6 +2,7 @@
 
 import { Course } from '@/lib/types'
 import { WishlistButton } from '@/components/ui/WishlistButton'
+import { StarRating } from '@/components/ui/StarRating'
 
 function FeatureIcons({ course }: { course: Course }) {
   const features = [
@@ -72,6 +73,7 @@ export function CourseCard({
         {course.region && (
           <p className="text-sm text-gray-500">{course.region}</p>
         )}
+        <StarRating course={course} size="sm" />
         <FeatureIcons course={course} />
       </div>
     </div>

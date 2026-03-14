@@ -2,6 +2,7 @@
 
 import { Course } from '@/lib/types'
 import { WishlistButton } from '@/components/ui/WishlistButton'
+import { StarRating } from '@/components/ui/StarRating'
 
 const FEATURES = [
   { icon: '🏕️', label: 'Overnight stays', active: (c: Course) => c.overnight_stays },
@@ -52,7 +53,11 @@ export function CourseDetailModal({
         {/* Content */}
         <div className="p-5">
           <h2 className="text-xl font-bold text-gray-900">{course.name}</h2>
-          {course.region && <p className="text-sm text-gray-500 mt-0.5 mb-3">{course.region}</p>}
+          <div className="flex items-center gap-2 mt-0.5 mb-3">
+            {course.region && <p className="text-sm text-gray-500">{course.region}</p>}
+            {course.region && course.google_rating && <span className="text-gray-300">·</span>}
+            <StarRating course={course} size="md" />
+          </div>
 
           {/* Feature icon row */}
           <div className="flex gap-3 mb-4">
