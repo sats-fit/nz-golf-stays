@@ -20,6 +20,7 @@ export type Course = {
   ask_first: boolean
   photos: string[]
   google_place_id: string | null
+  email: string | null
   google_rating: number | null
   google_rating_count: number | null
   approved: boolean
