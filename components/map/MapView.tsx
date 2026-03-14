@@ -7,8 +7,8 @@ import { Course } from '@/lib/types'
 import { CourseBadges } from '@/components/courses/CourseBadges'
 import { WishlistButton } from '@/components/ui/WishlistButton'
 
-const NZ_CENTER = { lat: -41.2865, lng: 174.7762 }
-const NZ_ZOOM = 6
+const NZ_CENTER = { lat: -41.5, lng: 172.8 }
+const NZ_ZOOM = 5
 
 function flagIcon(color: string) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="30" viewBox="0 0 22 30">
@@ -61,6 +61,7 @@ export function MapView({
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
+  const [detailCourse, setDetailCourse] = useState<Course | null>(null)
 
   // Highlight the hovered marker
   useEffect(() => {
@@ -239,12 +240,106 @@ export function MapView({
             <div className="mb-3">
               <CourseBadges course={selectedCourse} />
             </div>
-            <Link
-              href={`/courses/${selectedCourse.id}`}
+            <button
+              onClick={() => { setDetailCourse(selectedCourse); setSelectedCourse(null) }}
               className="block w-full text-center bg-green-600 hover:bg-green-700 text-white text-sm font-medium py-2 rounded-lg"
             >
               View details →
-            </Link>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Course detail modal */}
+      {detailCourse && (
+        <div className="absolute inset-0 z-30 flex items-center justify-center p-4" onClick={() => setDetailCourse(null)}>
+          <div
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-full overflow-y-auto"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Photo */}
+            <div className="relative h-52 bg-gray-100 shrink-0">
+              {detailCourse.google_place_id ? (
+                <img
+                  src={`/api/places/photo?place_id=${detailCourse.google_place_id}&index=0`}
+                  alt={detailCourse.name}
+                  className="w-full h-full object-cover rounded-t-2xl"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+                />
+              ) : detailCourse.photos.length > 0 ? (
+                <img src={detailCourse.photos[0]} alt={detailCourse.name} className="w-full h-full object-cover rounded-t-2xl" />
+              ) : null}
+              <WishlistButton courseId={detailCourse.id} className="absolute top-3 left-3" />
+              <button
+                onClick={() => setDetailCourse(null)}
+                className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-gray-600 hover:text-gray-900"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-5">
+              <h2 className="text-xl font-bold text-gray-900">{detailCourse.name}</h2>
+              {detailCourse.region && <p className="text-sm text-gray-500 mt-0.5 mb-3">{detailCourse.region}</p>}
+
+              <div className="mb-4">
+                <CourseBadges course={detailCourse} />
+              </div>
+
+              <div className="space-y-2.5 text-sm">
+                {detailCourse.address && (
+                  <div className="flex gap-2.5 text-gray-700">
+                    <span className="shrink-0">📍</span>
+                    <span>{detailCourse.address}</span>
+                  </div>
+                )}
+                {detailCourse.phone && (
+                  <div className="flex gap-2.5">
+                    <span className="shrink-0">📞</span>
+                    <a href={`tel:${detailCourse.phone}`} className="text-green-600 hover:underline">{detailCourse.phone}</a>
+                  </div>
+                )}
+                {detailCourse.website && (
+                  <div className="flex gap-2.5">
+                    <span className="shrink-0">🌐</span>
+                    <a href={detailCourse.website} target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline truncate">
+                      {detailCourse.website.replace(/^https?:\/\//, '')}
+                    </a>
+                  </div>
+                )}
+                {detailCourse.overnight_stays && (
+                  <div className="flex gap-2.5 text-gray-700"><span>🏕️</span><span>Overnight motorhome stays allowed</span></div>
+                )}
+                {detailCourse.stay_n_play === 'yes' && (
+                  <div className="flex gap-2.5 text-gray-700"><span>⛳</span><span>Stay &amp; Play available</span></div>
+                )}
+                {detailCourse.stay_n_play === 'free_with_gf' && (
+                  <div className="flex gap-2.5 text-gray-700"><span>⛳</span><span>Free stay with green fees</span></div>
+                )}
+                {detailCourse.stay_no_play && (
+                  <div className="flex gap-2.5 text-gray-700">
+                    <span>🛖</span>
+                    <span>Stay without playing{detailCourse.stay_no_play_price ? ` · ${detailCourse.stay_no_play_price}` : ''}</span>
+                  </div>
+                )}
+                {detailCourse.dogs === 'yes' && (
+                  <div className="flex gap-2.5 text-gray-700"><span>🐕</span><span>Dogs welcome</span></div>
+                )}
+                {detailCourse.power && (
+                  <div className="flex gap-2.5 text-gray-700"><span>⚡</span><span>Power hookup available</span></div>
+                )}
+                {detailCourse.ask_first && (
+                  <div className="flex gap-2.5 text-gray-700"><span>📋</span><span>Please call ahead to arrange stay</span></div>
+                )}
+                {detailCourse.notes && (
+                  <div className="mt-3 bg-gray-50 rounded-xl p-3">
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Notes</p>
+                    <p className="text-gray-700 text-sm leading-relaxed">{detailCourse.notes}</p>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}
