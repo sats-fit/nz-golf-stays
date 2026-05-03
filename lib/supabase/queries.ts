@@ -12,10 +12,11 @@ export async function getCourses(filters: Partial<FilterState>, supabase: Supaba
   if (filters.overnight_stays) query = query.eq('overnight_stays', true)
   if (filters.dogs) query = query.eq('dogs', 'yes')
   if (filters.power) query = query.eq('power', true)
-  if (filters.stay_n_play) query = query.eq('stay_n_play', 'yes')
-  if (filters.free_with_gf) query = query.eq('stay_n_play', 'free_with_gf')
-  if (filters.stay_no_play) query = query.eq('stay_no_play', true)
-  if (filters.ask_first) query = query.eq('ask_first', true)
+  if (filters.free_with_green_fees) query = query.eq('free_with_green_fees', true)
+  if (filters.stay_no_play) query = query.eq('stay_no_play_allowed', true)
+  if (filters.stay_with_play) query = query.eq('stay_with_play_allowed', true)
+  if (filters.donation) query = query.eq('donation_accepted', true)
+  if (filters.booking_required) query = query.in('booking', ['ask_first', 'must_book'])
   if (filters.search) query = query.ilike('name', `%${filters.search}%`)
 
   return query

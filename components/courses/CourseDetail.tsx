@@ -1,5 +1,6 @@
 import { Course } from '@/lib/types'
 import { CourseBadges } from './CourseBadges'
+import { StayOptionsTable } from './StayOptionsTable'
 
 export function CourseDetail({ course }: { course: Course }) {
   return (
@@ -40,6 +41,14 @@ export function CourseDetail({ course }: { course: Course }) {
         <CourseBadges course={course} />
       </div>
 
+      {/* Stay options table */}
+      {course.overnight_stays && (
+        <div className="mb-8">
+          <h2 className="font-semibold text-gray-900 mb-3">Stay Options</h2>
+          <StayOptionsTable course={course} />
+        </div>
+      )}
+
       {/* Details grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
         {course.address && (
@@ -73,44 +82,24 @@ export function CourseDetail({ course }: { course: Course }) {
           />
         )}
         <DetailRow
-          icon="🏕️"
-          label="Overnight Stays"
-          value={course.overnight_stays ? 'Yes' : 'No'}
-        />
-        <DetailRow
-          icon="⛳"
-          label="Stay & Play"
-          value={
-            course.stay_n_play === 'yes'
-              ? 'Yes'
-              : course.stay_n_play === 'free_with_gf'
-              ? 'Free with green fees'
-              : 'No'
-          }
-        />
-        <DetailRow
-          icon="🛖"
-          label="Stay No Play"
-          value={
-            course.stay_no_play
-              ? course.stay_no_play_price
-                ? `Yes · ${course.stay_no_play_price}`
-                : 'Yes'
-              : 'No'
-          }
-        />
-        <DetailRow
           icon="🐕"
           label="Dogs"
           value={
             course.dogs === 'yes' ? 'Allowed' : course.dogs === 'no' ? 'Not allowed' : 'Unknown'
           }
         />
-        <DetailRow icon="⚡" label="Power" value={course.power ? 'Available' : 'No'} />
         <DetailRow
           icon="📋"
-          label="Ask First"
-          value={course.ask_first ? 'Yes — please call ahead' : 'No'}
+          label="Booking"
+          value={
+            course.booking === 'must_book'
+              ? 'Must book ahead'
+              : course.booking === 'ask_first'
+              ? 'Ask first'
+              : course.booking === 'walk_in'
+              ? 'Walk-ins welcome'
+              : 'Unknown'
+          }
         />
       </div>
 

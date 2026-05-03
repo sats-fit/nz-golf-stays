@@ -4,6 +4,9 @@ import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { createSupabaseAdminClient } from '@/lib/supabase/admin'
 import { getCourses } from '@/lib/supabase/queries'
 
+const stayUnit = z.enum(['per_night', 'per_person', 'per_vehicle', 'per_person_per_night']).nullable().optional()
+const powerUnit = z.enum(['per_night', 'per_vehicle']).nullable().optional()
+
 const courseSchema = z.object({
   name: z.string().min(2).max(200),
   address: z.string().optional(),
@@ -12,12 +15,22 @@ const courseSchema = z.object({
   website: z.string().url().optional().or(z.literal('')),
   notes: z.string().max(1000).optional(),
   overnight_stays: z.boolean().default(false),
-  stay_n_play: z.enum(['yes', 'no', 'free_with_gf']).default('no'),
-  stay_no_play: z.boolean().default(false),
-  stay_no_play_price: z.string().optional(),
+
+  // Stay options v2
+  free_with_green_fees: z.boolean().default(false),
+  stay_no_play_allowed: z.boolean().default(false),
+  stay_no_play_price: z.number().nullable().optional(),
+  stay_no_play_unit: stayUnit,
+  stay_with_play_allowed: z.boolean().default(false),
+  stay_with_play_price: z.number().nullable().optional(),
+  stay_with_play_unit: stayUnit,
+  donation_accepted: z.boolean().default(false),
+
   dogs: z.enum(['yes', 'no', 'unknown']).default('unknown'),
   power: z.boolean().default(false),
-  ask_first: z.boolean().default(false),
+  power_additional_cost: z.number().nullable().optional(),
+  power_unit: powerUnit,
+  booking: z.enum(['unknown', 'walk_in', 'ask_first', 'must_book']).default('unknown'),
   photos: z.array(z.string().url()).default([]),
   submitted_by: z.string().optional(),
 })

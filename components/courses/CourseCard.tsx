@@ -7,11 +7,10 @@ import { StarRating } from '@/components/ui/StarRating'
 function FeatureIcons({ course }: { course: Course }) {
   const features = [
     { icon: '🏕️', label: 'Overnight stays', active: course.overnight_stays },
-    { icon: '⛳', label: 'Stay & Play', active: course.stay_n_play !== 'no' },
-    { icon: '🛖', label: 'Stay no play', active: course.stay_no_play },
+    { icon: '🆓', label: 'Free w/ green fees', active: course.free_with_green_fees },
     { icon: '🐕', label: 'Dogs welcome', active: course.dogs === 'yes' },
     { icon: '⚡', label: 'Power hookup', active: course.power },
-    { icon: '📋', label: 'Call ahead to arrange', active: course.ask_first },
+    { icon: '📋', label: 'Ask/Book ahead', active: course.booking === 'ask_first' || course.booking === 'must_book' },
   ]
   return (
     <div className="flex gap-3 mt-2">

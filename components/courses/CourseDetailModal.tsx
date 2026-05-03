@@ -3,14 +3,14 @@
 import { Course } from '@/lib/types'
 import { WishlistButton } from '@/components/ui/WishlistButton'
 import { StarRating } from '@/components/ui/StarRating'
+import { StayOptionsTable } from './StayOptionsTable'
 
 const FEATURES = [
   { icon: '🏕️', label: 'Overnight stays', active: (c: Course) => c.overnight_stays },
-  { icon: '⛳', label: 'Stay & Play', active: (c: Course) => c.stay_n_play !== 'no' },
-  { icon: '🛖', label: 'Stay no play', active: (c: Course) => c.stay_no_play },
+  { icon: '🆓', label: 'Free w/ green fees', active: (c: Course) => c.free_with_green_fees },
   { icon: '🐕', label: 'Dogs welcome', active: (c: Course) => c.dogs === 'yes' },
   { icon: '⚡', label: 'Power hookup', active: (c: Course) => c.power },
-  { icon: '📋', label: 'Call ahead to arrange', active: (c: Course) => c.ask_first },
+  { icon: '📋', label: 'Ask/Book ahead', active: (c: Course) => c.booking === 'ask_first' || c.booking === 'must_book' },
 ]
 
 export function CourseDetailModal({
@@ -72,12 +72,24 @@ export function CourseDetailModal({
             ))}
           </div>
 
+          {/* Stay options table */}
+          {course.overnight_stays && (
+            <div className="mb-4">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Stay Options</p>
+              <StayOptionsTable course={course} />
+            </div>
+          )}
+
           <div className="space-y-2.5 text-sm">
             {course.address && (
               <div className="flex gap-2.5">
                 <span className="shrink-0">📍</span>
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(course.address)}`}
+                  href={
+                    course.google_place_id
+                      ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(course.name)}&query_place_id=${course.google_place_id}`
+                      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(course.name + ', New Zealand')}`
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-green-600 hover:underline"
@@ -100,8 +112,11 @@ export function CourseDetailModal({
                 </a>
               </div>
             )}
-            {course.stay_no_play && course.stay_no_play_price && (
-              <div className="flex gap-2.5 text-gray-700"><span>🛖</span><span>Stay no play · {course.stay_no_play_price}</span></div>
+            {course.booking === 'ask_first' && (
+              <div className="flex gap-2.5 text-gray-700"><span>📋</span><span>Ask first before arriving</span></div>
+            )}
+            {course.booking === 'must_book' && (
+              <div className="flex gap-2.5 text-gray-700"><span>📋</span><span>Must book ahead</span></div>
             )}
             {course.notes && (
               <div className="mt-3 bg-gray-50 rounded-xl p-3">
