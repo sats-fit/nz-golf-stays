@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Course } from '@/lib/types'
 import { CourseBadges } from '@/components/courses/CourseBadges'
+import { NotesEditor } from './NotesEditor'
 
 export function PendingCourseCard({
   course,
@@ -12,6 +13,7 @@ export function PendingCourseCard({
   onAction: (id: string, action: 'approve' | 'reject') => void
 }) {
   const [loading, setLoading] = useState<'approve' | 'reject' | null>(null)
+  const [currentNotes, setCurrentNotes] = useState(course.notes)
 
   const handleAction = async (action: 'approve' | 'reject') => {
     setLoading(action)
@@ -44,9 +46,10 @@ export function PendingCourseCard({
           <div className="mt-3">
             <CourseBadges course={course} />
           </div>
-          {course.notes && (
-            <p className="text-xs text-gray-500 mt-2 bg-gray-50 rounded p-2">{course.notes}</p>
-          )}
+
+          <div className="mt-3">
+            <NotesEditor courseId={course.id} initialNotes={currentNotes} onSave={setCurrentNotes} />
+          </div>
         </div>
 
         {course.photos.length > 0 && (

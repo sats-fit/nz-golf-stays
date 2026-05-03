@@ -32,7 +32,18 @@ export default async function Home({ searchParams }: { searchParams: SearchParam
   const filters = parseFilters(params)
 
   const supabase = await createSupabaseServerClient()
-  const { data: courses = [] } = await getCourses(filters, supabase)
+  const [{ data: courses = [] }, { data: { session } }] = await Promise.all([
+    getCourses(filters, supabase),
+    supabase.auth.getSession(),
+  ])
 
-  return <HomePage courses={courses ?? []} />
+  let isAdmin = false
+  if (session) {
+    const { createSupabaseAdminClient } = await import('@/lib/supabase/admin')
+    const admin = createSupabaseAdminClient()
+    const { data } = await admin.from('admins').select('user_id').eq('user_id', session.user.id).single()
+    isAdmin = !!data
+  }
+
+  return <HomePage courses={courses ?? []} isAdmin={isAdmin} />
 }

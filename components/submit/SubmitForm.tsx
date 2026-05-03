@@ -22,7 +22,6 @@ const schema = z.object({
   region: z.string().optional(),
   phone: z.string().optional(),
   website: z.string().url('Must be a valid URL').optional().or(z.literal('')),
-  notes: z.string().max(1000).optional(),
   overnight_stays: z.enum(['yes', 'no']),
 
   free_with_green_fees: z.boolean(),
@@ -268,16 +267,6 @@ export function SubmitForm() {
       {/* Photos */}
       <Section title="Photos (optional)">
         <PhotoUpload photos={photos} onChange={setPhotos} />
-      </Section>
-
-      {/* Notes */}
-      <Section title="Additional Notes (optional)">
-        <textarea
-          {...register('notes')}
-          rows={4}
-          placeholder="Any other useful info about staying at this course..."
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
-        />
       </Section>
 
       {/* Your name */}

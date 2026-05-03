@@ -17,11 +17,26 @@ export default async function AdminPage() {
   }
 
   const admin = createSupabaseAdminClient()
-  const { data: courses = [] } = await admin
-    .from('courses')
-    .select('*')
-    .eq('approved', false)
-    .order('created_at', { ascending: false })
+
+  // Check admin role
+  const { data: adminRow } = await admin
+    .from('admins')
+    .select('user_id')
+    .eq('user_id', session.user.id)
+    .single()
+
+  if (!adminRow) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-500">You are not authorised to access this page.</p>
+      </div>
+    )
+  }
+
+  const [{ data: pending = [] }, { data: approved = [] }] = await Promise.all([
+    admin.from('courses').select('*').eq('approved', false).order('created_at', { ascending: false }),
+    admin.from('courses').select('*').eq('approved', true).order('name', { ascending: true }),
+  ])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -38,7 +53,7 @@ export default async function AdminPage() {
           </form>
         </div>
       </header>
-      <AdminDashboard initialCourses={courses ?? []} />
+      <AdminDashboard pendingCourses={pending ?? []} approvedCourses={approved ?? []} />
     </div>
   )
 }

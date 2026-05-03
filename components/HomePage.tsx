@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, Suspense } from 'react'
+import { useState, useCallback, useEffect, Suspense } from 'react'
 import { Course } from '@/lib/types'
 import { CourseList } from '@/components/courses/CourseList'
 import { FilterSidebar } from '@/components/filters/FilterSidebar'
@@ -9,6 +9,18 @@ import { MapView, MapBounds } from '@/components/map/MapView'
 import { Header } from '@/components/layout/Header'
 import { useAuth } from '@/components/auth/AuthProvider'
 import { CourseDetailModal } from '@/components/courses/CourseDetailModal'
+import { MobileLayout } from '@/components/mobile/MobileLayout'
+
+function useMobile() {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+  return isMobile
+}
 
 function coursesInBounds(courses: Course[], bounds: MapBounds | null): Course[] {
   if (!bounds) return courses
@@ -23,13 +35,14 @@ function coursesInBounds(courses: Course[], bounds: MapBounds | null): Course[] 
   })
 }
 
-export function HomePage({ courses }: { courses: Course[] }) {
+export function HomePage({ courses, isAdmin = false }: { courses: Course[]; isAdmin?: boolean }) {
   const [view, setView] = useState<ViewMode>('split')
   const [highlightedId, setHighlightedId] = useState<string | null>(null)
   const [mapBounds, setMapBounds] = useState<MapBounds | null>(null)
   const [wishlistOnly, setWishlistOnly] = useState(false)
   const [detailCourse, setDetailCourse] = useState<Course | null>(null)
   const { wishlisted, openAuthModal, session } = useAuth()
+  const isMobile = useMobile()
 
   const handleBoundsChange = useCallback((bounds: MapBounds) => {
     setMapBounds(bounds)
@@ -45,11 +58,42 @@ export function HomePage({ courses }: { courses: Course[] }) {
     ? Object.fromEntries(visibleCourses.map(c => [c.id, '']))
     : undefined
 
+  if (isMobile) {
+    const mobileNav = {
+      view,
+      onViewChange: setView,
+      wishlistOnly,
+      onWishlistToggle: () => setWishlistOnly(v => !v),
+    }
+    return (
+      <>
+        <Header mobileNav={mobileNav} />
+        {detailCourse && (
+          <CourseDetailModal course={detailCourse} onClose={() => setDetailCourse(null)} isAdmin={isAdmin} />
+        )}
+        {view === 'map' ? (
+          <div className="h-[calc(100dvh-105px)]">
+            <MapView
+              courses={filteredCourses}
+              highlightedId={highlightedId}
+              onCourseHover={setHighlightedId}
+              onCourseSelect={setDetailCourse}
+            />
+          </div>
+        ) : (
+          <div className="p-4">
+            <CourseList courses={filteredCourses} highlightedId={highlightedId} onCourseClick={setDetailCourse} />
+          </div>
+        )}
+      </>
+    )
+  }
+
   return (
     <>
       <Header />
       {detailCourse && (
-        <CourseDetailModal course={detailCourse} onClose={() => setDetailCourse(null)} />
+        <CourseDetailModal course={detailCourse} onClose={() => setDetailCourse(null)} isAdmin={isAdmin} />
       )}
 
       {/* Body row — not height-constrained, so page can grow and window scrolls */}
@@ -96,7 +140,7 @@ export function HomePage({ courses }: { courses: Course[] }) {
                 <CourseList courses={visibleCourses} highlightedId={highlightedId} columns={2} onCourseClick={setDetailCourse} />
               </div>
               {/* Right: sticky map — floated card with padding + rounded corners */}
-              <div className="flex-1 sticky top-[105px] self-start bg-gray-100 p-4" style={{height: 'calc(100vh - 105px)'}}>
+              <div className="flex-1 sticky top-[105px] self-start bg-white p-4" style={{height: 'calc(100vh - 105px)'}}>
                 <div className="h-full rounded-2xl overflow-hidden shadow-md">
                   <MapView
                     courses={filteredCourses}

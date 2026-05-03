@@ -16,25 +16,36 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { id, action } = await req.json() as { id: string; action: 'approve' | 'reject' }
+  const body = await req.json()
+  const { id, ...fields } = body
 
-  if (!id || !['approve', 'reject'].includes(action)) {
-    return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
+  if (!id) {
+    return NextResponse.json({ error: 'Missing id' }, { status: 400 })
   }
+
+  const ALLOWED = [
+    'name', 'address', 'region', 'phone', 'website', 'email', 'notes',
+    'overnight_stays',
+    'free_with_green_fees',
+    'stay_no_play_allowed', 'stay_no_play_price', 'stay_no_play_unit',
+    'stay_with_play_allowed', 'stay_with_play_price', 'stay_with_play_unit',
+    'donation_accepted',
+    'power', 'power_additional_cost', 'power_unit',
+    'dogs', 'booking',
+  ]
+
+  const update = Object.fromEntries(
+    Object.entries(fields).filter(([k]) => ALLOWED.includes(k))
+  )
 
   const admin = createSupabaseAdminClient()
-
-  if (action === 'reject') {
-    const { error } = await admin.from('courses').delete().eq('id', id)
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-    return NextResponse.json({ deleted: true })
-  }
-
-  const { error } = await admin
+  const { data, error } = await admin
     .from('courses')
-    .update({ approved: true })
+    .update(update)
     .eq('id', id)
+    .select()
+    .single()
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ approved: true })
+  return NextResponse.json(data)
 }
