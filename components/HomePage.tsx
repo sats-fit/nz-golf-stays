@@ -35,14 +35,23 @@ function coursesInBounds(courses: Course[], bounds: MapBounds | null): Course[] 
   })
 }
 
-export function HomePage({ courses, isAdmin = false }: { courses: Course[]; isAdmin?: boolean }) {
+export function HomePage({ courses }: { courses: Course[] }) {
   const [view, setView] = useState<ViewMode>('split')
   const [highlightedId, setHighlightedId] = useState<string | null>(null)
   const [mapBounds, setMapBounds] = useState<MapBounds | null>(null)
   const [wishlistOnly, setWishlistOnly] = useState(false)
   const [detailCourse, setDetailCourse] = useState<Course | null>(null)
+  const [isAdmin, setIsAdmin] = useState(false)
   const { wishlisted, openAuthModal, session } = useAuth()
   const isMobile = useMobile()
+
+  useEffect(() => {
+    if (!session) { setIsAdmin(false); return }
+    fetch('/api/admin/me')
+      .then(r => r.json())
+      .then(({ isAdmin }) => setIsAdmin(isAdmin))
+      .catch(() => setIsAdmin(false))
+  }, [session])
 
   const handleBoundsChange = useCallback((bounds: MapBounds) => {
     setMapBounds(bounds)
