@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NZ Golf Stays — Brand Palette Review</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-soft: #4a4a4a;
+    --line: #e6e6e6;
+    --bg: #fafafa;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 64px 32px; }
+  header.page-head { margin-bottom: 56px; }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  h1 {
+    font-size: 44px;
+    line-height: 1.05;
+    margin: 8px 0 12px;
+    letter-spacing: -0.02em;
+  }
+  .lede { font-size: 17px; color: var(--ink-soft); max-width: 640px; }
+
+  .palette {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 40px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .palette-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .palette-head h2 {
+    font-size: 28px;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .palette-tag {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+  .palette-desc { color: var(--ink-soft); margin: 0 0 32px; max-width: 640px; }
+
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  @media (max-width: 900px) { .swatches { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 520px) { .swatches { grid-template-columns: repeat(2, 1fr); } }
+
+  .swatch {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .swatch-color { height: 110px; }
+  .swatch-meta {
+    padding: 12px 14px;
+    background: white;
+  }
+  .swatch-role {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .swatch-name { font-weight: 600; font-size: 14px; margin-top: 2px; }
+  .swatch-hex {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  /* Mockup: pretend course-card to show palette in action */
+  .mockup-row {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 800px) { .mockup-row { grid-template-columns: 1fr; } }
+
+  .mockup-hero {
+    border-radius: 14px;
+    padding: 28px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .mockup-hero .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    opacity: 0.8;
+  }
+  .mockup-hero h3 {
+    font-size: 28px;
+    margin: 8px 0 6px;
+    letter-spacing: -0.015em;
+  }
+  .mockup-hero p { margin: 0; opacity: 0.85; max-width: 360px; }
+  .mockup-hero .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+  }
+
+  .mockup-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .mockup-card .card-img {
+    height: 130px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 12px;
+  }
+  .mockup-card .card-body { padding: 16px 18px 18px; }
+  .mockup-card h4 { margin: 0 0 4px; font-size: 16px; }
+  .mockup-card .card-sub { color: var(--ink-soft); font-size: 13px; margin-bottom: 12px; }
+  .mockup-card .badges { display: flex; gap: 6px; flex-wrap: wrap; }
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .pin-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.92);
+    color: #222;
+  }
+
+  .footer-note {
+    margin-top: 48px;
+    padding: 24px;
+    border-radius: 12px;
+    background: white;
+    border: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="page-head">
+    <div class="eyebrow">Brand Review</div>
+    <h1>NZ Golf Stays — palette options</h1>
+    <p class="lede">Three directions for the visual identity. Each shows the raw palette plus a quick mockup so you can feel how it lands on screen. Pick a direction and we'll wire it into the app's design tokens.</p>
+  </header>
+
+  <!-- ============================== PALETTE 1 ============================== -->
+  <section class="palette">
+    <div class="palette-head">
+      <h2>1 &nbsp;·&nbsp; Coastal Fairway</h2>
+      <span class="palette-tag">Seaside links · Recommended for clarity</span>
+    </div>
+    <p class="palette-desc">Greens of a fairway meet the blues of an NZ coastline. Feels like Paraparaumu Beach or Tara Iti — golfy first, travel second. Safest, most "this is a golf app" direction.</p>
+
+    <div class="swatches">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#2D5F3F"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Primary</div>
+          <div class="swatch-name">Fairway Green</div>
+          <div class="swatch-hex">#2D5F3F</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#3A7CA5"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Secondary</div>
+          <div class="swatch-name">Ocean Blue</div>
+          <div class="swatch-hex">#3A7CA5</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#A8DADC"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Accent</div>
+          <div class="swatch-name">Sea Foam</div>
+          <div class="swatch-hex">#A8DADC</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#F4ECD8"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Neutral warm</div>
+          <div class="swatch-name">Pale Sand</div>
+          <div class="swatch-hex">#F4ECD8</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#8B7355"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Neutral warm</div>
+          <div class="swatch-name">Driftwood</div>
+          <div class="swatch-hex">#8B7355</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#1D3557"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Text</div>
+          <div class="swatch-name">Deep Navy</div>
+          <div class="swatch-hex">#1D3557</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mockup-row">
+      <div class="mockup-hero" style="background:#2D5F3F; color:#F4ECD8">
+        <div>
+          <div class="hero-eyebrow" style="color:#A8DADC">Find your stay</div>
+          <h3>Park up where the fairway meets the sea.</h3>
+          <p>Browse 200+ NZ golf courses welcoming motorhomes overnight.</p>
+        </div>
+        <button class="btn" style="background:#A8DADC; color:#1D3557">Explore courses →</button>
+      </div>
+      <div class="mockup-card">
+        <div class="card-img" style="background:#3A7CA5">
+          <span class="pin-badge">$15 / van</span>
+        </div>
+        <div class="card-body">
+          <h4>Wairoa Golf Club</h4>
+          <div class="card-sub">Hawke's Bay · 9 holes</div>
+          <div class="badges">
+            <span class="badge" style="background:#F4ECD8; color:#2D5F3F">Power</span>
+            <span class="badge" style="background:#F4ECD8; color:#2D5F3F">Dogs OK</span>
+            <span class="badge" style="background:#F4ECD8; color:#2D5F3F">Walk-in</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== PALETTE 2 ============================== -->
+  <section class="palette">
+    <div class="palette-head">
+      <h2>2 &nbsp;·&nbsp; Pōhutukawa Summer</h2>
+      <span class="palette-tag">Distinctly NZ · Highest standout</span>
+    </div>
+    <p class="palette-desc">Bush green grounded by a hero red drawn from the pōhutukawa bloom. Feels like Christmas at the bach. Boldest direction — red as a primary accent is rare in golf branding, which is exactly why it works.</p>
+
+    <div class="swatches">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#2A4D3A"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Primary</div>
+          <div class="swatch-name">Bush Green</div>
+          <div class="swatch-hex">#2A4D3A</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#C73E1D"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Accent</div>
+          <div class="swatch-name">Pōhutukawa Red</div>
+          <div class="swatch-hex">#C73E1D</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#E8B547"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Soft accent</div>
+          <div class="swatch-name">Stamen Yellow</div>
+          <div class="swatch-hex">#E8B547</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#E8D5B7"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Neutral</div>
+          <div class="swatch-name">Warm Sand</div>
+          <div class="swatch-hex">#E8D5B7</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#FAF3E0"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Background</div>
+          <div class="swatch-name">Cream</div>
+          <div class="swatch-hex">#FAF3E0</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#2B2B2B"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Text</div>
+          <div class="swatch-name">Charcoal</div>
+          <div class="swatch-hex">#2B2B2B</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mockup-row">
+      <div class="mockup-hero" style="background:#2A4D3A; color:#FAF3E0">
+        <div>
+          <div class="hero-eyebrow" style="color:#E8B547">Aotearoa, on wheels</div>
+          <h3>Where the bush meets the green.</h3>
+          <p>Discover NZ golf courses welcoming motorhomes — book, park, play.</p>
+        </div>
+        <button class="btn" style="background:#C73E1D; color:#FAF3E0">Find a course →</button>
+      </div>
+      <div class="mockup-card">
+        <div class="card-img" style="background:#C73E1D">
+          <span class="pin-badge">$15 / van</span>
+        </div>
+        <div class="card-body">
+          <h4>Wairoa Golf Club</h4>
+          <div class="card-sub">Hawke's Bay · 9 holes</div>
+          <div class="badges">
+            <span class="badge" style="background:#E8D5B7; color:#2A4D3A">Power</span>
+            <span class="badge" style="background:#E8D5B7; color:#2A4D3A">Dogs OK</span>
+            <span class="badge" style="background:#E8D5B7; color:#2A4D3A">Walk-in</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== PALETTE 3 ============================== -->
+  <section class="palette">
+    <div class="palette-head">
+      <h2>3 &nbsp;·&nbsp; Aotearoa Earth</h2>
+      <span class="palette-tag">Premium travel guide · Most editorial</span>
+    </div>
+    <p class="palette-desc">Tussock-country muted. Reads less like an app and more like a curated travel brand — closer to a National Geographic guidebook than a sports app. Strong if you want to lean into the lifestyle/journey angle.</p>
+
+    <div class="swatches">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#3C5A3D"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Primary</div>
+          <div class="swatch-name">Native Bush</div>
+          <div class="swatch-hex">#3C5A3D</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#C9A961"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Secondary</div>
+          <div class="swatch-name">Tussock Gold</div>
+          <div class="swatch-hex">#C9A961</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#87B2C9"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Accent</div>
+          <div class="swatch-name">Sky Blue</div>
+          <div class="swatch-hex">#87B2C9</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#E5E0D5"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Neutral</div>
+          <div class="swatch-name">Stone</div>
+          <div class="swatch-hex">#E5E0D5</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#F5EFE0"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Background</div>
+          <div class="swatch-name">Manuka Cream</div>
+          <div class="swatch-hex">#F5EFE0</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#3A3A3A"></div>
+        <div class="swatch-meta">
+          <div class="swatch-role">Text</div>
+          <div class="swatch-name">Basalt</div>
+          <div class="swatch-hex">#3A3A3A</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mockup-row">
+      <div class="mockup-hero" style="background:#F5EFE0; color:#3A3A3A; border:1px solid #E5E0D5">
+        <div>
+          <div class="hero-eyebrow" style="color:#3C5A3D">A New Zealand journey</div>
+          <h3>Tee off, then turn in for the night.</h3>
+          <p style="color:#3A3A3A">Curated golf stays for motorhome travellers — coast to high country.</p>
+        </div>
+        <button class="btn" style="background:#3C5A3D; color:#F5EFE0">Begin your trip →</button>
+      </div>
+      <div class="mockup-card">
+        <div class="card-img" style="background:#C9A961">
+          <span class="pin-badge">$15 / van</span>
+        </div>
+        <div class="card-body">
+          <h4>Wairoa Golf Club</h4>
+          <div class="card-sub">Hawke's Bay · 9 holes</div>
+          <div class="badges">
+            <span class="badge" style="background:#E5E0D5; color:#3C5A3D">Power</span>
+            <span class="badge" style="background:#E5E0D5; color:#3C5A3D">Dogs OK</span>
+            <span class="badge" style="background:#E5E0D5; color:#3C5A3D">Walk-in</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-note">
+    <strong>Next step:</strong> tell me which direction you like (or which colours from each you want to mix), and I'll turn it into design tokens — Tailwind theme variables, button styles, and a typography pairing — and apply it across the app.
+  </div>
+
+</div>
+</body>
+</html>

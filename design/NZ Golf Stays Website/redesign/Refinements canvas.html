@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>NZ Golf Stays — Refinements canvas</title>
+<link rel="stylesheet" href="colors_and_type.css"/>
+<style>
+  body { margin: 0; background: var(--neutral-warm); font-family: var(--font-body); color: var(--text); }
+  *::-webkit-scrollbar { width: 8px; height: 8px; }
+  *::-webkit-scrollbar-thumb { background: rgba(29,53,87,0.18); border-radius: 4px; }
+  /* hide horizontal chip scrollbars */
+  .chip-row::-webkit-scrollbar { display: none; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="desktop-variants.jsx"></script>
+<script type="text/babel" src="mobile-variants.jsx"></script>
+<script type="text/babel" src="refinements.jsx"></script>
+
+<script type="text/babel">
+const { useState } = React;
+
+// ─────────────────────────────────────────────────────────────
+// Showcase tile wrappers
+// ─────────────────────────────────────────────────────────────
+const Tile = ({ children, label, sub, mode = 'cool', w = 460, h = 220 }) => (
+  <div style={{
+    width: w, height: h,
+    background: mode === 'warm' ? 'var(--neutral-warm)' : 'var(--surface-alt)',
+    borderRadius: 12, border: '1px solid var(--border)',
+    padding: 24, display: 'flex', flexDirection: 'column', gap: 14,
+  }}>
+    <div>
+      <div className="eyebrow" style={{ fontSize: 11, fontWeight: 600, color: 'var(--primary)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>{label}</div>
+      <div style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 16, marginTop: 4, color: 'var(--text)' }}>{sub}</div>
+    </div>
+    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff', borderRadius: 10, border: '1px solid var(--border)', padding: 14 }}>
+      {children}
+    </div>
+  </div>
+);
+
+const HeroH1Demo = () => { const [v, setV] = useState('stays-only'); return <window.HeroToggleH1 value={v} onChange={setV}/>; };
+const HeroH2Demo = () => { const [v, setV] = useState('stays-only'); return <window.HeroToggleH2 value={v} onChange={setV}/>; };
+const HeroH3Demo = () => { const [v, setV] = useState('stays-only'); return <window.HeroToggleH3 value={v} onChange={setV}/>; };
+const HeroH4Demo = () => { const [v, setV] = useState('stays-only'); return <window.HeroToggleH4 value={v} onChange={setV}/>; };
+
+const ClusterDemo = ({ Comp }) => { const [v, setV] = useState('list'); return <Comp view={v} setView={setV} savedCount={3}/>; };
+
+const MobileWrap = ({ children }) => <window.MobileFrame width={400} height={820}>{children}</window.MobileFrame>;
+
+function App() {
+  return (
+    <window.DesignCanvas
+      title="NZ Golf Stays — Refinements"
+      subtitle="Logo, hero toggle, button cluster + Mobile C explorations. Click any artboard to focus."
+      bg="var(--neutral-warm)">
+
+      <window.DCSection id="logo-desktop" title="Logo lockups — desktop" subtitle="Real fern + kombi mark, paired with different wordmark treatments.">
+        <window.DCArtboard id="logo-l1" label="L1 · Silhouette + inline" width={420} height={200}>
+          <Tile label="Variant L1" sub="Silhouette mark + plain wordmark" w={420} h={200}>
+            <window.LogoLockup variant="L1" size="lg"/>
+          </Tile>
+        </window.DCArtboard>
+        <window.DCArtboard id="logo-l2" label="L2 · Circle stamp + inline" width={420} height={200}>
+          <Tile label="Variant L2" sub="Brand-seal feeling — circle disc" w={420} h={200}>
+            <window.LogoLockup variant="L2" size="lg"/>
+          </Tile>
+        </window.DCArtboard>
+        <window.DCArtboard id="logo-l3" label="L3 · Silhouette + stacked" width={420} height={200}>
+          <Tile label="Variant L3" sub="Two-line wordmark, italic 'Stays'" w={420} h={200}>
+            <window.LogoLockup variant="L3" size="lg"/>
+          </Tile>
+        </window.DCArtboard>
+        <window.DCArtboard id="logo-l4" label="L4 · Vertical stack (formal)" width={360} height={240}>
+          <Tile label="Variant L4" sub="Stamp above tracked wordmark" w={360} h={240}>
+            <window.LogoLockup variant="L4" size="lg"/>
+          </Tile>
+        </window.DCArtboard>
+      </window.DCSection>
+
+      <window.DCSection id="logo-mobile" title="Logo lockups — mobile" subtitle="Compact treatments that work in tight headers / floating bars.">
+        <window.DCArtboard id="logo-m1" label="M1 · Circle stamp only" width={300} height={180}>
+          <Tile label="Mobile M1" sub="Disc only — reads as app icon" w={300} h={180}>
+            <window.LogoMobile variant="M1"/>
+          </Tile>
+        </window.DCArtboard>
+        <window.DCArtboard id="logo-m2" label="M2 · Silhouette + wordmark" width={300} height={180}>
+          <Tile label="Mobile M2" sub="Mark + small wordmark inline" w={300} h={180}>
+            <window.LogoMobile variant="M2"/>
+          </Tile>
+        </window.DCArtboard>
+        <window.DCArtboard id="logo-m3" label="M3 · Stamp + tracked caps" width={300} height={180}>
+          <Tile label="Mobile M3" sub="Mark above tiny uppercase text" w={300} h={180}>
+            <window.LogoMobile variant="M3"/>
+          </Tile>
+        </window.DCArtboard>
+        <window.DCArtboard id="logo-m4" label="M4 · Silhouette only" width={300} height={180}>
+          <Tile label="Mobile M4" sub="Standalone silhouette mark" w={300} h={180}>
+            <window.LogoMobile variant="M4"/>
+          </Tile>
+        </window.DCArtboard>
+      </window.DCSection>
+
+      <window.DCSection id="hero-toggle" title="Hero switch + count — layout variants" subtitle="Same idea (count is part of the toggle), four different layouts.">
+        <window.DCArtboard id="hero-h1" label="H1 · Inline pill (refined original)" width={460} height={220}>
+          <Tile label="Hero H1" sub="Switch + label + count, all inline" w={460} h={220}>
+            <HeroH1Demo/>
+          </Tile>
+        </window.DCArtboard>
+        <window.DCArtboard id="hero-h2" label="H2 · Stacked card with big count" width={460} height={220}>
+          <Tile label="Hero H2" sub="Number leads — count is the headline" w={460} h={220}>
+            <HeroH2Demo/>
+          </Tile>
+        </window.DCArtboard>
+        <window.DCArtboard id="hero-h3" label="H3 · Two-tab segmented" width={520} height={220}>
+          <Tile label="Hero H3" sub="Both options visible side-by-side" w={520} h={220}>
+            <HeroH3Demo/>
+          </Tile>
+        </window.DCArtboard>
+        <window.DCArtboard id="hero-h4" label="H4 · Bold label + sub-headline" width={540} height={220}>
+          <Tile label="Hero H4" sub="Editorial — eyebrow + display number" w={540} h={220}>
+            <HeroH4Demo/>
+          </Tile>
+        </window.DCArtboard>
+      </window.DCSection>
+
+      <window.DCSection id="cluster" title="Top-right button cluster — view + saved" subtitle="How Saved, List, Split and Map sit together in the header.">
+        <window.DCArtboard id="cl-c1" label="C1 · Saved link + segmented" width={520} height={180}>
+          <Tile label="Cluster C1" sub="Saved as text link, view as segmented" w={520} h={180}>
+            <ClusterDemo Comp={window.ClusterSegmented}/>
+          </Tile>
+        </window.DCArtboard>
+        <window.DCArtboard id="cl-c2" label="C2 · Round heart + dropdown" width={420} height={180}>
+          <Tile label="Cluster C2" sub="Saved as icon button w/ count badge" w={420} h={180}>
+            <ClusterDemo Comp={window.ClusterIconButtons}/>
+          </Tile>
+        </window.DCArtboard>
+        <window.DCArtboard id="cl-c3" label="C3 · Vertical right-rail tabs" width={300} height={300}>
+          <Tile label="Cluster C3" sub="Tabs run down the body's right edge" w={300} h={300}>
+            <ClusterDemo Comp={window.ClusterRailRight}/>
+          </Tile>
+        </window.DCArtboard>
+        <window.DCArtboard id="cl-c4" label="C4 · Icon-only pill + heart pill" width={420} height={180}>
+          <Tile label="Cluster C4" sub="Compact icons, separate Saved chip" w={420} h={180}>
+            <ClusterDemo Comp={window.ClusterMinimal}/>
+          </Tile>
+        </window.DCArtboard>
+      </window.DCSection>
+
+      <window.DCSection id="desktop-b-full" title="Desktop B — full layout combinations" subtitle="Mix-and-match: hero toggle × button cluster × logo. Pick what works.">
+        <window.DCArtboard id="db-1" label="H1 + C1 + L1 (refined current)" width={1280} height={760}>
+          <window.DesktopBRefined width={1280} height={760} heroToggle="H1" cluster="C1" logoVariant="L1" defaultView="list"/>
+        </window.DCArtboard>
+        <window.DCArtboard id="db-2" label="H2 + C2 + L2 (count-led + icon cluster)" width={1280} height={760}>
+          <window.DesktopBRefined width={1280} height={760} heroToggle="H2" cluster="C2" logoVariant="L2" defaultView="split"/>
+        </window.DCArtboard>
+        <window.DCArtboard id="db-3" label="H3 + C3 + L3 (two-tab + right-rail)" width={1280} height={760}>
+          <window.DesktopBRefined width={1280} height={760} heroToggle="H3" cluster="C3" logoVariant="L3" defaultView="map"/>
+        </window.DCArtboard>
+        <window.DCArtboard id="db-4" label="H4 + C4 + L1 (editorial + minimal)" width={1280} height={760}>
+          <window.DesktopBRefined width={1280} height={760} heroToggle="H4" cluster="C4" logoVariant="L1" defaultView="list"/>
+        </window.DCArtboard>
+      </window.DCSection>
+
+      <window.DCSection id="mobile-c-refined" title="Mobile C — refined directions" subtitle="Map-first + FAB + logo, three variations.">
+        <window.DCArtboard id="mc-1" label="MC1 · Logo lockup left, search right" width={420} height={840}>
+          <MobileWrap><window.MobileC1 logoVariant="M1" heroToggle="H1"/></MobileWrap>
+        </window.DCArtboard>
+        <window.DCArtboard id="mc-2" label="MC2 · Centered logo top, hero above card" width={420} height={840}>
+          <MobileWrap><window.MobileC2 logoVariant="M3" heroToggle="H4"/></MobileWrap>
+        </window.DCArtboard>
+        <window.DCArtboard id="mc-3" label="MC3 · Logo as FAB / home button" width={420} height={840}>
+          <MobileWrap><window.MobileC3 logoVariant="M1" heroToggle="H3"/></MobileWrap>
+        </window.DCArtboard>
+      </window.DCSection>
+
+    </window.DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

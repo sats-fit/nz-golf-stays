@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>NZ Golf Stays — Redesign canvas</title>
+<link rel="stylesheet" href="colors_and_type.css"/>
+<style>
+  body { margin: 0; background: var(--neutral-warm); font-family: var(--font-body); color: var(--text); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: rgba(29,53,87,0.2); border-radius: 4px; }
+  /* hide horizontal scrollbar visual on chip rows */
+  *::-webkit-scrollbar { display: none; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="desktop-variants.jsx"></script>
+<script type="text/babel" src="mobile-variants.jsx"></script>
+
+<script type="text/babel">
+const { useState } = React;
+
+// Sample course for popups
+const sampleCourse = window.COURSES.find(c => c.id === 'matarangi');
+
+// ─────────────────────────────────────────────────────────────
+// Stays-toggle showcase tile
+// ─────────────────────────────────────────────────────────────
+const ToggleShowcase = ({ children, label, sub, mode = 'cool' }) => {
+  return (
+    <div style={{
+      width: 460, height: 220,
+      background: mode === 'warm' ? 'var(--neutral-warm)' : 'var(--surface-alt)',
+      borderRadius: 12, border: '1px solid var(--border)',
+      padding: 24, display: 'flex', flexDirection: 'column', gap: 14,
+    }}>
+      <div>
+        <div className="eyebrow" style={{ fontSize: 11, fontWeight: 600, color: 'var(--primary)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>{label}</div>
+        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 18, marginTop: 4, color: 'var(--text)' }}>{sub}</div>
+      </div>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff', borderRadius: 10, border: '1px solid var(--border)' }}>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+const ToggleV1Demo = () => { const [v, setV] = useState('stays-only'); return <window.StaysToggleV1 value={v} onChange={setV}/>; };
+const ToggleV2Demo = () => { const [v, setV] = useState('all'); return <window.StaysToggleV2 value={v} onChange={setV}/>; };
+const ToggleV3Demo = () => { const [v, setV] = useState('stays-only'); return <window.StaysToggleV3 value={v} onChange={setV}/>; };
+const ToggleV4Demo = () => {
+  const [v, setV] = useState('stays-only');
+  const [q, setQ] = useState('');
+  return <div style={{ width: 460, padding: 12 }}><window.SearchWithStaysToggle stayMode={v} onStayChange={setV} query={q} onChangeQuery={setQ}/></div>;
+};
+
+// ─────────────────────────────────────────────────────────────
+// Map popup demo wrappers (give them a tiny map background)
+// ─────────────────────────────────────────────────────────────
+const PopupShowcase = ({ children, label, sub }) => (
+  <div style={{
+    width: 540, height: 540,
+    borderRadius: 12, border: '1px solid var(--border)',
+    overflow: 'hidden', position: 'relative',
+    background:
+      'radial-gradient(80% 60% at 60% 50%, rgba(168,218,220,0.6) 0%, transparent 60%),' +
+      'linear-gradient(180deg, #DCEEF1 0%, #C8E0E5 100%)',
+  }}>
+    <div style={{ position: 'absolute', top: 12, left: 12, background: '#fff', padding: '6px 12px', borderRadius: 9999, boxShadow: 'var(--shadow-sm)', fontSize: 12, fontWeight: 600 }}>
+      {label} · {sub}
+    </div>
+    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      {children}
+    </div>
+  </div>
+);
+
+const PopupCompactDemo = () => {
+  const [saved, setSaved] = useState(false);
+  return <PopupShowcase label="Map pop-up" sub="Compact (default tap)">
+    <window.MapPopupCompact c={sampleCourse} saved={saved} onSave={() => setSaved(s => !s)} onView={()=>{}}/>
+  </PopupShowcase>;
+};
+
+const PopupExpandedDemo = () => {
+  const [saved, setSaved] = useState(true);
+  return <PopupShowcase label="Map pop-up" sub="Expanded (after second tap)">
+    <window.MapPopupExpanded c={sampleCourse} saved={saved} onSave={() => setSaved(s => !s)} onClose={()=>{}}/>
+  </PopupShowcase>;
+};
+
+// ─────────────────────────────────────────────────────────────
+// Mobile artboard wrapper
+// ─────────────────────────────────────────────────────────────
+const MobileWrap = ({ Comp }) => (
+  <window.MobileFrame width={390} height={780}>
+    <Comp/>
+  </window.MobileFrame>
+);
+
+function App() {
+  return (
+    <window.DesignCanvas
+      title="NZ Golf Stays — Redesign explorations"
+      subtitle="Discover-surface variants in the Coastal Fairway design system. Drag artboards to reorder · click any to focus."
+      bg="var(--neutral-warm)">
+
+      <window.DCSection id="desktop" title="Desktop — discover surface" subtitle="Four nav directions. Each is a real, working layout — switch view modes, toggle stays, check filters.">
+        <window.DCArtboard id="d-a" label="A · Refined current" width={1200} height={760}>
+          <window.DesktopA/>
+        </window.DCArtboard>
+        <window.DCArtboard id="d-b" label="B · Airbnb-style — centered search + chips" width={1200} height={760}>
+          <window.DesktopB/>
+        </window.DCArtboard>
+        <window.DCArtboard id="d-c" label="C · Top-bar chips, no sidebar (split-default)" width={1200} height={760}>
+          <window.DesktopC/>
+        </window.DCArtboard>
+        <window.DCArtboard id="d-d" label="D · Collapsible icon-rail sidebar" width={1200} height={760}>
+          <window.DesktopD/>
+        </window.DCArtboard>
+      </window.DCSection>
+
+      <window.DCSection id="mobile" title="Mobile — discover surface" subtitle="Three navigation directions for small screens.">
+        <window.DCArtboard id="m-a" label="A · Compact bar + bottom-sheet filters" width={420} height={820}>
+          <MobileWrap Comp={window.MobileA}/>
+        </window.DCArtboard>
+        <window.DCArtboard id="m-b" label="B · Sticky top bar + chip row" width={420} height={820}>
+          <MobileWrap Comp={window.MobileB}/>
+        </window.DCArtboard>
+        <window.DCArtboard id="m-c" label="C · FAB filter + minimal top bar (map-first)" width={420} height={820}>
+          <MobileWrap Comp={window.MobileC}/>
+        </window.DCArtboard>
+      </window.DCSection>
+
+      <window.DCSection id="stays-toggle" title="Stays-only toggle — top-level filter" subtitle="The most prominent filter on the site. Four directions, each tappable.">
+        <window.DCArtboard id="t-1" label="V1 · Pill segmented" width={460} height={220}>
+          <ToggleShowcase label="Variant 1" sub="Two-state pill toggle">
+            <ToggleV1Demo/>
+          </ToggleShowcase>
+        </window.DCArtboard>
+        <window.DCArtboard id="t-2" label="V2 · Inline segmented w/ icons" width={460} height={220}>
+          <ToggleShowcase label="Variant 2" sub="Compact segmented control">
+            <ToggleV2Demo/>
+          </ToggleShowcase>
+        </window.DCArtboard>
+        <window.DCArtboard id="t-3" label="V3 · Hero switch + count" width={460} height={220}>
+          <ToggleShowcase label="Variant 3" sub="Hero switch with live count">
+            <ToggleV3Demo/>
+          </ToggleShowcase>
+        </window.DCArtboard>
+        <window.DCArtboard id="t-4" label="V4 · Inline in search bar" width={500} height={220}>
+          <ToggleShowcase label="Variant 4" sub="Embedded prefix in search bar">
+            <ToggleV4Demo/>
+          </ToggleShowcase>
+        </window.DCArtboard>
+      </window.DCSection>
+
+      <window.DCSection id="popup" title="Map pop-ups" subtitle="When a pin is tapped. Compact for quick scan, expanded for deep info.">
+        <window.DCArtboard id="p-c" label="Compact pop-up" width={540} height={540}>
+          <PopupCompactDemo/>
+        </window.DCArtboard>
+        <window.DCArtboard id="p-e" label="Expanded pop-up" width={540} height={540}>
+          <PopupExpandedDemo/>
+        </window.DCArtboard>
+      </window.DCSection>
+
+    </window.DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

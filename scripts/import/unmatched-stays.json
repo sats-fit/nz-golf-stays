@@ -1,0 +1,770 @@
+[
+  {
+    "source": "North",
+    "name": "Manama",
+    "freeWithGreenFees": false,
+    "noPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": true,
+      "price": 10,
+      "unit": "per_night"
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Manama",
+      "F": null,
+      "P": "10pn",
+      "NP": null,
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "North",
+    "name": "Ohakune",
+    "freeWithGreenFees": false,
+    "noPlay": {
+      "allowed": true,
+      "price": 5,
+      "unit": "per_person"
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Ohakune",
+      "F": null,
+      "P": null,
+      "NP": "5pp",
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "North",
+    "name": "Caterton",
+    "freeWithGreenFees": false,
+    "noPlay": {
+      "allowed": true,
+      "price": 15,
+      "unit": "per_night"
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": true,
+      "price": 20,
+      "unit": "per_night"
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Caterton",
+      "F": null,
+      "P": "20pn",
+      "NP": "15pn",
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "North",
+    "name": "Waiau",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Waiau",
+      "F": "Yes",
+      "P": null,
+      "NP": "No",
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "North",
+    "name": "Putāruru",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Putāruru",
+      "F": "Yes ",
+      "P": null,
+      "NP": null,
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "North",
+    "name": "Waiuku",
+    "freeWithGreenFees": false,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": "yes",
+    "raw": {
+      "Club": "Waiuku",
+      "F": null,
+      "P": null,
+      "NP": "No",
+      "A": null,
+      "SP": null,
+      "Dogs": "DA"
+    }
+  },
+  {
+    "source": "North",
+    "name": "Fairfield",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": true,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Fairfield",
+      "F": "Yes ",
+      "P": "Yes",
+      "NP": "No",
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "North",
+    "name": "Kerikeri",
+    "freeWithGreenFees": false,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": true,
+      "price": 20,
+      "unit": "per_night"
+    },
+    "power": {
+      "allowed": true,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Kerikeri",
+      "F": null,
+      "P": "Yes",
+      "NP": "No",
+      "A": null,
+      "SP": "20pn",
+      "Dogs": null
+    }
+  },
+  {
+    "source": "North",
+    "name": "Ngawi",
+    "freeWithGreenFees": false,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": "yes",
+    "raw": {
+      "Club": "Ngawi",
+      "F": null,
+      "P": null,
+      "NP": "No",
+      "A": null,
+      "SP": null,
+      "Dogs": "DA"
+    }
+  },
+  {
+    "source": "North",
+    "name": "Lakeview",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Lakeview",
+      "F": "Yes",
+      "P": null,
+      "NP": null,
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "North",
+    "name": "Reparoa",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Reparoa",
+      "F": "Yes",
+      "P": null,
+      "NP": null,
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "South",
+    "name": "Greenacres Nel",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": true,
+      "price": 5,
+      "unit": "per_person"
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Greenacres Nel",
+      "F": "Yes",
+      "P": null,
+      "NP": "5pp",
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "South",
+    "name": "Geraldine",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": true,
+      "price": 5,
+      "unit": "per_night"
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Geraldine",
+      "F": "Yes",
+      "P": null,
+      "NP": "No",
+      "A": null,
+      "SP": "$5pn",
+      "Dogs": null
+    }
+  },
+  {
+    "source": "South",
+    "name": "Waimakariri",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": true,
+      "price": 5,
+      "unit": "per_person"
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Waimakariri",
+      "F": "Yes",
+      "P": null,
+      "NP": "5pp",
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "South",
+    "name": "Onekaka",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Onekaka",
+      "F": "Yes",
+      "P": null,
+      "NP": "No",
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "South",
+    "name": "Otatara",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": true,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Otatara",
+      "F": "Yes ",
+      "P": null,
+      "NP": "No",
+      "A": null,
+      "SP": "Yes",
+      "Dogs": null
+    }
+  },
+  {
+    "source": "South",
+    "name": "Mt Neesing",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Mt Neesing",
+      "F": "Yes ",
+      "P": null,
+      "NP": "No",
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "South",
+    "name": "Owaka, Catlins",
+    "freeWithGreenFees": false,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": true,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Owaka, Catlins",
+      "F": null,
+      "P": null,
+      "NP": "No",
+      "A": null,
+      "SP": "Yes",
+      "Dogs": null
+    }
+  },
+  {
+    "source": "South",
+    "name": "Lake Hawera",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Lake Hawera",
+      "F": "Yes",
+      "P": null,
+      "NP": "No",
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "South",
+    "name": "Toko, Milton",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Toko, Milton",
+      "F": "Yes ",
+      "P": null,
+      "NP": "No",
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "South",
+    "name": "Greenacres Inv",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Greenacres Inv",
+      "F": "Yes",
+      "P": null,
+      "NP": "No",
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "South",
+    "name": "Redstone",
+    "freeWithGreenFees": false,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": true,
+      "price": 20,
+      "unit": "per_night"
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Redstone",
+      "F": null,
+      "P": null,
+      "NP": "No",
+      "A": null,
+      "SP": "$20pn",
+      "Dogs": null
+    }
+  },
+  {
+    "source": "South",
+    "name": "Waikauiti",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": false,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Waikauiti",
+      "F": "Yes",
+      "P": null,
+      "NP": "No",
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  },
+  {
+    "source": "South",
+    "name": "Port Charmers",
+    "freeWithGreenFees": true,
+    "noPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "withPlay": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "power": {
+      "allowed": null,
+      "price": null,
+      "unit": null
+    },
+    "ask": false,
+    "donation": false,
+    "dogs": null,
+    "raw": {
+      "Club": "Port Charmers",
+      "F": "Yes ",
+      "P": null,
+      "NP": null,
+      "A": null,
+      "SP": null,
+      "Dogs": null
+    }
+  }
+]

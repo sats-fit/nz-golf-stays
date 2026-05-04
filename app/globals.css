@@ -1,17 +1,41 @@
 @import "tailwindcss";
 
+@theme {
+  /* Coastal Fairway type families */
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), Inter, system-ui, sans-serif;
+
+  /* Brand colours */
+  --color-brand-green:      #2D5F3F;
+  --color-brand-green-dark: #1F4530;
+  --color-brand-navy:       #1D3557;
+  --color-brand-muted:      #5A6B85;
+  --color-brand-sand:       #F4ECD8;
+  --color-brand-surface:    #F7F9FA;
+  --color-brand-border:     #E6E6E6;
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1D3557;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans, Arial, sans-serif);
 }
 
 /* Ensure Google Maps fills container */
 .gm-style {
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Mobile sheet slide-up animation */
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+.animate-slide-up {
+  animation: slide-up 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }

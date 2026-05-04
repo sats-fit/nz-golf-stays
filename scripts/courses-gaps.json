@@ -1,0 +1,698 @@
+[
+  {
+    "id": "2cea9a3f-d01b-4a01-95c8-83f17caa3cf4",
+    "name": "Ardleigh Golf Club",
+    "region": "Otago",
+    "phone": "",
+    "email": "jpgrubb@xtra.co.nz",
+    "website": null
+  },
+  {
+    "id": "2c09a5af-6701-46d4-bd3a-304d54fec494",
+    "name": "Balclutha Golf Club",
+    "region": "Otago",
+    "phone": "03 4182171",
+    "email": "balcluthagolf@gmail.com",
+    "website": null
+  },
+  {
+    "id": "79d42faa-5c0d-47fb-97d5-95631d5e3b68",
+    "name": "Balmacewen Golf Course",
+    "region": "Otago",
+    "phone": null,
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "559842ee-1228-4e42-930a-92e8f991ef96",
+    "name": "Barley Station Golf Course",
+    "region": "Otago",
+    "phone": "-",
+    "email": "kit.gordon@barleyinvestment.com",
+    "website": null
+  },
+  {
+    "id": "3994b94a-aae2-4f8d-bc92-72d1ab3a53dc",
+    "name": "Belleknowes Golf Club",
+    "region": "Otago",
+    "phone": null,
+    "email": "belleknowesgolfclub@gmail.com",
+    "website": null
+  },
+  {
+    "id": "d77e1bb5-aa92-495d-a91a-3be8d40171dc",
+    "name": "Belmont Links",
+    "region": "Manawatu-Whanganui",
+    "phone": null,
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "07591f0b-7636-44d2-8657-0421df360aec",
+    "name": "Bluff Golf Club",
+    "region": "Southland",
+    "phone": "03 931 0082",
+    "email": "fishchips@xtra.co.nz",
+    "website": null
+  },
+  {
+    "id": "4fb21066-3976-45dd-8d88-e512ed66bcbb",
+    "name": "BOP Golf",
+    "region": "Bay of Plenty",
+    "phone": "",
+    "email": "sam.kendall@golfnz.org",
+    "website": "https://www.golf.co.nz/bay-of-plenty"
+  },
+  {
+    "id": "2f513468-b8be-4c19-b708-ca9e962006af",
+    "name": "Cape Turnagain Golf Club",
+    "region": "Manawatu-Whanganui",
+    "phone": "06 374 3669",
+    "email": "Capeturnagaingolfclub28@gmail.com",
+    "website": null
+  },
+  {
+    "id": "99ef4795-3405-4cfa-a116-42c0e3d805c4",
+    "name": "Chisholm Links",
+    "region": "Otago",
+    "phone": "03 455 0715",
+    "email": null,
+    "website": "http://www.dunedingolfclub.co.nz/"
+  },
+  {
+    "id": "434176b8-f8a7-4e2c-9750-78ff7b02d92b",
+    "name": "Clinton Golf Club",
+    "region": "Otago",
+    "phone": "03 415 7049",
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "5ba077b3-5417-4bbe-96a6-7d116b251808",
+    "name": "Club Wairarapa",
+    "region": "Wellington",
+    "phone": "06 370 0012",
+    "email": null,
+    "website": "https://clubwairarapa.com/"
+  },
+  {
+    "id": "10bb4309-21e8-43a2-b74c-cffcb43b8701",
+    "name": "Dipton Golf Club",
+    "region": "Southland",
+    "phone": "03 248 5051",
+    "email": "hele.i.baird@gmail.com",
+    "website": null
+  },
+  {
+    "id": "9adb30c4-6486-46a9-bbf1-31ff4d6add72",
+    "name": "Dunstan Golf Club",
+    "region": "Otago",
+    "phone": "03 449 2729",
+    "email": null,
+    "website": "http://www.sporty.co.nz/dunstangolf"
+  },
+  {
+    "id": "4b264e16-846e-4793-9913-d3d72b1b1ac8",
+    "name": "Eltham Golf Club",
+    "region": "Taranaki",
+    "phone": "06 764 8484",
+    "email": "elthamgolf@elthamgolf.co.nz",
+    "website": null
+  },
+  {
+    "id": "efe2aab3-d1b0-4ed6-ae91-22c35217cd32",
+    "name": "Glenorchy Golf Club",
+    "region": "Otago",
+    "phone": null,
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "cf48787f-2d57-46c8-b802-033eabd38950",
+    "name": "Golden Downs Golf Club",
+    "region": "Nelson",
+    "phone": "0278080578",
+    "email": "gazzasign111@gmail.com",
+    "website": null
+  },
+  {
+    "id": "49e7bd9e-5e34-4b84-b6c5-bb7423a7e375",
+    "name": "Golf Warehouse - Thorndon",
+    "region": "Wellington",
+    "phone": "04 499 4653",
+    "email": null,
+    "website": "https://www.golfwarehouse.nz/?utm_source=wellington&utm_medium=googleplaces"
+  },
+  {
+    "id": "a715f01d-2e66-4645-8ca7-7da3fdc4a936",
+    "name": "Grande Vue Golf Club",
+    "region": "Canterbury",
+    "phone": null,
+    "email": "grandevuegolf@gmail.com",
+    "website": null
+  },
+  {
+    "id": "51550c30-335a-489f-a58d-fe4bccdecbd1",
+    "name": "Hawkestone Golf Club",
+    "region": "Manawatu-Whanganui",
+    "phone": "0211650017",
+    "email": "hawkestonegolf@gmail.com",
+    "website": null
+  },
+  {
+    "id": "41e71f98-47ed-433c-9730-abe263a117d9",
+    "name": "Hedgehope Golf Club",
+    "region": "Southland",
+    "phone": "03 216 8387",
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "d563794b-61c8-4a94-8545-71e8bf02ba02",
+    "name": "Hinehopu Golf Club",
+    "region": "Bay of Plenty",
+    "phone": "07 362 7629",
+    "email": "hinehopugolfclub@gmail.com",
+    "website": null
+  },
+  {
+    "id": "3ce99a88-03c4-4211-9061-e6b7650835ff",
+    "name": "Karamea Golf Club",
+    "region": "West Coast",
+    "phone": "03 782 6624",
+    "email": "karameagolfclub@yahoo.co.nz",
+    "website": null
+  },
+  {
+    "id": "96c15733-61f3-4953-a9a9-4c5b21dcd380",
+    "name": "Karamu Golf Club",
+    "region": "Hawke's Bay",
+    "phone": null,
+    "email": "bobzatgolf@gmail.com",
+    "website": "http://karamugolfclub.com"
+  },
+  {
+    "id": "dc9c27aa-6118-4353-b63d-6708406b8b04",
+    "name": "Kauri Cliffs Golf Course",
+    "region": "Northland",
+    "phone": "09 407 0060",
+    "email": null,
+    "website": "http://www.kauricliffs.com/?fbclid=IwAR2dt9zLFTCfj-DuHvdBwcJiLCKLi7OLHkSQkrQQY8a_Guml2ge2tr-XwpM"
+  },
+  {
+    "id": "8711054b-875b-4557-a38a-27a0978cb687",
+    "name": "Kawhia Golf Club",
+    "region": "Waikato",
+    "phone": null,
+    "email": "kawhiagolf@gmail.com",
+    "website": null
+  },
+  {
+    "id": "3f64e608-e3f0-4363-8a30-d813bb56316d",
+    "name": "Kurow Golf Club",
+    "region": "Canterbury",
+    "phone": null,
+    "email": "kurow.golf@gmail.com",
+    "website": "http://www.kurowgolfclub.co.nz"
+  },
+  {
+    "id": "68414f6f-b64e-40bf-9132-f98bf2666e13",
+    "name": "Lake Rotoiti Golf Course",
+    "region": "Bay of Plenty",
+    "phone": "07 362 7823",
+    "email": "info@cogentcorp.co.nz",
+    "website": null
+  },
+  {
+    "id": "b3edb2f2-3d54-48da-98e8-0dedb4f713d2",
+    "name": "Lawrence Golf Club",
+    "region": "Otago",
+    "phone": "03)4859628",
+    "email": "gtdavidson@xtra.co.nz",
+    "website": null
+  },
+  {
+    "id": "c6e1a8dd-d53d-4375-b7b6-73f5356e723e",
+    "name": "Lower Waitaki Golf Club",
+    "region": "Otago",
+    "phone": "03 431 3800",
+    "email": null,
+    "website": "https://www.facebook.com/profile.php?id=100024269918656"
+  },
+  {
+    "id": "c29a55f8-9d05-40fe-b855-dc32491834d4",
+    "name": "Lumsden Golf Club",
+    "region": "Southland",
+    "phone": "03 248 7213",
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "c4da9f7c-b03e-4cc3-966f-d3599f02850d",
+    "name": "Mackenzie Golf Club",
+    "region": "Canterbury",
+    "phone": "027 243 5986",
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "f5370081-f5b7-400e-a780-ea1bf8ba737e",
+    "name": "Miramar Links",
+    "region": "Wellington",
+    "phone": "04 801 7650",
+    "email": null,
+    "website": "http://www.miramarlinks.co.nz/"
+  },
+  {
+    "id": "11fcd73c-bcb6-4ad3-9493-9f57a7d4d41e",
+    "name": "Mossburn Golf Club",
+    "region": "Southland",
+    "phone": "03 931 0082",
+    "email": "darrellosment@gmail.com",
+    "website": null
+  },
+  {
+    "id": "12a0a2ff-f15e-42f6-b5fa-1a5c6c944577",
+    "name": "Mt Nessing Golf Club",
+    "region": "Canterbury",
+    "phone": "0272753118",
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "826d6470-fe9a-430d-bc43-fbf3d728778a",
+    "name": "Murupara Golf Club",
+    "region": "Bay of Plenty",
+    "phone": "0274 664 153",
+    "email": "trina.bockman@tll.co.nz",
+    "website": null
+  },
+  {
+    "id": "ad18b4c5-45b8-4ec5-9b13-6e36d07d52ce",
+    "name": "Ngawi Hitaround Golf Links",
+    "region": "Wellington",
+    "phone": "027 654 1810",
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "e1bfe02f-8008-4c68-a032-e50dd2c79c13",
+    "name": "Ngunguru Golf Course",
+    "region": "Northland",
+    "phone": "09 4344 290",
+    "email": "ngungurugolfoffice@gmail.com",
+    "website": null
+  },
+  {
+    "id": "26bc3a0c-ebf6-4bd1-9aae-f36214d20e48",
+    "name": "Nightcaps Golf Club",
+    "region": "Southland",
+    "phone": "03 225 7846",
+    "email": "nightcaps@golf.co.nz",
+    "website": null
+  },
+  {
+    "id": "65859192-45b9-4a43-825e-87491143b737",
+    "name": "Norsewood Golf Club",
+    "region": "Manawatu-Whanganui",
+    "phone": "063746261",
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "dfdeb33d-55ab-4944-bcec-af65d3fac52c",
+    "name": "North Golf - Harbour",
+    "region": "Auckland",
+    "phone": "",
+    "email": "ceo@northgolf.nz",
+    "website": null
+  },
+  {
+    "id": "616496ea-a13c-4d70-8692-4b6b5fdff50d",
+    "name": "Okoroire Golf Club",
+    "region": "Waikato",
+    "phone": "021 275 3765",
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "b5d71e91-7a4d-473c-a961-926bc10f2c89",
+    "name": "Otautau Golf Club",
+    "region": "Southland",
+    "phone": null,
+    "email": "jack.haywood@xtra.co.nz",
+    "website": null
+  },
+  {
+    "id": "bcc844e7-a6ea-4e20-ba78-1e4575daf1a2",
+    "name": "Otematata Golf Club",
+    "region": "Canterbury",
+    "phone": "0226768789",
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "dbd4d1e6-246d-435e-9863-3f8a56254ac9",
+    "name": "Owaka Golf Club",
+    "region": "Otago",
+    "phone": "027 4157109",
+    "email": "owakagolfclub@outlook.com",
+    "website": null
+  },
+  {
+    "id": "8ed92ce6-be22-49fe-b9d5-593accb2e0e7",
+    "name": "Paparoa Golf Club",
+    "region": "Northland",
+    "phone": "022 678 1474",
+    "email": "paparoagolf@gmail.com",
+    "website": null
+  },
+  {
+    "id": "fba7b8c4-6139-4737-b292-2ce7dc537a7b",
+    "name": "Patutahi Golf Club",
+    "region": "Gisborne",
+    "phone": "06 862 7789",
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "2d15b818-885f-4033-bc84-b2087c6be00d",
+    "name": "Pongaroa Golf Club",
+    "region": "Manawatu-Whanganui",
+    "phone": null,
+    "email": "kandmmartin@xtra.co.nz",
+    "website": null
+  },
+  {
+    "id": "1365f02b-127a-495b-930d-3ef7cbff779c",
+    "name": "Porangahau Country Club",
+    "region": "Hawke's Bay",
+    "phone": "06 855 5029",
+    "email": null,
+    "website": "https://www.sporty.co.nz/ptc"
+  },
+  {
+    "id": "1239fbcb-1e84-4774-8b39-35b30e770197",
+    "name": "Puketitiri Golf Club",
+    "region": "Hawke's Bay",
+    "phone": "0274648147",
+    "email": "puketitirigolf@gmail.com",
+    "website": null
+  },
+  {
+    "id": "6cf5a571-c69f-4c8c-8707-41ca9217e6ed",
+    "name": "Pungarehu Golf Club",
+    "region": "Taranaki",
+    "phone": "06 763 8255",
+    "email": "crowleyxfive@xtra.co.nz",
+    "website": null
+  },
+  {
+    "id": "12df8ca1-dadc-4441-b973-e4c9653ea2ac",
+    "name": "Redstone Golf Park",
+    "region": "Nelson",
+    "phone": "03 541 8452",
+    "email": null,
+    "website": "http://www.redstonegolfpark.co.nz/"
+  },
+  {
+    "id": "bde9a45f-4d7f-437d-89e7-2f5b7696a914",
+    "name": "Reefton Golf Club",
+    "region": "West Coast",
+    "phone": "0274 326 714",
+    "email": "reeftongolf@gmail.com",
+    "website": null
+  },
+  {
+    "id": "445648c9-aa36-4fee-a8d6-057d18b3e547",
+    "name": "Ringa Ringa Heights Golf Club",
+    "region": "Southland",
+    "phone": "03 219 1114",
+    "email": "jonspraggon45@gmail.com",
+    "website": null
+  },
+  {
+    "id": "07a1399e-a2d7-4648-8c21-8b57ff7730df",
+    "name": "Riversdale Golf Club",
+    "region": "Southland",
+    "phone": "03 202 5137",
+    "email": "southernmeadows@xtra.co.nz",
+    "website": null
+  },
+  {
+    "id": "6318e116-77a1-422b-bbdb-c6e5c09a95cc",
+    "name": "RNZAF Ohakea Base  Golf Club",
+    "region": "Manawatu-Whanganui",
+    "phone": "06 351 5099",
+    "email": null,
+    "website": "http://www.airforce.mil.nz/about-us/where-we-are/hq-and-bases/ohakea.htm"
+  },
+  {
+    "id": "7f1546cd-0c0c-45b2-ac54-5f64763318e0",
+    "name": "RNZAF Woodbourne Golf Club",
+    "region": "Nelson",
+    "phone": "",
+    "email": "gordon.schofield@nzdf.mil.nz",
+    "website": "https://www.nzdf.mil.nz/defence-and-whanau/where-we-are/base-woodbourne/"
+  },
+  {
+    "id": "fe4fbe23-fab2-41b1-993b-5a71408d45af",
+    "name": "Royal NZ Navy Golf Society Golf Club",
+    "region": "Auckland",
+    "phone": "09 485 3230",
+    "email": null,
+    "website": "http://www.golf.co.nz/"
+  },
+  {
+    "id": "c8610e2a-0176-4388-9194-20aeb5780172",
+    "name": "Strathmore Golf Club",
+    "region": "Taranaki",
+    "phone": "06-7655180",
+    "email": "bucko@primowireless.co.nz",
+    "website": null
+  },
+  {
+    "id": "b8807551-1a30-408a-a38e-5e23edd33f01",
+    "name": "Takapau Golf Club",
+    "region": "Hawke's Bay",
+    "phone": "06 855 8385",
+    "email": "takapaugolf@xtra.co.nz",
+    "website": null
+  },
+  {
+    "id": "7efdef09-9e44-4d61-9bca-5c69ddf768d1",
+    "name": "Tapanui Golf Club",
+    "region": "Otago",
+    "phone": "0274 986 956",
+    "email": "richkeri@xtra.co.nz",
+    "website": null
+  },
+  {
+    "id": "afa4f7c1-d24d-4787-afd3-0c9b6e97d2f6",
+    "name": "Tara Iti Golf Club",
+    "region": "Auckland",
+    "phone": "09 431 4600",
+    "email": null,
+    "website": "http://www.taraiti.com/"
+  },
+  {
+    "id": "43dbba5e-4aee-43af-947e-2ba7faac5416",
+    "name": "Tawhero Golf Club",
+    "region": "Manawatu-Whanganui",
+    "phone": "06 344 5808",
+    "email": "riversittee@gmail.com",
+    "website": null
+  },
+  {
+    "id": "18cf1d49-4e5d-451b-840e-54ac3ca4b797",
+    "name": "Te Akau Golf Club",
+    "region": "Waikato",
+    "phone": "021 845 410",
+    "email": "jenny.sharp@xtra.co.nz",
+    "website": null
+  },
+  {
+    "id": "0b43f2a3-d0bd-4afc-9aab-b191343b5157",
+    "name": "Te Kauwhata Golf Course",
+    "region": "Waikato",
+    "phone": "07 826 3574",
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "fcb214aa-dfea-489b-ab09-be5243c10710",
+    "name": "Te Pohue Golf Club",
+    "region": "Hawke's Bay",
+    "phone": "021 447549",
+    "email": "jancooper949@gmail.com",
+    "website": null
+  },
+  {
+    "id": "c17d57f5-97ba-4abc-9592-3a9930431384",
+    "name": "Te Teko Golf Club",
+    "region": "Bay of Plenty",
+    "phone": "021929549",
+    "email": "tetekogolf1@xtra.co.nz",
+    "website": null
+  },
+  {
+    "id": "dd5c73b1-a5d4-4302-903c-63ccf93ed8ad",
+    "name": "The Morgans Golf Course",
+    "region": "Wellington",
+    "phone": "04 237 9027",
+    "email": null,
+    "website": "http://themorgans.co.nz/"
+  },
+  {
+    "id": "e8f6030c-9e95-4db8-8e7a-ed3f46f19926",
+    "name": "Tokanui Golf Club",
+    "region": "Southland",
+    "phone": "03 2468 520",
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "aa9941c7-fb0f-41b9-8c16-dc9542b3618c",
+    "name": "Toko Golf Club",
+    "region": "Otago",
+    "phone": "03 417 7073",
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "80bafc02-fd94-4256-a9ce-4c42a96b61cc",
+    "name": "Tolaga Bay Golf Club",
+    "region": "Gisborne",
+    "phone": "08 8638363",
+    "email": "arataha.stn@gmail.com",
+    "website": null
+  },
+  {
+    "id": "e47bee99-11ab-41d1-8de7-5657c55a3e73",
+    "name": "Tuatapere Golf Club",
+    "region": "Southland",
+    "phone": "0204389377",
+    "email": null,
+    "website": "https://www.facebook.com/p/Tuatapere-Golf-Club-100057102714309/"
+  },
+  {
+    "id": "687d2ccd-6569-497b-b6bb-acd4c86bb403",
+    "name": "Twelve Oaks Golf Club",
+    "region": "Otago",
+    "phone": "03 489 4947",
+    "email": "twelveoakssecretary@outlook.co.nz",
+    "website": null
+  },
+  {
+    "id": "5b5b3314-c009-4d71-8b9c-4790733d20b1",
+    "name": "Waikaia Golf Club",
+    "region": "Southland",
+    "phone": "03 202 7781",
+    "email": "al.louisa.mckee@gmail.com",
+    "website": null
+  },
+  {
+    "id": "d2f178d4-f40f-4197-b3b1-d5f2b5a6827c",
+    "name": "Waikaka Golf Club",
+    "region": "Southland",
+    "phone": "03 207 2719",
+    "email": "glenthorne1997@gmail.com",
+    "website": null
+  },
+  {
+    "id": "2c75d97e-2f2e-4a80-9c2d-5f98c93a1e82",
+    "name": "Waikohu Golf Club",
+    "region": "Otago",
+    "phone": "021 663 641",
+    "email": null,
+    "website": null
+  },
+  {
+    "id": "8f8d22f7-e7fc-413e-8f70-e6697ceb262e",
+    "name": "Waiotira Golf Club",
+    "region": "Northland",
+    "phone": "0275552001",
+    "email": null,
+    "website": "http://www.sporty.co.nz/waiotiragolf"
+  },
+  {
+    "id": "ee4d7241-c8df-4ef5-b2d6-c02ba215fa9f",
+    "name": "Waipukurau Golf Club",
+    "region": "Hawke's Bay",
+    "phone": "076213486",
+    "email": null,
+    "website": "https://www.waipukuraugolfclub.co.nz/"
+  },
+  {
+    "id": "074ee1bb-b441-48d4-8505-9e3a066668f5",
+    "name": "Wairau Valley Golf Club",
+    "region": "Nelson",
+    "phone": "03 577 6554",
+    "email": "wairauvalleygolfclub@gmail.com",
+    "website": null
+  },
+  {
+    "id": "8bd37593-2424-4634-b187-22a2b117a1ec",
+    "name": "Wairoa Golf Club",
+    "region": "Hawke's Bay",
+    "phone": "06 838 6000",
+    "email": "juneunderhill@gmail.com",
+    "website": null
+  },
+  {
+    "id": "77528991-3402-469d-9d21-7a4be6471535",
+    "name": "Waiterimu Golf Club",
+    "region": "Waikato",
+    "phone": "07 828 5805",
+    "email": "admin@waiterimugolf.kiwi",
+    "website": null
+  },
+  {
+    "id": "31faf815-04a7-401f-9659-3d8b62f79c38",
+    "name": "Waitomo Golf Club",
+    "region": "Waikato",
+    "phone": "027 235 8241",
+    "email": null,
+    "website": "http://www.sporty.co.nz/waitomogolf"
+  },
+  {
+    "id": "480a373b-8e6d-4e31-949d-133ccd479e56",
+    "name": "Waverley Golf Club",
+    "region": "Taranaki",
+    "phone": "0210 550 631",
+    "email": "waverley@golf.co.nz",
+    "website": null
+  },
+  {
+    "id": "0d4747ec-2321-4097-be29-e4a48036bd33",
+    "name": "Wellington Samoa Golf Academy Inc",
+    "region": "Wellington",
+    "phone": "04 472 0953",
+    "email": null,
+    "website": "https://www.golfwof.co.nz/"
+  },
+  {
+    "id": "4865efaf-aa57-4737-a1fa-ddd543a3fd70",
+    "name": "Whataroa Golf Club",
+    "region": "West Coast",
+    "phone": "027 360 4427",
+    "email": "fionadeans@xtra.co.nz",
+    "website": null
+  },
+  {
+    "id": "c39fe9e2-6f71-4281-8765-2993657c2ccc",
+    "name": "Winton Golf Club",
+    "region": "Southland",
+    "phone": "03 236 8422",
+    "email": null,
+    "website": "https://m.facebook.com/pages/category/Sports/Winton-Golf-Club-403347803339685/"
+  },
+  {
+    "id": "26d7ccf3-b1ea-48e5-9934-e6b8fb389e84",
+    "name": "Wyndham Golf Club",
+    "region": "Southland",
+    "phone": "03 206 4659",
+    "email": "WyndhamGolfClub@outlook.co.nz",
+    "website": null
+  }
+]

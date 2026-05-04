@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>NZ Golf Stays — Redesign prototype</title>
+<link rel="stylesheet" href="colors_and_type.css"/>
+<style>
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: #2A2F33; font-family: var(--font-body); color: var(--text);
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+    box-sizing: border-box;
+  }
+  *::-webkit-scrollbar { width: 8px; height: 8px; }
+  *::-webkit-scrollbar-thumb { background: rgba(29,53,87,0.18); border-radius: 4px; }
+  /* hide horizontal chip scrollbars */
+  .chip-row::-webkit-scrollbar { display: none; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="desktop-variants.jsx"></script>
+<script type="text/babel" src="mobile-variants.jsx"></script>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "device": "desktop",
+  "desktopVariant": "B",
+  "mobileVariant": "B",
+  "stayMode": "all",
+  "view": "list",
+  "bgTone": "sand",
+  "showPopup": false,
+  "popupSize": "compact"
+}/*EDITMODE-END*/;
+
+// ─────────────────────────────────────────────────────────────
+// Composable shell that respects every tweak
+// ─────────────────────────────────────────────────────────────
+function Shell({ tweaks, setTweak }) {
+  const { device, desktopVariant, mobileVariant, view, stayMode, bgTone, showPopup, popupSize } = tweaks;
+
+  // Force-apply background tone via data attribute on the artboard
+  const bgVar = bgTone === 'sand' ? 'var(--neutral-warm)' : 'var(--surface-alt)';
+
+  if (device === 'mobile') {
+    const Comp = mobileVariant === 'A' ? window.MobileA : mobileVariant === 'B' ? window.MobileB : window.MobileC;
+    return (
+      <window.MobileFrame width={420} height={840}>
+        <ProtoWrap bg={bgVar}><Comp/></ProtoWrap>
+      </window.MobileFrame>
+    );
+  }
+
+  const Comp = desktopVariant === 'A' ? window.DesktopA
+             : desktopVariant === 'B' ? window.DesktopB
+             : desktopVariant === 'C' ? window.DesktopC
+             : window.DesktopD;
+
+  return (
+    <div style={{
+      width: 1280, height: 800, borderRadius: 14,
+      overflow: 'hidden', boxShadow: '0 24px 60px rgba(0,0,0,0.4)', position: 'relative',
+    }}>
+      <ProtoWrap bg={bgVar}>
+        <Comp width={1280} height={800} view={view}/>
+      </ProtoWrap>
+      {showPopup && (
+        <div style={{
+          position: 'absolute', inset: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: 'rgba(29,53,87,0.18)', backdropFilter: 'none',
+          zIndex: 30,
+        }} onClick={() => setTweak('showPopup', false)}>
+          <div onClick={(e) => e.stopPropagation()}>
+            {popupSize === 'compact'
+              ? <window.MapPopupCompact c={window.COURSES.find(c => c.id === 'matarangi')} saved={true} onSave={()=>{}} onView={()=>setTweak('showPopup', false)}/>
+              : <window.MapPopupExpanded c={window.COURSES.find(c => c.id === 'matarangi')} saved={true} onSave={()=>{}} onClose={()=>setTweak('showPopup', false)}/>
+            }
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+const ProtoWrap = ({ bg, children }) => (
+  <div style={{ width: '100%', height: '100%', background: bg, '--surface-alt-eff': bg }}>{children}</div>
+);
+
+function App() {
+  const [tweaks, setTweak] = window.useTweaks(TWEAK_DEFAULTS);
+
+  return (
+    <>
+      <Shell tweaks={tweaks} setTweak={setTweak}/>
+
+      <window.TweaksPanel title="Tweaks" defaultPosition={{ right: 24, bottom: 24 }}>
+        <window.TweakSection title="Device">
+          <window.TweakRadio
+            value={tweaks.device}
+            onChange={(v) => setTweak('device', v)}
+            options={[
+              { value: 'desktop', label: 'Desktop' },
+              { value: 'mobile',  label: 'Mobile' },
+            ]}
+          />
+        </window.TweakSection>
+
+        {tweaks.device === 'desktop' && (
+          <window.TweakSection title="Desktop nav variant">
+            <window.TweakSelect
+              value={tweaks.desktopVariant}
+              onChange={(v) => setTweak('desktopVariant', v)}
+              options={[
+                { value: 'A', label: 'A — Refined current (sidebar)' },
+                { value: 'B', label: 'B — Airbnb-style (centered + chips)' },
+                { value: 'C', label: 'C — Top-bar chips, no sidebar' },
+                { value: 'D', label: 'D — Collapsible icon rail' },
+              ]}
+            />
+          </window.TweakSection>
+        )}
+
+        {tweaks.device === 'mobile' && (
+          <window.TweakSection title="Mobile nav variant">
+            <window.TweakSelect
+              value={tweaks.mobileVariant}
+              onChange={(v) => setTweak('mobileVariant', v)}
+              options={[
+                { value: 'A', label: 'A — Bottom-sheet filters' },
+                { value: 'B', label: 'B — Sticky chip row' },
+                { value: 'C', label: 'C — FAB + map-first' },
+              ]}
+            />
+          </window.TweakSection>
+        )}
+
+        <window.TweakSection title="Stays toggle (header default)">
+          <window.TweakRadio
+            value={tweaks.stayMode}
+            onChange={(v) => setTweak('stayMode', v)}
+            options={[
+              { value: 'stays-only', label: 'Stays only' },
+              { value: 'all', label: 'All courses' },
+            ]}
+          />
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 6, lineHeight: 1.4 }}>
+            Each variant has its own toggle component on screen — this just sets the initial state when reloading.
+          </div>
+        </window.TweakSection>
+
+        {tweaks.device === 'desktop' && tweaks.desktopVariant === 'A' && (
+          <window.TweakSection title="Default view">
+            <window.TweakRadio
+              value={tweaks.view}
+              onChange={(v) => setTweak('view', v)}
+              options={[
+                { value: 'list',  label: 'List' },
+                { value: 'split', label: 'Split' },
+                { value: 'map',   label: 'Map' },
+              ]}
+            />
+          </window.TweakSection>
+        )}
+
+        <window.TweakSection title="Background tone">
+          <window.TweakRadio
+            value={tweaks.bgTone}
+            onChange={(v) => setTweak('bgTone', v)}
+            options={[
+              { value: 'mist', label: 'Mist (cool)' },
+              { value: 'sand', label: 'Pale Sand (warm)' },
+            ]}
+          />
+        </window.TweakSection>
+
+        {tweaks.device === 'desktop' && (
+          <window.TweakSection title="Map pop-up overlay">
+            <window.TweakToggle
+              label="Show pop-up over the design"
+              value={tweaks.showPopup}
+              onChange={(v) => setTweak('showPopup', v)}
+            />
+            {tweaks.showPopup && (
+              <div style={{ marginTop: 8 }}>
+                <window.TweakRadio
+                  value={tweaks.popupSize}
+                  onChange={(v) => setTweak('popupSize', v)}
+                  options={[
+                    { value: 'compact',  label: 'Compact' },
+                    { value: 'expanded', label: 'Expanded' },
+                  ]}
+                />
+              </div>
+            )}
+          </window.TweakSection>
+        )}
+      </window.TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

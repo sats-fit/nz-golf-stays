@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>NZ Golf Stays — Refined prototype</title>
+<link rel="stylesheet" href="colors_and_type.css"/>
+<style>
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: #2A2F33; font-family: var(--font-body); color: var(--text);
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+    box-sizing: border-box;
+  }
+  *::-webkit-scrollbar { width: 8px; height: 8px; }
+  *::-webkit-scrollbar-thumb { background: rgba(29,53,87,0.18); border-radius: 4px; }
+  .chip-row::-webkit-scrollbar { display: none; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="desktop-variants.jsx"></script>
+<script type="text/babel" src="mobile-variants.jsx"></script>
+<script type="text/babel" src="refinements.jsx"></script>
+
+<script type="text/babel">
+const { useState } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "device": "desktop",
+  "logoVariant": "L1",
+  "mobileLogoVariant": "M1",
+  "heroToggle": "H1",
+  "cluster": "C1",
+  "defaultView": "split",
+  "mobileVariant": "MC1",
+  "bgTone": "mist"
+}/*EDITMODE-END*/;
+
+function Shell({ tweaks, setTweak }) {
+  const { device, logoVariant, mobileLogoVariant, heroToggle, cluster, defaultView, mobileVariant, bgTone } = tweaks;
+  const bgVar = bgTone === 'sand' ? 'var(--neutral-warm)' : 'var(--surface-alt)';
+
+  if (device === 'mobile') {
+    const Comp = mobileVariant === 'MC2' ? window.MobileC2 : mobileVariant === 'MC3' ? window.MobileC3 : window.MobileC1;
+    return (
+      <window.MobileFrame width={420} height={840}>
+        <div style={{ width: '100%', height: '100%', background: bgVar }}>
+          <Comp logoVariant={mobileLogoVariant} heroToggle={heroToggle}/>
+        </div>
+      </window.MobileFrame>
+    );
+  }
+
+  return (
+    <div style={{ width: 1280, height: 800, borderRadius: 14, overflow: 'hidden', boxShadow: '0 24px 60px rgba(0,0,0,0.4)' }}>
+      <div style={{ width: '100%', height: '100%', background: bgVar }}>
+        <window.DesktopBRefined width={1280} height={800} heroToggle={heroToggle} cluster={cluster} logoVariant={logoVariant} defaultView={defaultView}/>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [tweaks, setTweak] = window.useTweaks(TWEAK_DEFAULTS);
+
+  return (
+    <>
+      <Shell tweaks={tweaks} setTweak={setTweak}/>
+
+      <window.TweaksPanel title="Tweaks" defaultPosition={{ right: 24, bottom: 24 }}>
+        <window.TweakSection title="Device">
+          <window.TweakRadio
+            value={tweaks.device}
+            onChange={(v) => setTweak('device', v)}
+            options={[
+              { value: 'desktop', label: 'Desktop' },
+              { value: 'mobile',  label: 'Mobile' },
+            ]}
+          />
+        </window.TweakSection>
+
+        {tweaks.device === 'desktop' && (
+          <>
+            <window.TweakSection title="Desktop logo lockup">
+              <window.TweakSelect
+                value={tweaks.logoVariant}
+                onChange={(v) => setTweak('logoVariant', v)}
+                options={[
+                  { value: 'L1', label: 'L1 — Pin + flag' },
+                  { value: 'L2', label: 'L2 — Coin / horizon' },
+                  { value: 'L3', label: 'L3 — G monogram' },
+                  { value: 'L4', label: 'L4 — NG tile + stacked' },
+                ]}
+              />
+            </window.TweakSection>
+
+            <window.TweakSection title="Top-right cluster">
+              <window.TweakSelect
+                value={tweaks.cluster}
+                onChange={(v) => setTweak('cluster', v)}
+                options={[
+                  { value: 'C1', label: 'C1 — Saved link + segmented' },
+                  { value: 'C2', label: 'C2 — Round heart + dropdown' },
+                  { value: 'C3', label: 'C3 — Vertical right-rail tabs' },
+                  { value: 'C4', label: 'C4 — Icon-only pill + heart' },
+                ]}
+              />
+            </window.TweakSection>
+
+            <window.TweakSection title="Default view">
+              <window.TweakRadio
+                value={tweaks.defaultView}
+                onChange={(v) => setTweak('defaultView', v)}
+                options={[
+                  { value: 'list',  label: 'List' },
+                  { value: 'split', label: 'Split' },
+                  { value: 'map',   label: 'Map' },
+                  { value: 'saved', label: 'Saved' },
+                ]}
+              />
+            </window.TweakSection>
+          </>
+        )}
+
+        {tweaks.device === 'mobile' && (
+          <>
+            <window.TweakSection title="Mobile C variant">
+              <window.TweakSelect
+                value={tweaks.mobileVariant}
+                onChange={(v) => setTweak('mobileVariant', v)}
+                options={[
+                  { value: 'MC1', label: 'MC1 — Logo left, search right' },
+                  { value: 'MC2', label: 'MC2 — Centered logo + hero card' },
+                  { value: 'MC3', label: 'MC3 — Logo as FAB / home button' },
+                ]}
+              />
+            </window.TweakSection>
+
+            <window.TweakSection title="Mobile logo lockup">
+              <window.TweakSelect
+                value={tweaks.mobileLogoVariant}
+                onChange={(v) => setTweak('mobileLogoVariant', v)}
+                options={[
+                  { value: 'M1', label: 'M1 — Mark only' },
+                  { value: 'M2', label: 'M2 — Mark + wordmark' },
+                  { value: 'M3', label: 'M3 — Stacked compact' },
+                  { value: 'M4', label: 'M4 — NGS abbreviation' },
+                ]}
+              />
+            </window.TweakSection>
+          </>
+        )}
+
+        <window.TweakSection title="Hero switch + count layout">
+          <window.TweakSelect
+            value={tweaks.heroToggle}
+            onChange={(v) => setTweak('heroToggle', v)}
+            options={[
+              { value: 'H1', label: 'H1 — Inline pill (refined)' },
+              { value: 'H2', label: 'H2 — Stacked card, big count' },
+              { value: 'H3', label: 'H3 — Two-tab segmented' },
+              { value: 'H4', label: 'H4 — Editorial, eyebrow + headline' },
+            ]}
+          />
+        </window.TweakSection>
+
+        <window.TweakSection title="Background tone">
+          <window.TweakRadio
+            value={tweaks.bgTone}
+            onChange={(v) => setTweak('bgTone', v)}
+            options={[
+              { value: 'mist', label: 'Mist (cool)' },
+              { value: 'sand', label: 'Pale Sand (warm)' },
+            ]}
+          />
+        </window.TweakSection>
+
+      </window.TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "Bash(npm run:*)",
+      "Bash(cmd /c npx -y @chrome-devtools/chrome-devtools-mcp --help)"
+    ]
+  }
+}
