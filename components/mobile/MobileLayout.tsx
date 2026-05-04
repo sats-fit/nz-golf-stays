@@ -56,8 +56,12 @@ export function MobileLayout({
   const dragState = useRef<{
     startY: number
     startTranslate: number
+    startSnapKey: 'peek' | 'half' | 'full'
     dragging: boolean
     listScrolledAtStart: boolean
+    lastY: number
+    lastTime: number
+    velocity: number   // px/ms; negative = swipe up (expanding)
   } | null>(null)
 
   // Init vh after mount
@@ -91,17 +95,32 @@ export function MobileLayout({
     dragState.current = {
       startY: touch.clientY,
       startTranslate: translateY ?? snaps.peek,
+      startSnapKey: snapKey,
       dragging: true,
       listScrolledAtStart: listScrollTop > 0,
+      lastY: touch.clientY,
+      lastTime: performance.now(),
+      velocity: 0,
     }
-  }, [translateY, snaps.peek])
+  }, [translateY, snaps.peek, snapKey])
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!dragState.current?.dragging) return
-    const { startY, startTranslate, listScrolledAtStart } = dragState.current
+    const { startY, startTranslate, listScrolledAtStart, lastY, lastTime } = dragState.current
 
     const touch = e.touches[0]
+    const now = performance.now()
     const delta = touch.clientY - startY
+
+    // Track velocity for flick detection (px/ms; negative = upward)
+    const dt = now - lastTime
+    if (dt > 0) {
+      // Smooth a bit so a single jittery sample doesn't dominate
+      const instant = (touch.clientY - lastY) / dt
+      dragState.current.velocity = dragState.current.velocity * 0.4 + instant * 0.6
+    }
+    dragState.current.lastY = touch.clientY
+    dragState.current.lastTime = now
 
     // If list was scrolled when drag started, let list scroll
     if (listScrolledAtStart && snapKey === 'full') return
@@ -119,9 +138,27 @@ export function MobileLayout({
     if (!dragState.current?.dragging) return
     dragState.current.dragging = false
 
-    const current = translateY ?? snaps.peek
-    const key = snapNearest(getSnapPoints(window.innerHeight), current)
-    snapTo(key)
+    const { velocity, startSnapKey } = dragState.current
+    const FLICK_THRESHOLD = 0.4  // px/ms ≈ 400 px/s
+
+    // Snap order from collapsed → expanded
+    const order: Array<'peek' | 'half' | 'full'> = ['peek', 'half', 'full']
+    const startIdx = order.indexOf(startSnapKey)
+
+    let nextKey: 'peek' | 'half' | 'full'
+    if (velocity < -FLICK_THRESHOLD) {
+      // Flicked up → next snap up (more expanded)
+      nextKey = order[Math.min(order.length - 1, startIdx + 1)]
+    } else if (velocity > FLICK_THRESHOLD) {
+      // Flicked down → next snap down (more collapsed)
+      nextKey = order[Math.max(0, startIdx - 1)]
+    } else {
+      // Slow release — snap to nearest
+      const current = translateY ?? snaps.peek
+      nextKey = snapNearest(getSnapPoints(window.innerHeight), current)
+    }
+
+    snapTo(nextKey)
   }, [translateY, snaps.peek, snapTo])
 
   // When list is at top and user scrolls down → collapse sheet
