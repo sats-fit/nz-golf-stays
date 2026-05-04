@@ -6,12 +6,16 @@ import { MapView, MapBounds } from '@/components/map/MapView'
 import { CourseList } from '@/components/courses/CourseList'
 
 // Snap positions (translateY values from top of viewport)
-const HANDLE_HEIGHT = 40   // drag handle + toolbar
-const HEADER_HEIGHT = 57   // sticky header above this component
+const HANDLE_AREA = 24      // drag handle wrapper height
+const TOOLBAR_AREA = 44     // count toolbar height
+const CHROME_HEIGHT = HANDLE_AREA + TOOLBAR_AREA   // 68
+const BOTTOM_SAFE = 20      // bottom buffer for home indicator / gesture bar
+const PEEK_VISIBLE = CHROME_HEIGHT + BOTTOM_SAFE   // 88 — handle + count only, no card
+const HEADER_HEIGHT = 57    // sticky header above this component
 
 function getSnapPoints(vh: number) {
   return {
-    peek: vh - 130,                  // ~1 card peeking
+    peek: vh - PEEK_VISIBLE,         // handle + count only
     half: Math.round(vh * 0.45),     // 50/50 split
     full: HEADER_HEIGHT + 8,         // nearly full screen
   }
@@ -62,7 +66,7 @@ export function MobileLayout({
       const h = window.innerHeight
       setVh(h)
       setTranslateY(prev => {
-        if (prev === null) return h - 130   // initial peek
+        if (prev === null) return h - PEEK_VISIBLE   // initial peek
         // re-snap to same key with new dimensions
         return getSnapPoints(h)[snapKey]
       })
@@ -106,7 +110,7 @@ export function MobileLayout({
     if (snapKey === 'full' && delta < 0) return
 
     e.preventDefault()
-    const newY = Math.max(HEADER_HEIGHT + 8, Math.min(window.innerHeight - 80, startTranslate + delta))
+    const newY = Math.max(HEADER_HEIGHT + 8, Math.min(window.innerHeight - PEEK_VISIBLE, startTranslate + delta))
     setTranslateY(newY)
     setTransitioning(false)
   }, [snapKey])
@@ -131,7 +135,7 @@ export function MobileLayout({
   const visibleCourses = filteredCourses  // bounds filtering handled by parent if needed
 
   const sheetHeight = vh > 0 && translateY !== null ? vh - translateY : 0
-  const listHeight = Math.max(0, sheetHeight - HANDLE_HEIGHT - 52)  // subtract handle + toolbar
+  const listHeight = Math.max(0, sheetHeight - CHROME_HEIGHT - BOTTOM_SAFE)
 
   if (translateY === null) return null
 
@@ -163,12 +167,18 @@ export function MobileLayout({
         onTouchEnd={handleTouchEnd}
       >
         {/* Drag handle */}
-        <div className="flex justify-center pt-2.5 pb-1 cursor-grab touch-none select-none">
+        <div
+          className="flex justify-center cursor-grab touch-none select-none"
+          style={{ height: HANDLE_AREA, paddingTop: 10 }}
+        >
           <div className="w-10 h-[5px] bg-gray-300 rounded-full" />
         </div>
 
         {/* Toolbar — count centered like Airbnb */}
-        <div className="px-4 py-2.5 flex items-center justify-center">
+        <div
+          className="px-4 flex items-center justify-center"
+          style={{ height: TOOLBAR_AREA }}
+        >
           <p className="text-sm text-brand-navy">
             <span className="font-semibold">{visibleCourses.length}</span>{' '}
             {visibleCourses.length === 1 ? 'course' : 'courses'}
