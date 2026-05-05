@@ -65,16 +65,28 @@ function toDraft(c: Course): Draft {
   }
 }
 
+const EMPTY_DRAFT: Draft = {
+  name: '', address: '', region: '', phone: '', website: '', email: '', notes: '',
+  overnight_stays: true,
+  free_with_green_fees: false,
+  stay_no_play_allowed: false, stay_no_play_price: '', stay_no_play_unit: '',
+  stay_with_play_allowed: false, stay_with_play_price: '', stay_with_play_unit: '',
+  donation_accepted: false,
+  power: false, power_additional_cost: '', power_unit: '',
+  dogs: 'unknown', booking: 'unknown',
+}
+
 export function CourseEditForm({
   course,
   onSave,
   onCancel,
 }: {
-  course: Course
-  onSave: (updated: Course) => void
+  course?: Course
+  onSave: (saved: Course) => void
   onCancel: () => void
 }) {
-  const [draft, setDraft] = useState<Draft>(toDraft(course))
+  const isNew = !course
+  const [draft, setDraft] = useState<Draft>(course ? toDraft(course) : EMPTY_DRAFT)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -89,7 +101,7 @@ export function CourseEditForm({
     const unit = <T extends string>(s: T | '') => (s !== '' ? s : null)
 
     const payload = {
-      id: course.id,
+      ...(course ? { id: course.id } : {}),
       name: draft.name.trim(),
       address: draft.address.trim() || null,
       region: draft.region || null,
@@ -114,27 +126,27 @@ export function CourseEditForm({
     }
 
     const res = await fetch('/api/admin/course', {
-      method: 'PATCH',
+      method: isNew ? 'POST' : 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     })
 
     if (!res.ok) {
-      const err = await res.json()
+      const err = await res.json().catch(() => ({}))
       setError(err.error ?? 'Save failed')
       setSaving(false)
       return
     }
 
-    const updated: Course = await res.json()
-    onSave(updated)
+    const saved: Course = await res.json()
+    onSave(saved)
   }
 
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 shrink-0">
-        <h2 className="font-bold text-gray-900">Edit Listing</h2>
+        <h2 className="font-bold text-gray-900">{isNew ? 'Add Course' : 'Edit Listing'}</h2>
         <button onClick={onCancel} className="text-sm text-gray-400 hover:text-gray-600">Cancel</button>
       </div>
 
@@ -142,11 +154,14 @@ export function CourseEditForm({
       <div className="overflow-y-auto flex-1 px-5 py-4 space-y-6">
 
         <Section title="Course Details">
-          <Field label="Name">
-            <input className={input} value={draft.name} onChange={e => set('name', e.target.value)} />
+          <Field label="Name *">
+            <input className={input} value={draft.name} onChange={e => set('name', e.target.value)} placeholder="Wairakei Golf + Sanctuary" />
           </Field>
           <Field label="Address">
-            <input className={input} value={draft.address} onChange={e => set('address', e.target.value)} />
+            <input className={input} value={draft.address} onChange={e => set('address', e.target.value)} placeholder="123 Golf Rd, Hamilton" />
+            {isNew && draft.address && (
+              <p className="text-xs text-gray-400 mt-1">Will be geocoded to pin on map.</p>
+            )}
           </Field>
           <Field label="Region">
             <select className={input} value={draft.region} onChange={e => set('region', e.target.value)}>
@@ -259,10 +274,10 @@ export function CourseEditForm({
       <div className="px-5 py-4 border-t border-gray-100 shrink-0">
         <button
           onClick={handleSave}
-          disabled={saving}
+          disabled={saving || !draft.name.trim()}
           className="w-full py-2.5 bg-green-600 text-white text-sm font-medium rounded-xl hover:bg-green-700 disabled:opacity-50 transition-colors"
         >
-          {saving ? 'Saving…' : 'Save Changes'}
+          {saving ? (isNew ? 'Creating…' : 'Saving…') : (isNew ? 'Create Course' : 'Save Changes')}
         </button>
       </div>
     </div>

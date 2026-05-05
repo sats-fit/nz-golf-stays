@@ -3,7 +3,7 @@
 import { Course } from '@/lib/types'
 import { NotesEditor } from './NotesEditor'
 
-export function ApprovedCourseCard({ course }: { course: Course }) {
+export function ApprovedCourseCard({ course, onEdit }: { course: Course; onEdit: (course: Course) => void }) {
   return (
     <div className="border border-gray-200 rounded-xl px-4 py-3 bg-white">
       <div className="flex items-start justify-between gap-3">
@@ -23,6 +23,12 @@ export function ApprovedCourseCard({ course }: { course: Course }) {
             <NotesEditor courseId={course.id} initialNotes={course.notes} />
           </div>
         </div>
+        <button
+          onClick={() => onEdit(course)}
+          className="shrink-0 text-xs text-gray-500 hover:text-gray-800 border border-gray-200 hover:border-gray-300 rounded-lg px-2.5 py-1.5 transition-colors"
+        >
+          Edit
+        </button>
       </div>
     </div>
   )

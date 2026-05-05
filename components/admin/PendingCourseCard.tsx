@@ -8,9 +8,11 @@ import { NotesEditor } from './NotesEditor'
 export function PendingCourseCard({
   course,
   onAction,
+  onEdit,
 }: {
   course: Course
   onAction: (id: string, action: 'approve' | 'reject') => void
+  onEdit: (course: Course) => void
 }) {
   const [loading, setLoading] = useState<'approve' | 'reject' | null>(null)
   const [currentNotes, setCurrentNotes] = useState(course.notes)
@@ -62,13 +64,20 @@ export function PendingCourseCard({
       </div>
 
       {/* Actions */}
-      <div className="flex gap-3 mt-4 pt-4 border-t border-gray-100">
+      <div className="flex gap-2 mt-4 pt-4 border-t border-gray-100">
         <button
           onClick={() => handleAction('approve')}
           disabled={!!loading}
           className="flex-1 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors"
         >
           {loading === 'approve' ? 'Approving...' : '✓ Approve'}
+        </button>
+        <button
+          onClick={() => onEdit(course)}
+          disabled={!!loading}
+          className="px-4 py-2 bg-white text-gray-600 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+        >
+          Edit
         </button>
         <button
           onClick={() => handleAction('reject')}
