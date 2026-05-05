@@ -134,7 +134,9 @@ function SearchBar({ className = '' }: { className?: string }) {
   useEffect(() => { setValue(filters.search || '') }, [filters.search])
 
   useEffect(() => {
-    const t = setTimeout(() => setFilter('search', value), 300)
+    const t = setTimeout(() => {
+      if (value !== (filters.search || '')) setFilter('search', value)
+    }, 300)
     return () => clearTimeout(t)
   }, [value]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -144,7 +146,7 @@ function SearchBar({ className = '' }: { className?: string }) {
         <SearchIcon />
       </div>
       <input
-        type="search"
+        type="text"
         placeholder="Search courses..."
         value={value}
         onChange={e => setValue(e.target.value)}

@@ -68,11 +68,11 @@ export function AdminDashboard({
             </svg>
           </div>
           <input
-            type="search"
+            type="text"
             placeholder="Search by course name or region..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-brand-border bg-white text-brand-navy placeholder:text-brand-muted focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green"
+            className="w-full pl-10 pr-10 py-2.5 text-sm rounded-xl border border-brand-border bg-white text-brand-navy placeholder:text-brand-muted focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green"
           />
           {searchQuery && (
             <button

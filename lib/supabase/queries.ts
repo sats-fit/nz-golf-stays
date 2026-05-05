@@ -17,7 +17,7 @@ export async function getCourses(filters: Partial<FilterState>, supabase: Supaba
   if (filters.stay_with_play) query = query.eq('stay_with_play_allowed', true)
   if (filters.donation) query = query.eq('donation_accepted', true)
   if (filters.booking_required) query = query.in('booking', ['ask_first', 'must_book'])
-  if (filters.search) query = query.ilike('name', `%${filters.search}%`)
+  if (filters.search) query = query.or(`name.ilike.%${filters.search}%,region.ilike.%${filters.search}%`)
 
   return query
 }
