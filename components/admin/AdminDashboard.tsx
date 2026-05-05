@@ -19,6 +19,11 @@ export function AdminDashboard({
   const [pending, setPending] = useState(pendingCourses)
   const [approved, setApproved] = useState(approvedCourses)
   const [editTarget, setEditTarget] = useState<Course | 'new' | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const q = searchQuery.toLowerCase()
+  const filteredPending = q ? pending.filter(c => c.name.toLowerCase().includes(q) || c.region?.toLowerCase().includes(q)) : pending
+  const filteredApproved = q ? approved.filter(c => c.name.toLowerCase().includes(q) || c.region?.toLowerCase().includes(q)) : approved
 
   const handlePendingAction = (id: string, action: 'approve' | 'reject') => {
     if (action === 'approve') {
@@ -55,6 +60,33 @@ export function AdminDashboard({
   return (
     <>
       <div className="max-w-3xl mx-auto px-4 py-8">
+        {/* Search */}
+        <div className="relative mb-6">
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </div>
+          <input
+            type="search"
+            placeholder="Search by course name or region..."
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-brand-border bg-white text-brand-navy placeholder:text-brand-muted focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              aria-label="Clear search"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-navy transition-colors"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          )}
+        </div>
+
         {/* Tabs + Add button */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex gap-1 bg-brand-surface rounded-xl p-1 w-fit border border-brand-border">
@@ -78,20 +110,20 @@ export function AdminDashboard({
             <div className="mb-6">
               <h1 className="text-2xl font-bold text-brand-navy">Pending Submissions</h1>
               <p className="text-brand-muted mt-1">
-                {pending.length === 0
+                {filteredPending.length === 0 && !q
                   ? 'No pending submissions'
-                  : `${pending.length} submission${pending.length === 1 ? '' : 's'} to review`}
+                  : `${filteredPending.length} submission${filteredPending.length === 1 ? '' : 's'}${q ? ' matching' : ' to review'}`}
               </p>
             </div>
 
-            {pending.length === 0 ? (
+            {filteredPending.length === 0 ? (
               <div className="text-center py-16 text-brand-muted">
-                <div className="text-4xl mb-3">✓</div>
-                <p>All caught up!</p>
+                <div className="text-4xl mb-3">{q ? '🔍' : '✓'}</div>
+                <p>{q ? 'No matching submissions' : 'All caught up!'}</p>
               </div>
             ) : (
               <div className="space-y-4">
-                {pending.map(course => (
+                {filteredPending.map(course => (
                   <PendingCourseCard
                     key={course.id}
                     course={course}
@@ -108,18 +140,27 @@ export function AdminDashboard({
           <>
             <div className="mb-6">
               <h1 className="text-2xl font-bold text-brand-navy">All Courses</h1>
-              <p className="text-brand-muted mt-1">{approved.length} published listings</p>
+              <p className="text-brand-muted mt-1">
+                {q ? `${filteredApproved.length} of ${approved.length} matching` : `${approved.length} published listings`}
+              </p>
             </div>
 
-            <div className="space-y-3">
-              {approved.map(course => (
-                <ApprovedCourseCard
-                  key={course.id}
-                  course={course}
-                  onEdit={setEditTarget}
-                />
-              ))}
-            </div>
+            {filteredApproved.length === 0 ? (
+              <div className="text-center py-16 text-brand-muted">
+                <div className="text-4xl mb-3">🔍</div>
+                <p>No courses match your search</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {filteredApproved.map(course => (
+                  <ApprovedCourseCard
+                    key={course.id}
+                    course={course}
+                    onEdit={setEditTarget}
+                  />
+                ))}
+              </div>
+            )}
           </>
         )}
       </div>

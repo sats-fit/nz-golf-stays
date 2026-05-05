@@ -72,7 +72,8 @@ export function HomePage({ courses }: { courses: Course[] }) {
       COUNTABLE_FILTER_KEYS.filter(k => !!filters[k]).length +
       (filters.region ? 1 : 0) +
       (!filters.overnight_stays ? 1 : 0) +
-      (wishlistOnly ? 1 : 0)
+      (wishlistOnly ? 1 : 0) +
+      (filters.search ? 1 : 0)
 
     return (
       <>

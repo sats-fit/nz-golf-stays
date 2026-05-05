@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, Suspense } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { StaysToggle } from '@/components/filters/StaysToggle'
 import { useAuth } from '@/components/auth/AuthProvider'
@@ -42,14 +42,17 @@ export function Header({
   if (desktopNav) {
     return (
       <header className="sticky top-0 z-20 bg-white border-b border-brand-border">
-        {/* Row 1: logo | avatar */}
-        <div className="flex items-center justify-between px-8 py-3.5">
+        {/* Row 1: logo | search | avatar */}
+        <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 px-8 py-3">
           <Link href="/" className="flex items-center gap-3 shrink-0">
             <img src="/logo-mark-circle.png" alt="NZ Golf Stays" className="w-8 h-8" />
             <span className="font-display font-semibold text-[17px] text-brand-green tracking-tight leading-none">
               NZ Golf Stays
             </span>
           </Link>
+          <div className="max-w-sm w-full mx-auto">
+            <Suspense><SearchBar /></Suspense>
+          </div>
           <AvatarButton session={session} onClick={() => setMenuOpen(o => !o)} />
         </div>
 
@@ -75,9 +78,9 @@ export function Header({
     )
   }
 
-  // Mobile layout — minimal header: logo + filters icon + avatar
+  // Mobile layout — minimal header: logo + filters icon + avatar + search row
   return (
-    <header className="sticky top-0 z-20 bg-white border-b border-brand-border px-4 py-3 relative">
+    <header className="sticky top-0 z-20 bg-white border-b border-brand-border px-4 pt-3 pb-2.5 relative">
       <div className="flex items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <img src="/logo-mark-circle.png" alt="NZ Golf Stays" className="w-8 h-8" />
@@ -105,6 +108,11 @@ export function Header({
         </div>
       </div>
 
+      {/* Search row */}
+      <div className="mt-2.5">
+        <Suspense><SearchBar /></Suspense>
+      </div>
+
       <HeaderDropdown
         menuOpen={menuOpen}
         onClose={() => setMenuOpen(false)}
@@ -113,6 +121,45 @@ export function Header({
         onSignIn={() => { openAuthModal(); setMenuOpen(false) }}
       />
     </header>
+  )
+}
+
+// ─── Search bar ──────────────────────────────────────────────────────────────
+
+function SearchBar({ className = '' }: { className?: string }) {
+  const { filters, setFilter } = useFilters()
+  const [value, setValue] = useState(filters.search || '')
+
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { setValue(filters.search || '') }, [filters.search])
+
+  useEffect(() => {
+    const t = setTimeout(() => setFilter('search', value), 300)
+    return () => clearTimeout(t)
+  }, [value]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (
+    <div className={`relative flex items-center ${className}`}>
+      <div className="absolute left-3 pointer-events-none text-brand-muted">
+        <SearchIcon />
+      </div>
+      <input
+        type="search"
+        placeholder="Search courses..."
+        value={value}
+        onChange={e => setValue(e.target.value)}
+        className="w-full pl-9 pr-8 py-2 text-sm rounded-full border border-brand-border bg-white text-brand-navy placeholder:text-brand-muted focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green"
+      />
+      {value && (
+        <button
+          onClick={() => setValue('')}
+          aria-label="Clear search"
+          className="absolute right-3 text-brand-muted hover:text-brand-navy transition-colors"
+        >
+          <XIcon />
+        </button>
+      )}
+    </div>
   )
 }
 
@@ -494,6 +541,24 @@ function FiltersButtonIcon() {
       <line x1="1" y1="14" x2="7" y2="14" />
       <line x1="9" y1="8" x2="15" y2="8" />
       <line x1="17" y1="16" x2="23" y2="16" />
+    </svg>
+  )
+}
+
+function SearchIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  )
+}
+
+function XIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
     </svg>
   )
 }
