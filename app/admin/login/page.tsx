@@ -29,28 +29,32 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <div className="bg-white rounded-2xl border border-gray-200 p-8 w-full max-w-sm">
-        <h1 className="text-xl font-bold text-gray-900 mb-6 text-center">Admin Login</h1>
+    <div className="min-h-screen bg-brand-surface flex items-center justify-center px-4">
+      <div className="bg-white rounded-2xl border border-brand-border p-8 w-full max-w-sm shadow-sm">
+        <div className="flex flex-col items-center mb-7">
+          <img src="/logo-mark-circle.png" alt="NZ Golf Stays" className="w-12 h-12 mb-3" />
+          <span className="font-display font-semibold text-lg text-brand-green tracking-tight">NZ Golf Stays</span>
+          <span className="text-xs text-brand-muted mt-0.5">Admin</span>
+        </div>
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+            <label className="block text-xs font-medium text-brand-muted mb-1.5">Email</label>
             <input
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-3 py-2 border border-brand-border rounded-lg text-sm text-brand-navy focus:outline-none focus:ring-2 focus:ring-brand-green"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+            <label className="block text-xs font-medium text-brand-muted mb-1.5">Password</label>
             <input
               type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-3 py-2 border border-brand-border rounded-lg text-sm text-brand-navy focus:outline-none focus:ring-2 focus:ring-brand-green"
             />
           </div>
           {error && (
@@ -59,7 +63,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors"
+            className="w-full py-2.5 bg-brand-green text-white font-medium rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity"
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>

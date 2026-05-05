@@ -57,9 +57,9 @@ export function AdminDashboard({
       <div className="max-w-3xl mx-auto px-4 py-8">
         {/* Tabs + Add button */}
         <div className="flex items-center justify-between mb-8">
-          <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">
+          <div className="flex gap-1 bg-brand-surface rounded-xl p-1 w-fit border border-brand-border">
             <TabButton active={tab === 'pending'} onClick={() => setTab('pending')}>
-              Pending {pending.length > 0 && <span className="ml-1.5 bg-green-600 text-white text-xs rounded-full px-1.5 py-0.5">{pending.length}</span>}
+              Pending {pending.length > 0 && <span className="ml-1.5 bg-brand-green text-white text-xs rounded-full px-1.5 py-0.5">{pending.length}</span>}
             </TabButton>
             <TabButton active={tab === 'approved'} onClick={() => setTab('approved')}>
               All Courses
@@ -67,7 +67,7 @@ export function AdminDashboard({
           </div>
           <button
             onClick={() => setEditTarget('new')}
-            className="flex items-center gap-1.5 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
+            className="flex items-center gap-1.5 px-4 py-2 bg-brand-green text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
           >
             <span className="text-lg leading-none">+</span> Add Course
           </button>
@@ -76,8 +76,8 @@ export function AdminDashboard({
         {tab === 'pending' && (
           <>
             <div className="mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">Pending Submissions</h1>
-              <p className="text-gray-500 mt-1">
+              <h1 className="text-2xl font-bold text-brand-navy">Pending Submissions</h1>
+              <p className="text-brand-muted mt-1">
                 {pending.length === 0
                   ? 'No pending submissions'
                   : `${pending.length} submission${pending.length === 1 ? '' : 's'} to review`}
@@ -85,7 +85,7 @@ export function AdminDashboard({
             </div>
 
             {pending.length === 0 ? (
-              <div className="text-center py-16 text-gray-400">
+              <div className="text-center py-16 text-brand-muted">
                 <div className="text-4xl mb-3">✓</div>
                 <p>All caught up!</p>
               </div>
@@ -107,8 +107,8 @@ export function AdminDashboard({
         {tab === 'approved' && (
           <>
             <div className="mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">All Courses</h1>
-              <p className="text-gray-500 mt-1">{approved.length} published listings</p>
+              <h1 className="text-2xl font-bold text-brand-navy">All Courses</h1>
+              <p className="text-brand-muted mt-1">{approved.length} published listings</p>
             </div>
 
             <div className="space-y-3">
@@ -149,7 +149,7 @@ function TabButton({ active, onClick, children }: { active: boolean; onClick: ()
     <button
       onClick={onClick}
       className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center ${
-        active ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+        active ? 'bg-white text-brand-navy shadow-sm' : 'text-brand-muted hover:text-brand-navy'
       }`}
     >
       {children}

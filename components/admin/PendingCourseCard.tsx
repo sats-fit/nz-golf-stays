@@ -31,19 +31,19 @@ export function PendingCourseCard({
   }
 
   return (
-    <div className="border border-gray-200 rounded-xl p-5 bg-white">
+    <div className="border border-brand-border rounded-xl p-5 bg-white">
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-gray-900">{course.name}</h3>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <h3 className="font-semibold text-brand-navy">{course.name}</h3>
+          <p className="text-sm text-brand-muted mt-0.5">
             {course.region && <span className="mr-2">{course.region}</span>}
-            {course.address && <span className="text-gray-400">{course.address}</span>}
+            {course.address && <span className="text-brand-muted">{course.address}</span>}
           </p>
           {course.phone && (
-            <p className="text-xs text-gray-400 mt-1">📞 {course.phone}</p>
+            <p className="text-xs text-brand-muted mt-1">📞 {course.phone}</p>
           )}
           {course.submitted_by && (
-            <p className="text-xs text-gray-400 mt-1">Submitted by: {course.submitted_by}</p>
+            <p className="text-xs text-brand-muted mt-1">Submitted by: {course.submitted_by}</p>
           )}
           <div className="mt-3">
             <CourseBadges course={course} />
@@ -64,18 +64,18 @@ export function PendingCourseCard({
       </div>
 
       {/* Actions */}
-      <div className="flex gap-2 mt-4 pt-4 border-t border-gray-100">
+      <div className="flex gap-2 mt-4 pt-4 border-t border-brand-border">
         <button
           onClick={() => handleAction('approve')}
           disabled={!!loading}
-          className="flex-1 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors"
+          className="flex-1 py-2 bg-brand-green text-white text-sm font-medium rounded-lg hover:opacity-90 disabled:opacity-50 transition-colors"
         >
           {loading === 'approve' ? 'Approving...' : '✓ Approve'}
         </button>
         <button
           onClick={() => onEdit(course)}
           disabled={!!loading}
-          className="px-4 py-2 bg-white text-gray-600 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+          className="px-4 py-2 bg-white text-gray-600 text-sm font-medium rounded-lg border border-brand-border hover:bg-gray-50 disabled:opacity-50 transition-colors"
         >
           Edit
         </button>

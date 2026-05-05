@@ -145,9 +145,9 @@ export function CourseEditForm({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 shrink-0">
-        <h2 className="font-bold text-gray-900">{isNew ? 'Add Course' : 'Edit Listing'}</h2>
-        <button onClick={onCancel} className="text-sm text-gray-400 hover:text-gray-600">Cancel</button>
+      <div className="flex items-center justify-between px-5 py-4 border-b border-brand-border shrink-0">
+        <h2 className="font-bold text-brand-navy">{isNew ? 'Add Course' : 'Edit Listing'}</h2>
+        <button onClick={onCancel} className="text-sm text-brand-muted hover:text-brand-muted">Cancel</button>
       </div>
 
       {/* Scrollable form */}
@@ -160,7 +160,7 @@ export function CourseEditForm({
           <Field label="Address">
             <input className={input} value={draft.address} onChange={e => set('address', e.target.value)} placeholder="123 Golf Rd, Hamilton" />
             {isNew && draft.address && (
-              <p className="text-xs text-gray-400 mt-1">Will be geocoded to pin on map.</p>
+              <p className="text-xs text-brand-muted mt-1">Will be geocoded to pin on map.</p>
             )}
           </Field>
           <Field label="Region">
@@ -225,7 +225,7 @@ export function CourseEditForm({
             <Check label="Powered sites available" checked={draft.power} onChange={v => set('power', v)} />
             {draft.power && (
               <div className="pl-6">
-                <p className="text-xs text-gray-400 mb-1.5">Additional cost on top of stay price</p>
+                <p className="text-xs text-brand-muted mb-1.5">Additional cost on top of stay price</p>
                 <PriceUnit
                   price={draft.power_additional_cost}
                   unit={draft.power_unit}
@@ -271,11 +271,11 @@ export function CourseEditForm({
       </div>
 
       {/* Footer */}
-      <div className="px-5 py-4 border-t border-gray-100 shrink-0">
+      <div className="px-5 py-4 border-t border-brand-border shrink-0">
         <button
           onClick={handleSave}
           disabled={saving || !draft.name.trim()}
-          className="w-full py-2.5 bg-green-600 text-white text-sm font-medium rounded-xl hover:bg-green-700 disabled:opacity-50 transition-colors"
+          className="w-full py-2.5 bg-brand-green text-white text-sm font-medium rounded-xl hover:opacity-90 disabled:opacity-50 transition-colors"
         >
           {saving ? (isNew ? 'Creating…' : 'Saving…') : (isNew ? 'Create Course' : 'Save Changes')}
         </button>
@@ -284,12 +284,12 @@ export function CourseEditForm({
   )
 }
 
-const input = 'w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-white'
+const input = 'w-full px-3 py-2 border border-brand-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-green bg-white'
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="space-y-3">
-      <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide border-b border-gray-100 pb-1">{title}</h3>
+      <h3 className="text-[10px] font-semibold text-brand-muted uppercase tracking-widest border-b border-brand-border pb-1">{title}</h3>
       {children}
     </div>
   )
@@ -298,7 +298,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-gray-600 mb-1">{label}</label>
+      <label className="block text-xs font-medium text-brand-muted mb-1">{label}</label>
       {children}
     </div>
   )
@@ -311,9 +311,9 @@ function Check({ label, checked, onChange }: { label: string; checked: boolean; 
         type="checkbox"
         checked={checked}
         onChange={e => onChange(e.target.checked)}
-        className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+        className="h-4 w-4 rounded border-brand-border text-green-600 focus:ring-brand-green"
       />
-      <span className="text-sm text-gray-700">{label}</span>
+      <span className="text-sm text-brand-navy">{label}</span>
     </label>
   )
 }
@@ -329,7 +329,7 @@ function PriceUnit({
 }) {
   return (
     <div className="pl-6 flex items-center gap-2">
-      <span className="text-sm text-gray-400">$</span>
+      <span className="text-sm text-brand-muted">$</span>
       <input
         type="number"
         step="0.5"
@@ -337,12 +337,12 @@ function PriceUnit({
         placeholder="0"
         value={price}
         onChange={e => onPrice(e.target.value)}
-        className="w-24 px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+        className="w-24 px-2 py-1.5 border border-brand-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-green"
       />
       <select
         value={unit}
         onChange={e => onUnit(e.target.value)}
-        className="px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+        className="px-2 py-1.5 border border-brand-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-green"
       >
         <option value="">— unit —</option>
         {units.map(u => <option key={u.value} value={u.value}>{u.label}</option>)}
