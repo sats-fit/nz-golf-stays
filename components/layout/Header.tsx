@@ -315,11 +315,12 @@ function HeaderDropdown({
   onSignOut: () => void
   onSignIn: () => void
 }) {
+  const { isAdmin } = useAuth()
   if (!menuOpen) return null
   return (
     <>
       <div className="fixed inset-0 z-30" onClick={onClose} />
-      <div className="absolute right-4 md:right-8 top-full mt-1 w-52 bg-white rounded-xl shadow-lg border border-brand-border py-1 z-40">
+      <div className="absolute right-4 md:right-8 top-full mt-1 w-56 bg-white rounded-xl shadow-lg border border-brand-border py-1 z-40">
         {session ? (
           <>
             <div className="px-4 py-2 text-xs text-brand-muted truncate">{session.user.email}</div>
@@ -332,6 +333,24 @@ function HeaderDropdown({
               <HeartIcon filled size={14} />
               My Wishlist
             </Link>
+            <Link
+              href="/account"
+              onClick={onClose}
+              className="flex items-center gap-2 px-4 py-2.5 text-sm text-brand-navy hover:bg-brand-surface"
+            >
+              <UserIcon size={14} />
+              Account settings
+            </Link>
+            {isAdmin && (
+              <Link
+                href="/admin"
+                onClick={onClose}
+                className="flex items-center gap-2 px-4 py-2.5 text-sm text-brand-navy hover:bg-brand-surface"
+              >
+                <ShieldIcon size={14} />
+                Admin dashboard
+              </Link>
+            )}
             <div className="h-px bg-brand-border mx-2" />
             <button
               onClick={onSignOut}
@@ -355,6 +374,23 @@ function HeaderDropdown({
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 
+
+function UserIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  )
+}
+
+function ShieldIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>
+  )
+}
 
 function HeartIcon({ filled = false, size = 16 }: { filled?: boolean; size?: number }) {
   return (

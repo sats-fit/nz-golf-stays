@@ -48,19 +48,10 @@ export function HomePage({ courses }: { courses: Course[] }) {
   const [mapBounds, setMapBounds] = useState<MapBounds | null>(null)
   const [wishlistOnly, setWishlistOnly] = useState(false)
   const [detailCourse, setDetailCourse] = useState<Course | null>(null)
-  const [isAdmin, setIsAdmin] = useState(false)
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-  const { wishlisted, openAuthModal, session } = useAuth()
+  const { wishlisted, isAdmin } = useAuth()
   const { filters } = useFilters()
   const isMobile = useMobile()
-
-  useEffect(() => {
-    if (!session) { setIsAdmin(false); return }
-    fetch('/api/admin/me')
-      .then(r => r.json())
-      .then(({ isAdmin }) => setIsAdmin(isAdmin))
-      .catch(() => setIsAdmin(false))
-  }, [session])
 
   const handleBoundsChange = useCallback((bounds: MapBounds) => {
     setMapBounds(bounds)

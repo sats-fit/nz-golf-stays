@@ -10,6 +10,7 @@ type AuthContextType = {
   wishlisted: Set<string>
   toggleWishlist: (courseId: string) => Promise<void>
   openAuthModal: () => void
+  isAdmin: boolean
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -17,6 +18,7 @@ const AuthContext = createContext<AuthContextType>({
   wishlisted: new Set(),
   toggleWishlist: async () => {},
   openAuthModal: () => {},
+  isAdmin: false,
 })
 
 export function useAuth() {
@@ -27,6 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [wishlisted, setWishlisted] = useState<Set<string>>(new Set())
   const [showModal, setShowModal] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const supabase = createSupabaseBrowserClient()
 
   // Track session
@@ -50,6 +53,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
   }, [session, supabase])
 
+  // Track admin status
+  useEffect(() => {
+    if (!session) { setIsAdmin(false); return }
+    let cancelled = false
+    fetch('/api/admin/me')
+      .then(r => r.json())
+      .then(({ isAdmin }) => { if (!cancelled) setIsAdmin(!!isAdmin) })
+      .catch(() => { if (!cancelled) setIsAdmin(false) })
+    return () => { cancelled = true }
+  }, [session])
+
   const toggleWishlist = useCallback(async (courseId: string) => {
     if (!session) { setShowModal(true); return }
     const isSaved = wishlisted.has(courseId)
@@ -67,7 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [session, wishlisted, supabase])
 
   return (
-    <AuthContext.Provider value={{ session, wishlisted, toggleWishlist, openAuthModal: () => setShowModal(true) }}>
+    <AuthContext.Provider value={{ session, wishlisted, toggleWishlist, openAuthModal: () => setShowModal(true), isAdmin }}>
       {children}
       {showModal && <AuthModal onClose={() => setShowModal(false)} />}
     </AuthContext.Provider>
