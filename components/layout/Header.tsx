@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
 import Link from 'next/link'
 import { StaysToggle } from '@/components/filters/StaysToggle'
 import { useAuth } from '@/components/auth/AuthProvider'
@@ -129,12 +129,16 @@ export function Header({
 function SearchBar({ className = '' }: { className?: string }) {
   const { filters, setFilter } = useFilters()
   const [value, setValue] = useState(filters.search || '')
+  const isPending = useRef(false)
 
+  // Only sync from URL when there's no debounce in flight (i.e. external URL change like clearing filters)
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { setValue(filters.search || '') }, [filters.search])
+  useEffect(() => { if (!isPending.current) setValue(filters.search || '') }, [filters.search])
 
   useEffect(() => {
+    isPending.current = true
     const t = setTimeout(() => {
+      isPending.current = false
       if (value !== (filters.search || '')) setFilter('search', value)
     }, 300)
     return () => clearTimeout(t)
