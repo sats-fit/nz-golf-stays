@@ -33,6 +33,7 @@ const courseSchema = z.object({
   booking: z.enum(['unknown', 'walk_in', 'ask_first', 'must_book']).default('unknown'),
   photos: z.array(z.string().url()).default([]),
   submitted_by: z.string().optional(),
+  suggestion_for_course_id: z.string().uuid().optional(),
 })
 
 export async function GET(req: NextRequest) {

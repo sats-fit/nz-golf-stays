@@ -8,6 +8,14 @@ async function checkAdmin(userId: string): Promise<boolean> {
   return !!data
 }
 
+const SUGGESTION_MERGE_FIELDS = [
+  'name', 'address', 'region', 'phone', 'email', 'website',
+  'overnight_stays', 'free_with_green_fees',
+  'stay_no_play_allowed', 'stay_no_play_price', 'stay_no_play_unit',
+  'stay_with_play_allowed', 'stay_with_play_price', 'stay_with_play_unit',
+  'donation_accepted', 'dogs', 'power', 'power_additional_cost', 'power_unit', 'booking',
+] as const
+
 export async function PATCH(req: NextRequest) {
   const supabase = await createSupabaseServerClient()
   const { data: { session } } = await supabase.auth.getSession()
@@ -30,6 +38,37 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ deleted: true })
   }
 
+  // Fetch the pending record to check if it's a suggestion
+  const { data: pending, error: fetchError } = await admin
+    .from('courses')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (fetchError || !pending) {
+    return NextResponse.json({ error: 'Course not found' }, { status: 404 })
+  }
+
+  if (pending.suggestion_for_course_id) {
+    // Merge suggestion fields into the original course, then delete the suggestion
+    const mergeData = Object.fromEntries(
+      SUGGESTION_MERGE_FIELDS.map(f => [f, pending[f]])
+    )
+
+    const { error: updateError } = await admin
+      .from('courses')
+      .update(mergeData)
+      .eq('id', pending.suggestion_for_course_id)
+
+    if (updateError) return NextResponse.json({ error: updateError.message }, { status: 500 })
+
+    const { error: deleteError } = await admin.from('courses').delete().eq('id', id)
+    if (deleteError) return NextResponse.json({ error: deleteError.message }, { status: 500 })
+
+    return NextResponse.json({ merged: true })
+  }
+
+  // Regular new course submission — just approve it
   const { error } = await admin
     .from('courses')
     .update({ approved: true })

@@ -28,7 +28,8 @@ export function AdminDashboard({
   const handlePendingAction = (id: string, action: 'approve' | 'reject') => {
     if (action === 'approve') {
       const course = pending.find(c => c.id === id)
-      if (course) {
+      // Only move to approved list if it's a brand-new course submission, not a suggestion
+      if (course && !course.suggestion_for_course_id) {
         const live = { ...course, approved: true }
         setApproved(prev => [...prev, live].sort((a, b) => a.name.localeCompare(b.name)))
       }
@@ -127,6 +128,11 @@ export function AdminDashboard({
                   <PendingCourseCard
                     key={course.id}
                     course={course}
+                    suggestedForName={
+                      course.suggestion_for_course_id
+                        ? approved.find(c => c.id === course.suggestion_for_course_id)?.name ?? 'Unknown listing'
+                        : undefined
+                    }
                     onAction={handlePendingAction}
                     onEdit={setEditTarget}
                   />

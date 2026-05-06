@@ -50,6 +50,7 @@ export type Course = {
   photo_references: string[] | null
   approved: boolean
   submitted_by: string | null
+  suggestion_for_course_id: string | null
   created_at: string
   updated_at: string
 }

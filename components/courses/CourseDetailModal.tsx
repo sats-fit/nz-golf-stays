@@ -6,6 +6,7 @@ import { WishlistButton } from '@/components/ui/WishlistButton'
 import { StarRating } from '@/components/ui/StarRating'
 import { StayOptionsTable } from './StayOptionsTable'
 import { CourseEditForm } from '@/components/admin/CourseEditForm'
+import { CourseSuggestionForm } from './CourseSuggestionForm'
 
 export function CourseDetailModal({
   course: initialCourse,
@@ -18,6 +19,7 @@ export function CourseDetailModal({
 }) {
   const [course, setCourse] = useState(initialCourse)
   const [editing, setEditing] = useState(false)
+  const [suggesting, setSuggesting] = useState(false)
 
   const amenityBadges = [
     course.overnight_stays      && { icon: <BadgeVanIcon />,   label: 'Overnight stays' },
@@ -43,6 +45,11 @@ export function CourseDetailModal({
             onSave={updated => { setCourse(updated); setEditing(false) }}
             onCancel={() => setEditing(false)}
           />
+        ) : suggesting ? (
+          <CourseSuggestionForm
+            course={course}
+            onCancel={() => setSuggesting(false)}
+          />
         ) : (
           <>
             {/* Photo */}
@@ -59,12 +66,19 @@ export function CourseDetailModal({
               ) : null}
               <WishlistButton courseId={course.id} className="absolute top-3 left-3" />
               <div className="absolute top-3 right-3 flex items-center gap-2">
-                {isAdmin && (
+                {isAdmin ? (
                   <button
                     onClick={() => setEditing(true)}
                     className="h-8 px-3 bg-white/95 backdrop-blur-sm rounded-full shadow flex items-center gap-1.5 text-xs font-semibold text-brand-navy hover:shadow-md transition-all"
                   >
                     <EditIcon /> Edit
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setSuggesting(true)}
+                    className="h-8 px-3 bg-white/95 backdrop-blur-sm rounded-full shadow flex items-center gap-1.5 text-xs font-semibold text-brand-navy hover:shadow-md transition-all"
+                  >
+                    <EditIcon /> Suggest edit
                   </button>
                 )}
                 <button
