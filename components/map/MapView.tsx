@@ -18,9 +18,19 @@ function flagIcon(color: string) {
   return `data:image/svg+xml,${encodeURIComponent(svg)}`
 }
 
-const FLAG_ACTIVE = flagIcon('#16a34a')
+const FLAG_STAYS = flagIcon('#2D5F3F')
+const FLAG_STAYS_HIGHLIGHTED = flagIcon('#1F4530')
+const FLAG_NO_STAYS = flagIcon('#C73E1D')
+const FLAG_NO_STAYS_HIGHLIGHTED = flagIcon('#A83318')
 const FLAG_DIM = flagIcon('#9ca3af')
-const FLAG_HIGHLIGHTED = flagIcon('#15803d')
+
+function activeIcon(overnightStays: boolean) {
+  return overnightStays ? FLAG_STAYS : FLAG_NO_STAYS
+}
+
+function highlightedIcon(overnightStays: boolean) {
+  return overnightStays ? FLAG_STAYS_HIGHLIGHTED : FLAG_NO_STAYS_HIGHLIGHTED
+}
 
 let optionsSet = false
 
@@ -57,6 +67,7 @@ export function MapView({
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<google.maps.Map | null>(null)
   const markersRef = useRef<Map<string, google.maps.Marker>>(new Map())
+  const courseStaysRef = useRef<Map<string, boolean>>(new Map())
   const onBoundsChangeRef = useRef(onBoundsChange)
   onBoundsChangeRef.current = onBoundsChange
   const onCourseSelectRef = useRef(onCourseSelect)
@@ -71,8 +82,9 @@ export function MapView({
     for (const [id, marker] of markersRef.current) {
       const inView = labelMap == null || id in labelMap
       const isHighlighted = id === highlightedId
+      const stays = courseStaysRef.current.get(id) ?? false
       marker.setIcon({
-        url: isHighlighted ? FLAG_HIGHLIGHTED : inView ? FLAG_ACTIVE : FLAG_DIM,
+        url: isHighlighted ? highlightedIcon(stays) : inView ? activeIcon(stays) : FLAG_DIM,
         scaledSize: isHighlighted ? new google.maps.Size(26, 35) : new google.maps.Size(22, 30),
         anchor: isHighlighted ? new google.maps.Point(8, 35) : new google.maps.Point(7, 30),
       })
@@ -86,9 +98,10 @@ export function MapView({
     if (isLoading || labelMap == null) return
     for (const [id, marker] of markersRef.current) {
       const inView = id in labelMap
+      const stays = courseStaysRef.current.get(id) ?? false
       marker.setLabel('')
       marker.setIcon({
-        url: inView ? FLAG_ACTIVE : FLAG_DIM,
+        url: inView ? activeIcon(stays) : FLAG_DIM,
         scaledSize: new google.maps.Size(22, 30),
         anchor: new google.maps.Point(7, 30),
       })
@@ -150,6 +163,7 @@ export function MapView({
         const marker = markersRef.current.get(id)!
         marker.setMap(null)
         markersRef.current.delete(id)
+        courseStaysRef.current.delete(id)
       }
     }
 
@@ -160,13 +174,14 @@ export function MapView({
         if (markersRef.current.has(course.id)) return
 
         const inView = labelMap == null || course.id in labelMap
+        courseStaysRef.current.set(course.id, course.overnight_stays)
 
         const marker = new Marker({
           map,
           position: { lat: course.lat, lng: course.lng },
           title: course.name,
           icon: {
-            url: inView ? FLAG_ACTIVE : FLAG_DIM,
+            url: inView ? activeIcon(course.overnight_stays) : FLAG_DIM,
             scaledSize: new google.maps.Size(22, 30),
             anchor: new google.maps.Point(7, 30),
           },

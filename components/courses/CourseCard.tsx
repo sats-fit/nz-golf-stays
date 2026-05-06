@@ -16,15 +16,18 @@ function getPriceLabel(course: Course): string | null {
 }
 
 function TopRightBadge({ course }: { course: Course }) {
+  const showVan = course.overnight_stays
   const label = getPriceLabel(course)
-  const showPower = course.power
-  const showDogs = course.dogs === 'yes'
-  const showBooking = course.booking === 'ask_first' || course.booking === 'must_book'
+  const showPower = course.overnight_stays && course.power
+  const showDogs = course.overnight_stays && course.dogs === 'yes'
+  const showBooking = course.overnight_stays && (course.booking === 'ask_first' || course.booking === 'must_book')
   const hasExtras = showPower || showDogs || showBooking
+
+  if (!showVan && !label && !hasExtras) return null
 
   return (
     <span className="absolute top-2.5 right-2.5 inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-sm text-brand-navy px-2.5 py-1 rounded-full text-xs font-semibold shadow-sm">
-      <VanIconSm />
+      {showVan && <VanIconSm />}
       {label && <span>{label}</span>}
       {label && hasExtras && <span className="text-brand-navy/30">·</span>}
       {showPower && <PlugIconSm />}
