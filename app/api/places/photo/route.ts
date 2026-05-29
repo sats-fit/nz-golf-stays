@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
   return new NextResponse(buffer, {
     headers: {
       'Content-Type': photoRes.headers.get('content-type') ?? 'image/jpeg',
-      'Cache-Control': 'public, max-age=604800, stale-while-revalidate=86400', // 7 days
+      'Cache-Control': 'public, s-maxage=604800, stale-while-revalidate=86400', // 7 days CDN + browser cache
     },
   })
 }
