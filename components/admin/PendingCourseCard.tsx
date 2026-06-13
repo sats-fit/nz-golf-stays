@@ -64,7 +64,8 @@ export function PendingCourseCard({
           )}
           {course.submitted_by && (
             <p className="text-xs text-brand-muted mt-1">
-              {isSuggestion ? 'From: ' : 'Submitted by: '}{course.submitted_by}
+              {isSuggestion ? 'From: ' : 'Submitted by: '}
+              <SubmittedBy text={course.submitted_by} />
             </p>
           )}
           <div className="mt-3">
@@ -122,5 +123,23 @@ export function PendingCourseCard({
         </button>
       </div>
     </div>
+  )
+}
+
+// Renders submitter text, turning any email it contains into a mailto link.
+function SubmittedBy({ text }: { text: string }) {
+  const match = text.match(/[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+/)
+  if (!match) return <>{text}</>
+  const email = match[0]
+  const before = text.slice(0, match.index)
+  const after = text.slice(match.index! + email.length)
+  return (
+    <>
+      {before}
+      <a href={`mailto:${email}`} className="text-brand-green hover:underline">
+        {email}
+      </a>
+      {after}
+    </>
   )
 }
