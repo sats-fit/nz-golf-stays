@@ -9,11 +9,12 @@ const powerUnit = z.enum(['per_night', 'per_vehicle']).nullable().optional()
 
 const courseSchema = z.object({
   name: z.string().min(2).max(200),
-  address: z.string().optional(),
-  region: z.string().optional(),
-  phone: z.string().optional(),
-  website: z.string().url().optional().or(z.literal('')),
-  notes: z.string().max(1000).optional(),
+  address: z.string().nullish(),
+  region: z.string().nullish(),
+  phone: z.string().nullish(),
+  email: z.string().email().nullish().or(z.literal('')),
+  website: z.string().url().nullish().or(z.literal('')),
+  notes: z.string().max(1000).nullish(),
   overnight_stays: z.boolean().default(false),
 
   // Stay options v2
@@ -32,8 +33,8 @@ const courseSchema = z.object({
   power_unit: powerUnit,
   booking: z.enum(['unknown', 'walk_in', 'ask_first', 'must_book']).default('unknown'),
   photos: z.array(z.string().url()).default([]),
-  submitted_by: z.string().optional(),
-  suggestion_for_course_id: z.string().uuid().optional(),
+  submitted_by: z.string().nullish(),
+  suggestion_for_course_id: z.string().uuid().nullish(),
 })
 
 export async function GET(req: NextRequest) {

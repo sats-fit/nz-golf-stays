@@ -123,7 +123,7 @@ export function CourseSuggestionForm({
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}))
-      setError(err.error ?? 'Something went wrong. Please try again.')
+      setError(typeof err.error === 'string' ? err.error : 'Something went wrong. Please try again.')
       setSubmitting(false)
       return
     }
