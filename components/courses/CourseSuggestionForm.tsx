@@ -17,7 +17,8 @@ const POWER_UNITS: { value: PowerUnit; label: string }[] = [
 
 type Draft = {
   message: string
-  contact: string
+  submitterName: string
+  submitterEmail: string
   name: string
   address: string
   region: string
@@ -43,7 +44,8 @@ type Draft = {
 function fromCourse(c: Course): Draft {
   return {
     message: '',
-    contact: '',
+    submitterName: '',
+    submitterEmail: '',
     name: c.name ?? '',
     address: c.address ?? '',
     region: c.region ?? '',
@@ -82,6 +84,10 @@ export function CourseSuggestionForm({
   const set = <K extends keyof Draft>(key: K, value: Draft[K]) =>
     setDraft(prev => ({ ...prev, [key]: value }))
 
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.submitterEmail.trim())
+  const canSubmit =
+    !!draft.name.trim() && !!draft.message.trim() && !!draft.submitterName.trim() && emailValid
+
   const handleSubmit = async () => {
     setSubmitting(true)
     setError(null)
@@ -92,7 +98,7 @@ export function CourseSuggestionForm({
     const payload = {
       suggestion_for_course_id: course.id,
       notes: draft.message.trim() || null,
-      submitted_by: draft.contact.trim() || null,
+      submitted_by: `${draft.submitterName.trim()} <${draft.submitterEmail.trim()}>`,
       name: draft.name.trim(),
       address: draft.address.trim() || null,
       region: draft.region || null,
@@ -177,12 +183,21 @@ export function CourseSuggestionForm({
               placeholder="e.g. Their phone number has changed, they no longer allow dogs, pricing updated..."
             />
           </Field>
-          <Field label="Your contact info (optional)">
+          <Field label="Your name">
             <input
               className={input}
-              value={draft.contact}
-              onChange={e => set('contact', e.target.value)}
-              placeholder="Name or email — in case we need to follow up"
+              value={draft.submitterName}
+              onChange={e => set('submitterName', e.target.value)}
+              placeholder="So we know who to credit"
+            />
+          </Field>
+          <Field label="Your email">
+            <input
+              className={input}
+              type="email"
+              value={draft.submitterEmail}
+              onChange={e => set('submitterEmail', e.target.value)}
+              placeholder="In case we need to follow up"
             />
           </Field>
         </Section>
@@ -295,7 +310,7 @@ export function CourseSuggestionForm({
       <div className="px-5 py-4 border-t border-brand-border shrink-0">
         <button
           onClick={handleSubmit}
-          disabled={submitting || !draft.name.trim() || !draft.message.trim()}
+          disabled={submitting || !canSubmit}
           className="w-full py-2.5 bg-brand-green text-white text-sm font-semibold rounded-xl hover:opacity-90 disabled:opacity-50 transition-colors"
         >
           {submitting ? 'Submitting…' : 'Submit suggestion'}
