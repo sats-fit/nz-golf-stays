@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { createSupabaseAdminClient } from '@/lib/supabase/admin'
+import { geocodeAddress } from '@/lib/google/places'
 
 async function requireAdmin() {
   const supabase = await createSupabaseServerClient()
@@ -9,22 +10,6 @@ async function requireAdmin() {
   const admin = createSupabaseAdminClient()
   const { data } = await admin.from('admins').select('user_id').eq('user_id', session.user.id).single()
   return data ? session : null
-}
-
-async function geocodeAddress(address: string): Promise<{ lat: number; lng: number } | null> {
-  const key = process.env.GOOGLE_MAPS_API_KEY
-  if (!key || !address.trim()) return null
-  try {
-    const query = address.toLowerCase().includes('new zealand') ? address : `${address}, New Zealand`
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(query)}&key=${key}`
-    const res = await fetch(url)
-    const json = await res.json()
-    if (json.status === 'OK' && json.results[0]) {
-      const { lat, lng } = json.results[0].geometry.location
-      return { lat, lng }
-    }
-  } catch {}
-  return null
 }
 
 const ALLOWED_FIELDS = [

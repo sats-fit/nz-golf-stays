@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { createSupabaseAdminClient } from '@/lib/supabase/admin'
+import { enrichCourseFromGoogle } from '@/lib/google/places'
 
 async function checkAdmin(userId: string): Promise<boolean> {
   const admin = createSupabaseAdminClient()
@@ -68,12 +69,19 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ merged: true })
   }
 
-  // Regular new course submission — just approve it
+  // Regular new course submission — find it on Google Maps (coords, place,
+  // rating, photos) before publishing, so it gets a map pin and imagery.
+  // Best-effort: never let a Google hiccup block the approval.
+  let enrichment: Record<string, unknown> = {}
+  try {
+    enrichment = await enrichCourseFromGoogle(pending)
+  } catch {}
+
   const { error } = await admin
     .from('courses')
-    .update({ approved: true })
+    .update({ ...enrichment, approved: true })
     .eq('id', id)
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ approved: true })
+  return NextResponse.json({ approved: true, enriched: Object.keys(enrichment) })
 }

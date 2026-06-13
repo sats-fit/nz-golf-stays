@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { NZ_REGIONS } from '@/lib/constants'
-import { PhotoUpload } from './PhotoUpload'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 
@@ -22,7 +21,7 @@ const schema = z.object({
   region: z.string().optional(),
   phone: z.string().optional(),
   website: z.string().url('Must be a valid URL').optional().or(z.literal('')),
-  overnight_stays: z.enum(['yes', 'no']),
+  overnight_stays: z.enum(['yes', 'no', 'unsure']),
 
   free_with_green_fees: z.boolean(),
   stay_no_play_allowed: z.boolean(),
@@ -38,7 +37,8 @@ const schema = z.object({
   power_additional_cost: priceString,
   power_unit: powerUnit.or(z.literal('')).optional(),
   booking: z.enum(['unknown', 'walk_in', 'ask_first', 'must_book']),
-  submitted_by: z.string().optional(),
+  submitter_name: z.string().min(1, 'Your name is required'),
+  submitter_email: z.string().min(1, 'Your email is required').email('Enter a valid email'),
 })
 
 type FormData = z.infer<typeof schema>
@@ -56,7 +56,6 @@ const POWER_UNIT_OPTIONS: { value: 'per_night' | 'per_vehicle'; label: string }[
 ]
 
 export function SubmitForm() {
-  const [photos, setPhotos] = useState<string[]>([])
   const [submitted, setSubmitted] = useState(false)
   const [serverError, setServerError] = useState<string | null>(null)
 
@@ -88,19 +87,33 @@ export function SubmitForm() {
     setServerError(null)
     const num = (s: string | undefined) => (s && s.trim() !== '' ? Number(s) : null)
     const unit = <T extends string>(s: T | '' | undefined) => (s && s !== '' ? s : null)
+
+    // Fold the submitter's name + email into a single "Name <email>" string so
+    // admins can credit and follow up. (Email renders as a mailto in the admin
+    // dashboard.)
+    const { submitter_name, submitter_email, ...rest } = data
+    const submitted_by = `${submitter_name.trim()} <${submitter_email.trim()}>`
+
+    // overnight_stays is a boolean in the DB. "Unsure" is recorded as false but
+    // flagged in the notes so the admin knows to verify rather than assuming "No".
+    const notes = rest.overnight_stays === 'unsure'
+      ? 'Submitter was unsure whether this course allows overnight stays — please verify.'
+      : null
+
     const res = await fetch('/api/courses', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        ...data,
-        overnight_stays: data.overnight_stays === 'yes',
-        stay_no_play_price: num(data.stay_no_play_price),
-        stay_no_play_unit:  unit(data.stay_no_play_unit),
-        stay_with_play_price: num(data.stay_with_play_price),
-        stay_with_play_unit:  unit(data.stay_with_play_unit),
-        power_additional_cost: num(data.power_additional_cost),
-        power_unit:            unit(data.power_unit),
-        photos,
+        ...rest,
+        overnight_stays: rest.overnight_stays === 'yes',
+        stay_no_play_price: num(rest.stay_no_play_price),
+        stay_no_play_unit:  unit(rest.stay_no_play_unit),
+        stay_with_play_price: num(rest.stay_with_play_price),
+        stay_with_play_unit:  unit(rest.stay_with_play_unit),
+        power_additional_cost: num(rest.power_additional_cost),
+        power_unit:            unit(rest.power_unit),
+        notes,
+        submitted_by,
       }),
     })
 
@@ -185,6 +198,15 @@ export function SubmitForm() {
               />
               <span className="text-sm text-gray-700">No</span>
             </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                value="unsure"
+                {...register('overnight_stays')}
+                className="h-4 w-4 border-gray-300 text-green-600 focus:ring-green-500"
+              />
+              <span className="text-sm text-gray-700">Unsure</span>
+            </label>
           </div>
         </Field>
 
@@ -264,15 +286,20 @@ export function SubmitForm() {
         </Field>
       </Section>
 
-      {/* Photos */}
-      <Section title="Photos (optional)">
-        <PhotoUpload photos={photos} onChange={setPhotos} />
+      {/* Your details */}
+      <Section title="Your Details">
+        <p className="text-xs text-gray-500 -mt-2">
+          So we can credit you and follow up if we need to double-check anything.
+        </p>
+        <div className="grid grid-cols-2 gap-4">
+          <Field label="Your Name *" error={errors.submitter_name?.message}>
+            <Input {...register('submitter_name')} placeholder="Jane Doe" />
+          </Field>
+          <Field label="Your Email *" error={errors.submitter_email?.message}>
+            <Input {...register('submitter_email')} type="email" placeholder="you@example.com" />
+          </Field>
+        </div>
       </Section>
-
-      {/* Your name */}
-      <Field label="Your Name (optional)">
-        <Input {...register('submitted_by')} placeholder="So we can credit you" />
-      </Field>
 
       {serverError && (
         <p className="text-red-500 text-sm bg-red-50 border border-red-200 rounded-lg px-4 py-3">

@@ -276,20 +276,27 @@ export default function GuidePage() {
         <Section id="suggest" eyebrow="08" title="Suggesting edits & adding courses">
           <p>
             This site is community-driven, so the details get better when locals and travellers chip
-            in. If you spot something out of date — a price change, a new rule, a wrong phone number
-            — open the course pop-up and tap <strong>Suggest edit</strong>.
+            in. There are two ways to help: <strong>fix an existing listing</strong>, or{' '}
+            <strong>add a course we don&apos;t have yet</strong>.
           </p>
           <ul className="space-y-3">
-            <FilterRow label="Tell us what changed">
-              A short form opens, pre-filled with the current details. Describe what changed and
-              correct any fields.
-            </FilterRow>
-            <FilterRow label="We review it">
-              Your suggestion goes to our team for a quick check before it appears live, so the
-              listings stay accurate for everyone.
+            <FilterRow label="Spotted something out of date?">
+              Open the course pop-up and tap <strong>Suggest edit</strong>. A short form opens,
+              pre-filled with the current details — describe what changed and correct any fields.
             </FilterRow>
             <FilterRow label="Know a course we&apos;re missing?">
-              Use <strong>Add a course</strong> to submit a brand-new listing the same way.
+              Open the menu (the <HamburgerInline /> icon, top-right) and choose{' '}
+              <strong>Add a course</strong> — or go straight to the{' '}
+              <Link href="/submit" className="text-brand-green font-semibold hover:underline">
+                Add a course
+              </Link>{' '}
+              form. Fill in what you know (even just a name and town is a great start) — you
+              don&apos;t need an account.
+            </FilterRow>
+            <FilterRow label="We do the rest">
+              Every suggestion and new course goes to our team for a quick check. For new courses
+              we&apos;ll find it on Google Maps, add the location and photos, then publish it — so
+              listings stay accurate for everyone.
             </FilterRow>
           </ul>
           <Figure
