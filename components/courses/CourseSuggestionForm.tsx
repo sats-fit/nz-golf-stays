@@ -168,7 +168,7 @@ export function CourseSuggestionForm({
       <div className="overflow-y-auto flex-1 px-5 py-4 space-y-6">
 
         <Section title="Your message">
-          <Field label="What's changed? (optional)">
+          <Field label="What's changed?">
             <textarea
               className={`${input} resize-none`}
               rows={3}
@@ -295,7 +295,7 @@ export function CourseSuggestionForm({
       <div className="px-5 py-4 border-t border-brand-border shrink-0">
         <button
           onClick={handleSubmit}
-          disabled={submitting || !draft.name.trim()}
+          disabled={submitting || !draft.name.trim() || !draft.message.trim()}
           className="w-full py-2.5 bg-brand-green text-white text-sm font-semibold rounded-xl hover:opacity-90 disabled:opacity-50 transition-colors"
         >
           {submitting ? 'Submitting…' : 'Submit suggestion'}
