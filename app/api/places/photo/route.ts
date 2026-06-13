@@ -3,28 +3,52 @@ import { createClient } from '@supabase/supabase-js'
 
 const API_KEY = process.env.GOOGLE_MAPS_API_KEY!
 
+// In-memory cache of photo references per place_id (TTL 24h) so we don't call the
+// Place Details API on every request for the same course.
+const refCache = new Map<string, { refs: string[]; ts: number }>()
+const CACHE_TTL = 86_400_000
+
+async function getPhotoRefsFromGoogle(placeId: string): Promise<string[]> {
+  const cached = refCache.get(placeId)
+  if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.refs
+
+  const url = `https://maps.googleapis.com/maps/api/place/details/json` +
+    `?place_id=${placeId}&fields=photos&key=${API_KEY}`
+  let refs: string[] = []
+  try {
+    const res = await fetch(url)
+    const data = await res.json() as { result?: { photos?: { photo_reference: string }[] } }
+    refs = (data.result?.photos ?? []).slice(0, 3).map((p) => p.photo_reference)
+  } catch {
+    refs = []
+  }
+  refCache.set(placeId, { refs, ts: Date.now() })
+  return refs
+}
+
 export async function GET(request: NextRequest) {
   const placeId = request.nextUrl.searchParams.get('place_id')
   const index = parseInt(request.nextUrl.searchParams.get('index') ?? '0', 10)
 
   if (!placeId) return new NextResponse('Missing place_id', { status: 400 })
 
-  // Only serve photos for place_ids that already exist in our DB. This prevents
-  // the endpoint being abused as an open, billable proxy: an attacker cannot make
-  // us call the (paid) Google Places API for arbitrary place_ids they supply.
+  // Security gate: only fetch from Google for place_ids that belong to an approved
+  // course in our DB. This prevents the endpoint being abused as an open, billable
+  // proxy for arbitrary attacker-supplied place_ids, while still serving real photos.
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
-  const { data } = await supabase
+  const { data: course } = await supabase
     .from('courses')
-    .select('photo_references')
+    .select('id')
     .eq('google_place_id', placeId)
+    .eq('approved', true)
     .maybeSingle()
 
-  const refs = data?.photo_references
-  if (!refs?.length) return new NextResponse('No photo found', { status: 404 })
+  if (!course) return new NextResponse('Unknown place', { status: 404 })
 
+  const refs = await getPhotoRefsFromGoogle(placeId)
   const photoRef = refs[Math.min(index, refs.length - 1)] ?? null
   if (!photoRef) return new NextResponse('No photo found', { status: 404 })
 
