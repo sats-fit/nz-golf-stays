@@ -174,7 +174,7 @@ export function CourseSuggestionForm({
       <div className="overflow-y-auto flex-1 px-5 py-4 space-y-6">
 
         <Section title="Your message">
-          <Field label="What's changed?">
+          <Field label="What's changed?" required>
             <textarea
               className={`${input} resize-none`}
               rows={3}
@@ -183,21 +183,25 @@ export function CourseSuggestionForm({
               placeholder="e.g. Their phone number has changed, they no longer allow dogs, pricing updated..."
             />
           </Field>
-          <Field label="Your name">
+        </Section>
+
+        <Section title="Your details">
+          <p className="text-xs text-brand-muted -mt-1">Required in case we need to follow up for extra details.</p>
+          <Field label="Name" required>
             <input
               className={input}
               value={draft.submitterName}
               onChange={e => set('submitterName', e.target.value)}
-              placeholder="So we know who to credit"
+              placeholder="Your name"
             />
           </Field>
-          <Field label="Your email">
+          <Field label="Email" required>
             <input
               className={input}
               type="email"
               value={draft.submitterEmail}
               onChange={e => set('submitterEmail', e.target.value)}
-              placeholder="In case we need to follow up"
+              placeholder="Your email"
             />
           </Field>
         </Section>
@@ -331,10 +335,13 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   )
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-brand-muted mb-1">{label}</label>
+      <label className="block text-xs font-medium text-brand-muted mb-1">
+        {label}
+        {required && <span className="text-red-500 ml-0.5">*</span>}
+      </label>
       {children}
     </div>
   )

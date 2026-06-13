@@ -131,8 +131,8 @@ function SubmittedBy({ text }: { text: string }) {
   const match = text.match(/[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+/)
   if (!match) return <>{text}</>
   const email = match[0]
-  const before = text.slice(0, match.index)
-  const after = text.slice(match.index! + email.length)
+  const before = text.slice(0, match.index).replace(/[<>]/g, '')
+  const after = text.slice(match.index! + email.length).replace(/[<>]/g, '')
   return (
     <>
       {before}
