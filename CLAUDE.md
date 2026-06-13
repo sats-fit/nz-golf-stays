@@ -69,7 +69,7 @@ Formatting helpers in `lib/utils.ts`: `pricingTypeLabel()`, `bookingLabel()`, `d
 
 The homepage has three view modes toggled by `ViewToggle`: split (list + map), map-only, list-only. `HomePage` detects mobile/tablet and renders `MobileLayout` vs the desktop split. `CourseDetailModal` overlays course details with a Google Map marker.
 
-Photos are stored as Google Place photo references (`photo_references` column) and proxied through `/api/places/photo` — never fetched directly from the client to avoid exposing the API key.
+Photos are **fetched live from Google** (not stored): the client requests `/api/places/photo?place_id=…`, which looks up the course by `google_place_id` (must be an approved course, else 404 — this blocks billable abuse of arbitrary place_ids), then calls the Google Place Details + Place Photo APIs server-side and returns the image (CDN-cached 7 days). This keeps the API key off the client. Note: there is **no `photo_references` column** — the `courses` table has `google_place_id` and an unused `photos` text[] array. Do not remove the live Google fallback (doing so blanks all photos).
 
 ### Scripts
 
