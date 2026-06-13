@@ -39,3 +39,12 @@ body {
 .animate-slide-up {
   animation: slide-up 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
+/* Hide scrollbar for horizontally-scrolling chip rows */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
