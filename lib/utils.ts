@@ -6,6 +6,20 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+/**
+ * Best photo URL for a course, preferring photos we've stored in Supabase
+ * Storage (free, populated by the backfill / approval flow) over the live
+ * Google Places proxy (billable — only used as a fallback for courses we
+ * haven't stored yet). Returns null when there's no photo at all.
+ */
+export function coursePhotoUrl(
+  course: { photos: string[] | null; google_place_id: string | null },
+): string | null {
+  if (course.photos && course.photos.length > 0) return course.photos[0]
+  if (course.google_place_id) return `/api/places/photo?place_id=${course.google_place_id}&index=0`
+  return null
+}
+
 export function pricingTypeLabel(value: PricingType): string {
   switch (value) {
     case 'free': return 'Free'

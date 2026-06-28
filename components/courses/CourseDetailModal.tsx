@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Course } from '@/lib/types'
+import { coursePhotoUrl } from '@/lib/utils'
 import { WishlistButton } from '@/components/ui/WishlistButton'
 import { StarRating } from '@/components/ui/StarRating'
 import { StayOptionsTable } from './StayOptionsTable'
@@ -54,15 +55,13 @@ export function CourseDetailModal({
           <>
             {/* Photo */}
             <div className="relative bg-brand-surface shrink-0 rounded-t-2xl overflow-hidden" style={{ height: 220 }}>
-              {course.google_place_id ? (
+              {coursePhotoUrl(course) ? (
                 <img
-                  src={`/api/places/photo?place_id=${course.google_place_id}&index=0`}
+                  src={coursePhotoUrl(course)!}
                   alt={course.name}
                   className="w-full h-full object-cover"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
                 />
-              ) : course.photos.length > 0 ? (
-                <img src={course.photos[0]} alt={course.name} className="w-full h-full object-cover" />
               ) : null}
               <WishlistButton courseId={course.id} className="absolute top-3 left-3" />
               <div className="absolute top-3 right-3 flex items-center gap-2">

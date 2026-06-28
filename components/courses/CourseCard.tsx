@@ -1,6 +1,7 @@
 'use client'
 
 import { Course } from '@/lib/types'
+import { coursePhotoUrl } from '@/lib/utils'
 import { WishlistButton } from '@/components/ui/WishlistButton'
 import { StarRating } from '@/components/ui/StarRating'
 
@@ -46,6 +47,7 @@ export function CourseCard({
   highlighted?: boolean
   onClick?: (course: Course) => void
 }) {
+  const photoSrc = coursePhotoUrl(course)
   return (
     <div
       onClick={() => onClick?.(course)}
@@ -57,18 +59,12 @@ export function CourseCard({
     >
       {/* Photo */}
       <div className="relative bg-brand-surface rounded-t-xl overflow-hidden" style={{ aspectRatio: '16/10' }}>
-        {course.google_place_id ? (
+        {photoSrc ? (
           <img
-            src={`/api/places/photo?place_id=${course.google_place_id}&index=0`}
+            src={photoSrc}
             alt={course.name}
             className="w-full h-full object-cover"
             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
-          />
-        ) : course.photos.length > 0 ? (
-          <img
-            src={course.photos[0]}
-            alt={course.name}
-            className="w-full h-full object-cover"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">

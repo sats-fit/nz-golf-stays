@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { createSupabaseAdminClient } from '@/lib/supabase/admin'
 import { enrichCourseFromGoogle } from '@/lib/google/places'
+import { storeCoursePhotos } from '@/lib/google/coursePhotos'
 
 async function checkAdmin(userId: string): Promise<boolean> {
   const admin = createSupabaseAdminClient()
@@ -76,6 +77,16 @@ export async function PATCH(req: NextRequest) {
   try {
     enrichment = await enrichCourseFromGoogle(pending)
   } catch {}
+
+  // Persist photos into Supabase Storage so they're served for free, not via
+  // the billable live Google proxy — only for courses without photos already.
+  const placeId = (enrichment.google_place_id as string | undefined) ?? pending.google_place_id
+  if (placeId && (!pending.photos || pending.photos.length === 0)) {
+    try {
+      const urls = await storeCoursePhotos(admin, id, placeId)
+      if (urls.length > 0) enrichment.photos = urls
+    } catch {}
+  }
 
   const { error } = await admin
     .from('courses')

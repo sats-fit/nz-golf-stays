@@ -47,7 +47,6 @@ export type Course = {
   email: string | null
   google_rating: number | null
   google_rating_count: number | null
-  photo_references: string[] | null
   approved: boolean
   submitted_by: string | null
   suggestion_for_course_id: string | null

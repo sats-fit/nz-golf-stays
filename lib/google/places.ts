@@ -112,7 +112,6 @@ export type EnrichableCourse = {
   google_place_id: string | null
   google_rating: number | null
   google_rating_count: number | null
-  photo_references: string[] | null
 }
 
 /**
@@ -146,12 +145,13 @@ export async function enrichCourseFromGoogle(course: EnrichableCourse): Promise<
     if (coords) { updates.lat = coords.lat; updates.lng = coords.lng }
   }
 
-  // 3. Pull photos (and backfill phone/website) from the place details.
-  const needsDetails = !!placeId && (course.photo_references == null || !course.phone || !course.website)
+  // 3. Backfill phone/website from the place details. (Photos are handled
+  // separately via storeCoursePhotos so they land in Supabase Storage, not a
+  // billable live-fetch path — see lib/google/coursePhotos.ts.)
+  const needsDetails = !!placeId && (!course.phone || !course.website)
   if (needsDetails && placeId) {
     const details = await getPlaceDetails(placeId)
     if (details) {
-      if (course.photo_references == null && details.photoRefs.length > 0) updates.photo_references = details.photoRefs
       if (!course.phone && details.phone) updates.phone = details.phone
       if (!course.website && details.website) updates.website = details.website
     }

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { setOptions, importLibrary } from '@googlemaps/js-api-loader'
 import { Course } from '@/lib/types'
+import { coursePhotoUrl } from '@/lib/utils'
 import { WishlistButton } from '@/components/ui/WishlistButton'
 import { StarRating } from '@/components/ui/StarRating'
 
@@ -225,18 +226,12 @@ export function MapView({
         >
           {/* Photo */}
           <div className="relative bg-brand-surface rounded-t-2xl overflow-hidden" style={{ aspectRatio: '16/10' }}>
-            {selectedCourse.google_place_id ? (
+            {coursePhotoUrl(selectedCourse) ? (
               <img
-                src={`/api/places/photo?place_id=${selectedCourse.google_place_id}&index=0`}
+                src={coursePhotoUrl(selectedCourse)!}
                 alt={selectedCourse.name}
                 className="w-full h-full object-cover"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
-              />
-            ) : selectedCourse.photos.length > 0 ? (
-              <img
-                src={selectedCourse.photos[0]}
-                alt={selectedCourse.name}
-                className="w-full h-full object-cover"
               />
             ) : null}
             <WishlistButton courseId={selectedCourse.id} className="absolute top-2.5 left-2.5" />

@@ -50,7 +50,14 @@ export async function GET(request: NextRequest) {
 
   const refs = await getPhotoRefsFromGoogle(placeId)
   const photoRef = refs[Math.min(index, refs.length - 1)] ?? null
-  if (!photoRef) return new NextResponse('No photo found', { status: 404 })
+  if (!photoRef) {
+    // CDN-cache the "no photo" result so a course Google has no imagery for
+    // doesn't re-trigger a billable Place Details call on every page view.
+    return new NextResponse('No photo found', {
+      status: 404,
+      headers: { 'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=86400' },
+    })
+  }
 
   const photoUrl = `https://maps.googleapis.com/maps/api/place/photo` +
     `?maxwidth=800&photo_reference=${photoRef}&key=${API_KEY}`
